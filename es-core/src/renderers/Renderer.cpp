@@ -16,6 +16,7 @@ namespace Renderer
 	static std::stack<Rect> nativeClipStack;
 
 	static SDL_Window*      sdlWindow          = nullptr;
+	static SDL_Renderer*	sdlRenderer        = nullptr;
 	static int              windowWidth        = 0;
 	static int              windowHeight       = 0;
 	static int              screenWidth        = 0;
@@ -32,33 +33,12 @@ namespace Renderer
 		size_t                     width   = 0;
 		size_t                     height  = 0;
 		ResourceData               resData = ResourceManager::getInstance()->getFileData(":/window_icon_256.png");
-		unsigned char*             rawData = ImageIO::loadFromMemoryRGBA32(resData.ptr.get(), resData.length, width, height);
+		SDL_Surface*               surface = ImageIO::loadSurfaceFromMemoryRGBA32(resData.ptr.get(), resData.length, width, height);
 
-		if(rawData != nullptr)
+		if(surface != nullptr)
 		{
-			ImageIO::flipPixelsVert(rawData, width, height);
-
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-			unsigned int rmask = 0xFF000000;
-			unsigned int gmask = 0x00FF0000;
-			unsigned int bmask = 0x0000FF00;
-			unsigned int amask = 0x000000FF;
-#else
-			unsigned int rmask = 0x000000FF;
-			unsigned int gmask = 0x0000FF00;
-			unsigned int bmask = 0x00FF0000;
-			unsigned int amask = 0xFF000000;
-#endif
-			// try creating SDL surface from logo data
-			SDL_Surface* logoSurface = SDL_CreateRGBSurfaceFrom((void*)rawData, (int)width, (int)height, 32, (int)(width * 4), rmask, gmask, bmask, amask);
-			
-			if(logoSurface != nullptr)
-			{
-				SDL_SetWindowIcon(sdlWindow, logoSurface);
-				SDL_FreeSurface(logoSurface);
-			}
-
-			delete[] rawData;
+			SDL_SetWindowIcon(sdlWindow, surface);
+			SDL_FreeSurface(surface);
 		}
 
 	} // setIcon
@@ -153,6 +133,9 @@ namespace Renderer
 
 		LOG(LogInfo) << "Created window successfully.";
 
+		if (sdlRenderer == nullptr)
+    			sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_TARGETTEXTURE | SDL_RENDERER_ACCELERATED/* | SDL_RENDERER_PRESENTVSYNC*/);
+
 		createContext();
 		setIcon();
 		setSwapInterval();
@@ -171,6 +154,9 @@ namespace Renderer
 		}
 
 		destroyContext();
+
+		SDL_DestroyRenderer(sdlRenderer);
+		sdlRenderer = nullptr;
 
 		SDL_DestroyWindow(sdlWindow);
 		sdlWindow = nullptr;
@@ -378,6 +364,54 @@ namespace Renderer
 
 		return (float) screenWidth / (float) screenHeight;
 	}
+
+	SDL_Texture* createStaticTexture(const Texture::Type _type, const bool _linear, const bool _repeat, const unsigned int _width, const unsigned int _height, void* _data)
+	{
+        SDL_Texture* texture = nullptr;
+        if (_data == nullptr)
+        {
+	        texture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, _width, _height);
+        }
+        else
+        {
+			SDL_Surface* sdlSurfaceData = SDL_CreateRGBSurfaceWithFormatFrom(_data, _width, _height, 32, _width*sizeof(Uint32), SDL_PIXELFORMAT_ARGB8888);
+
+			// Create a texture from the surface, destroy surface as its' not needed anymore
+			texture = SDL_CreateTextureFromSurface(sdlRenderer, sdlSurfaceData);
+			SDL_FreeSurface(sdlSurfaceData);
+        }
+
+        return texture;
+	}
+
+//////////////////////////////////////////////////////////////////////////
+
+	SDL_Texture* createStreamingTexture(const Texture::Type _type, const bool _linear, const bool _repeat, const unsigned int _width, const unsigned int _height, void* _data)
+	{
+        SDL_Texture* texture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, _width, _height);
+        void* pixels = nullptr;
+        int pitch;
+        if (_data)
+        {
+        	if (SDL_LockTexture(texture, NULL, &pixels, &pitch) == 0)
+        	{
+        		for (int y = 0 ; y < _height ; y++)
+        			memcpy(pixels+y*pitch, _data+y*_height*sizeof(Uint32), _width*sizeof(Uint32));
+
+        		SDL_UnlockTexture(texture);
+        	}
+        }
+        return texture;
+	}
+
+//////////////////////////////////////////////////////////////////////////
+
+	void destroyTexture(SDL_Texture* _texture)
+	{
+		SDL_DestroyTexture(_texture);
+	} // destroyTexture
+
+//////////////////////////////////////////////////////////////////////////
 
 	bool        isSmallScreen()    
 	{ 		

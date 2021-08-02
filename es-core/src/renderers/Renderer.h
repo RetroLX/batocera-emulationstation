@@ -3,6 +3,7 @@
 #define ES_CORE_RENDERER_RENDERER_H
 
 #include <vector>
+#include <SDL.h>
 #include "math/Vector2f.h"
 
 class  Transform4x4f;
@@ -69,16 +70,18 @@ namespace Renderer
 	void        popClipRect     ();
 	void        drawRect        (const float _x, const float _y, const float _w, const float _h, const unsigned int _color, const Blend::Factor _srcBlendFactor = Blend::SRC_ALPHA, const Blend::Factor _dstBlendFactor = Blend::ONE_MINUS_SRC_ALPHA);
 	void        drawRect        (const float _x, const float _y, const float _w, const float _h, const unsigned int _color, const unsigned int _colorEnd, bool horizontalGradient = false, const Blend::Factor _srcBlendFactor = Blend::SRC_ALPHA, const Blend::Factor _dstBlendFactor = Blend::ONE_MINUS_SRC_ALPHA);
-
-	SDL_Window* getSDLWindow    ();
-	int         getWindowWidth  ();
-	int         getWindowHeight ();
-	int         getScreenWidth  ();
-	int         getScreenHeight ();
-	int         getScreenOffsetX();
-	int         getScreenOffsetY();
-	int         getScreenRotate ();
 	float		getScreenProportion();
+
+	SDL_Window*     getSDLWindow       ();
+	SDL_Renderer*   getWindowRenderer  ();
+	SDL_Renderer*   createTextureRenderer();
+	int             getWindowWidth  ();
+	int             getWindowHeight ();
+	int             getScreenWidth  ();
+	int             getScreenHeight ();
+	int             getScreenOffsetX();
+	int             getScreenOffsetY();
+	int             getScreenRotate ();
 
 	// API specific
 	unsigned int convertColor      (const unsigned int _color);
@@ -86,11 +89,13 @@ namespace Renderer
 	void         setupWindow       ();
 	void         createContext     ();
 	void         destroyContext    ();
-	unsigned int createTexture     (const Texture::Type _type, const bool _linear, const bool _repeat, const unsigned int _width, const unsigned int _height, void* _data);
-	void         destroyTexture    (const unsigned int _texture);
-	void         updateTexture     (const unsigned int _texture, const Texture::Type _type, const unsigned int _x, const unsigned _y, const unsigned int _width, const unsigned int _height, void* _data);
-	void         bindTexture       (const unsigned int _texture);
-	void         drawLines         (const Vertex* _vertices, const unsigned int _numVertices, const Blend::Factor _srcBlendFactor = Blend::SRC_ALPHA, const Blend::Factor _dstBlendFactor = Blend::ONE_MINUS_SRC_ALPHA);
+	SDL_Texture* createStaticTexture(const Texture::Type _type, const bool _linear, const bool _repeat, const unsigned int _width, const unsigned int _height, void* _data);
+	SDL_Texture* createStreamingTexture(const Texture::Type _type, const bool _linear, const bool _repeat, const unsigned int _width, const unsigned int _height, void* _data);
+	SDL_Texture* createTexture     (const Texture::Type _type, const bool _linear, const bool _repeat, const unsigned int _width, const unsigned int _height, void* _data);
+	void         destroyTexture    (SDL_Texture* _texture);
+	void         updateTexture     (SDL_Texture* _texture, const Texture::Type _type, const unsigned int _x, const unsigned _y, const unsigned int _width, const unsigned int _height, void* _data);
+	void         bindTexture       (SDL_Texture* _texture);
+	void         blit(SDL_Renderer* renderer, SDL_Texture* _texture, SDL_Rect* srcRect, SDL_Rect* dstRect, Uint32 flipFlags = 0);	void         drawLines         (const Vertex* _vertices, const unsigned int _numVertices, const Blend::Factor _srcBlendFactor = Blend::SRC_ALPHA, const Blend::Factor _dstBlendFactor = Blend::ONE_MINUS_SRC_ALPHA);
 	void         drawTriangleStrips(const Vertex* _vertices, const unsigned int _numVertices, const Blend::Factor _srcBlendFactor = Blend::SRC_ALPHA, const Blend::Factor _dstBlendFactor = Blend::ONE_MINUS_SRC_ALPHA);
 	void         setProjection     (const Transform4x4f& _projection);
 	void         setMatrix         (const Transform4x4f& _matrix);

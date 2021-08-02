@@ -7,11 +7,12 @@
 #include "Log.h"
 #include "Settings.h"
 #include "SystemData.h"
-#include <FreeImage.h>
 #include <fstream>
 #include "utils/FileSystemUtil.h"
 #include "utils/StringUtil.h"
 #include <thread>
+#include <SDL.h>
+#include <SDL_image.h>
 #include <SDL_timer.h>
 
 #define OVERQUOTA_RETRY_DELAY 15000
@@ -481,34 +482,28 @@ bool resizeImage(const std::string& path, int maxWidth, int maxHeight)
 	if(maxWidth == 0 && maxHeight == 0)
 		return true;
 
-	FREE_IMAGE_FORMAT format = FIF_UNKNOWN;
-	FIBITMAP* image = NULL;
-	
-	//detect the filetype
-	format = FreeImage_GetFileType(path.c_str(), 0);
-	if(format == FIF_UNKNOWN)
-		format = FreeImage_GetFIFFromFilename(path.c_str());
-	if(format == FIF_UNKNOWN)
-	{
-		LOG(LogError) << "Error - could not detect filetype for image \"" << path << "\"!";
-		return false;
-	}
+	bool isPNG = false;
+	bool isJPEG = false;
+	bool isBMP = false;
 
-	//make sure we can read this filetype first, then load it
-	if(FreeImage_FIFSupportsReading(format))
+	if (IMG_isPNG(SDL_RWFromFile(path.c_str(), "rb")))
+		isPNG = true;
+	else if (IMG_isJPG(SDL_RWFromFile(path.c_str(), "rb")))
+		isJPEG = true;
+	else if (IMG_isBMP(SDL_RWFromFile(path.c_str(), "rb")))
+		isBMP = true;
+
+	SDL_Surface* surface = IMG_Load(path.c_str());
+	if (surface==nullptr)
 	{
-		image = FreeImage_Load(format, path.c_str());
-	}else{
 		LOG(LogError) << "Error - file format reading not supported for image \"" << path << "\"!";
 		return false;
 	}
-
-	float width = (float)FreeImage_GetWidth(image);
-	float height = (float)FreeImage_GetHeight(image);
-
+	float width = (float)surface->w;
+	float height = (float)surface->h;
 	if (width == 0 || height == 0)
 	{
-		FreeImage_Unload(image);
+		SDL_FreeSurface(surface);
 		return true;
 	}
 
@@ -519,28 +514,58 @@ bool resizeImage(const std::string& path, int maxWidth, int maxHeight)
 	
 	if (width <= maxWidth && height <= maxHeight)
 	{
-		FreeImage_Unload(image);
+		SDL_FreeSurface(surface);
 		return true;
 	}
-		
-	FIBITMAP* imageRescaled = FreeImage_Rescale(image, maxWidth, maxHeight, FILTER_BILINEAR);
-	FreeImage_Unload(image);
 
-	if(imageRescaled == NULL)
+	SDL_FreeSurface(surface);
+
+	SDL_Renderer* renderer = Renderer::getWindowRenderer();
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+	SDL_Texture* rescaledTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET, maxWidth, maxHeight);
+
+ 	if (rescaledTexture == NULL)
+ 	{
+        	LOG(LogError) << "Could not resize image! (not enough memory? invalid bitdepth?)";
+        	return false;
+ 	}
+
+	bool saved = false;
+
+	SDL_Rect srcDest = { 0, 0, (int)width, (int)height };
+	SDL_Rect dstRect = { 0, 0, maxWidth, maxHeight};
+	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
+	SDL_SetRenderTarget(renderer, rescaledTexture);
+	SDL_RenderCopy(renderer, texture, &srcDest, &dstRect);
+	SDL_SetRenderTarget(renderer, NULL);
+	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
+	SDL_DestroyTexture(texture);
+
+	SDL_Surface* rescaledSurface = nullptr;
+	SDL_LockTextureToSurface(rescaledTexture, &dstRect, &rescaledSurface);
+	if (rescaledSurface == nullptr)
 	{
-		LOG(LogError) << "Could not resize image! (not enough memory? invalid bitdepth?)";
+		SDL_DestroyTexture(rescaledTexture);
+		SDL_DestroyTexture(texture);
 		return false;
 	}
 
-	bool saved = false;
-	
-	try
+	if (isPNG)
 	{
-		saved = (FreeImage_Save(format, imageRescaled, path.c_str()) != 0);
+		IMG_SavePNG(rescaledSurface, path.c_str());
+		saved = true;
 	}
-	catch(...) { }
-
-	FreeImage_Unload(imageRescaled);
+	else if (isJPEG)
+	{
+		IMG_SaveJPG(rescaledSurface, path.c_str(), 90);
+		saved = true;
+	}
+	else
+	{
+		LOG(LogError) << "Could not resize image! (cannot save to this format)";
+	}
+	SDL_UnlockTexture(rescaledTexture);
+	SDL_DestroyTexture(rescaledTexture);
 
 	if(!saved)
 		LOG(LogError) << "Failed to save resized image!";

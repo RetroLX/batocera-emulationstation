@@ -459,10 +459,50 @@ namespace Renderer
 
 //////////////////////////////////////////////////////////////////////////
 
-	void destroyTexture(const unsigned int _texture)
+	SDL_Texture* createStaticTexture(const Texture::Type _type, const bool _linear, const bool _repeat, const unsigned int _width, const unsigned int _height, void* _data)
 	{
-		GL_CHECK_ERROR(glDeleteTextures(1, &_texture));
+        SDL_Texture* texture = nullptr;
+        if (_data == nullptr)
+        {
+	        texture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, _width, _height);
+        }
+        else
+        {
+			SDL_Surface* sdlSurfaceData = SDL_CreateRGBSurfaceWithFormatFrom(_data, _width, _height, 32, _width*sizeof(Uint32), SDL_PIXELFORMAT_ARGB8888);
 
+			// Create a texture from the surface, destroy surface as its' not needed anymore
+			texture = SDL_CreateTextureFromSurface(sdlRenderer, sdlSurfaceData);
+			SDL_FreeSurface(sdlSurfaceData);
+        }
+
+        return texture;
+	}
+
+//////////////////////////////////////////////////////////////////////////
+
+	SDL_Texture* createStreamingTexture(const Texture::Type _type, const bool _linear, const bool _repeat, const unsigned int _width, const unsigned int _height, void* _data)
+	{
+        SDL_Texture* texture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, _width, _height);
+        void* pixels = nullptr;
+        int pitch;
+        if (_data)
+        {
+        	if (SDL_LockTexture(texture, NULL, &pixels, &pitch) == 0)
+        	{
+        		for (int y = 0 ; y < _height ; y++)
+        			memcpy(pixels+y*pitch, _data+y*_height*sizeof(Uint32), _width*sizeof(Uint32));
+
+        		SDL_UnlockTexture(texture);
+        	}
+        }
+        return texture;
+	}
+
+//////////////////////////////////////////////////////////////////////////
+
+	void destroyTexture(SDL_Texture* _texture)
+	{
+		SDL_DestroyTexture(_texture);
 	} // destroyTexture
 
 //////////////////////////////////////////////////////////////////////////
@@ -498,27 +538,52 @@ namespace Renderer
 
 //////////////////////////////////////////////////////////////////////////
 
-	static unsigned int boundTexture = 0;
+	static SDL_Texture* boundTexture = 0;
 
-	void bindTexture(const unsigned int _texture)
+	void bindTexture(SDL_Texture* _texture)
 	{
 		if (boundTexture == _texture)
 			return;
 
 		boundTexture = _texture;
-
-		if(_texture == 0)
-		{
-			GL_CHECK_ERROR(glBindTexture(GL_TEXTURE_2D, 0));
-			boundTexture = 0;
-		}
-		else
-		{
-			GL_CHECK_ERROR(glBindTexture(GL_TEXTURE_2D, _texture));
-			boundTexture = _texture;
-		}
-
 	} // bindTexture
+
+//////////////////////////////////////////////////////////////////////////
+
+	void updateTexture(SDL_Texture* _texture, const Texture::Type _type, const unsigned int _x, const unsigned _y, const unsigned int _width, const unsigned int _height, void* _data)
+	{
+        Uint32* pixels = nullptr;
+        Uint32* data32 = (Uint32*)_data;
+        int pitch;
+        if (_data)
+        {
+	        SDL_Rect rect = { _x, _y, _width, _height };
+        	if (SDL_LockTexture(_texture, nullptr/*&rect*/, (void**)&pixels, &pitch) == 0)
+        	{
+        		for (int y = 0 ; y < _height ; y++)
+        			memcpy(pixels+y*(pitch/sizeof(Uint32)), data32+((_y+y)*_width)+_x, _width*sizeof(Uint32));
+
+        		SDL_UnlockTexture(_texture);
+        	}
+        }
+	} // updateTexture
+
+//////////////////////////////////////////////////////////////////////////
+
+	void blit(SDL_Renderer* renderer, SDL_Texture* _texture, SDL_Rect* srcRect, SDL_Rect* dstRect, Uint32 flipFlags)
+	{
+        dstRect->x += (int)mTranslate.x();
+        dstRect->y += (int)mTranslate.y();
+
+	    if (flipFlags == 0)
+		    SDL_RenderCopy(renderer, _texture, srcRect, dstRect);
+	    else
+        {
+            int w, h;
+            SDL_GetRendererOutputSize(renderer, &w, &h);
+            SDL_RenderCopyEx(renderer, _texture, srcRect, dstRect, 0., NULL, (SDL_RendererFlip)flipFlags);
+        }
+	}
 
 //////////////////////////////////////////////////////////////////////////
 

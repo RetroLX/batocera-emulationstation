@@ -4,6 +4,7 @@
 
 #include <mutex>
 #include <string>
+#include <SDL.h>
 #include "ImageIO.h"
 
 class TextureResource;
@@ -65,6 +66,8 @@ public:
 	bool isRequired() { return mRequired; };
 	void setRequired(bool value) { mRequired = value; };
 
+	SDL_Texture* getTextureID() { return mTextureID; }
+
 private:
 	bool			mRequired;
 
@@ -72,7 +75,7 @@ private:
 	bool			mTile;
 	bool			mLinear;
 	std::string		mPath;
-	unsigned int	mTextureID;
+	SDL_Texture*	mTextureID;
 	unsigned char*	mDataRGBA;
 	size_t			mWidth;
 	size_t			mHeight;
