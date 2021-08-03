@@ -268,6 +268,8 @@ TextureLoader::~TextureLoader()
 
 void TextureLoader::threadProc()
 {
+    SDL_GLContext ctx = SDL_GL_CreateContext(SDL_GL_GetCurrentWindow());
+
 	while (true)
 	{		
 		// Wait for an event to say there is something in the queue
@@ -284,11 +286,12 @@ void TextureLoader::threadProc()
 
 			mProcessingTextureDataQ.push_back(textureData);
 
+			SDL_GL_MakeCurrent(SDL_GL_GetCurrentWindow(), ctx);
 			lock.unlock();
 
 			if (textureData && !textureData->isLoaded())
 			{
-				//LOG(LogDebug) << "TextureLoader::Thread\tLoading " << textureData->getPath().c_str();
+				LOG(LogDebug) << "TextureLoader::Thread\tLoading " << textureData->getPath().c_str();
 				std::this_thread::yield();
 
 				textureData->load(true);

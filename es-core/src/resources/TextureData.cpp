@@ -337,7 +337,7 @@ bool TextureData::uploadAndBind()
 		}
 
 		// Upload texture
-		mTextureID = Renderer::createTexture(Renderer::Texture::RGBA, mLinear, mTile, mWidth, mHeight, mDataRGBA);
+		mTextureID = Renderer::createStreamingTexture(Renderer::Texture::RGBA, mLinear, mTile, mWidth, mHeight, mDataRGBA);
 		if (mTextureID == 0)
 			return false;
 

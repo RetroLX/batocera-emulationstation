@@ -5,6 +5,7 @@
 #include <vector>
 #include <SDL.h>
 #include "math/Vector2f.h"
+#include "math/Vector3f.h"
 
 class  Transform4x4f;
 class  Vector2i;
@@ -95,8 +96,9 @@ namespace Renderer
 	void         destroyTexture    (SDL_Texture* _texture);
 	void         updateTexture     (SDL_Texture* _texture, const Texture::Type _type, const unsigned int _x, const unsigned _y, const unsigned int _width, const unsigned int _height, void* _data);
 	void         bindTexture       (SDL_Texture* _texture);
-	void         blit(SDL_Renderer* renderer, SDL_Texture* _texture, SDL_Rect* srcRect, SDL_Rect* dstRect, Uint32 flipFlags = 0);	void         drawLines         (const Vertex* _vertices, const unsigned int _numVertices, const Blend::Factor _srcBlendFactor = Blend::SRC_ALPHA, const Blend::Factor _dstBlendFactor = Blend::ONE_MINUS_SRC_ALPHA);
-	void         drawTriangleStrips(const Vertex* _vertices, const unsigned int _numVertices, const Blend::Factor _srcBlendFactor = Blend::SRC_ALPHA, const Blend::Factor _dstBlendFactor = Blend::ONE_MINUS_SRC_ALPHA);
+	void         blit(SDL_Renderer* renderer, SDL_Texture* _texture, SDL_Rect* srcRect, SDL_Rect* dstRect, Uint32 flipFlags = 0);
+	void         drawLines         (const Vertex* _vertices, const unsigned int _numVertices, const Blend::Factor _srcBlendFactor = Blend::SRC_ALPHA, const Blend::Factor _dstBlendFactor = Blend::ONE_MINUS_SRC_ALPHA);
+	//void         drawTriangleStrips(const Vertex* _vertices, const unsigned int _numVertices, const Blend::Factor _srcBlendFactor = Blend::SRC_ALPHA, const Blend::Factor _dstBlendFactor = Blend::ONE_MINUS_SRC_ALPHA);
 	void         setProjection     (const Transform4x4f& _projection);
 	void         setMatrix         (const Transform4x4f& _matrix);
 	void         setViewport       (const Rect& _viewport);
@@ -104,6 +106,7 @@ namespace Renderer
 	void         setSwapInterval   ();
 	void         swapBuffers       ();
 	std::vector<std::pair<std::string, std::string>> getDriverInformation();
+	SDL_Texture* createTargetTexture(const Texture::Type _type, const bool _linear, const bool _repeat, const unsigned int _width, const unsigned int _height);
 
 	// batocera methods
 	bool         isClippingEnabled  ();
@@ -122,6 +125,9 @@ namespace Renderer
 	std::vector<Vertex> createRoundRect(float x, float y, float width, float height, float radius, unsigned int color = 0xFFFFFFFF);
 
 	void		activateWindow();
+
+	static SDL_Renderer*	sdlRenderer = nullptr;
+	static Vector3f       mTranslate;
 
 } // Renderer::
 

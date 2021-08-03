@@ -193,7 +193,7 @@ void NinePatchComponent::render(const Transform4x4f& parentTrans)
 		}
 
 		Renderer::setMatrix(trans);
-		Renderer::drawTriangleStrips(&mVertices[0], 6 * 9);
+		//TODO Renderer::drawTriangleStrips(&mVertices[0], 6 * 9);
 
 		if (mAnimateTiming > 0)
 			updateColors();

@@ -2,6 +2,7 @@
 
 #include "math/Transform4x4f.h"
 #include "math/Vector2i.h"
+#include "math/Vector2f.h"
 #include "resources/ResourceManager.h"
 #include "ImageIO.h"
 #include "Log.h"
@@ -12,11 +13,29 @@
 
 namespace Renderer
 {
+    static Transform4x4f mProjection;
+    static Transform4x4f mMvp;
+
+    void setProjection(const Transform4x4f& _projection)
+    {
+        mProjection = _projection;
+    } // setProjection
+
+    void destroyContext()
+    {
+    } // destroyContext
+
+    void setMatrix(const Transform4x4f& _matrix)
+    {
+        mMvp = _matrix;
+        mMvp.round();
+        mTranslate = mMvp.translation();
+    } // setMatrix
+
 	static std::stack<Rect> clipStack;
 	static std::stack<Rect> nativeClipStack;
 
 	static SDL_Window*      sdlWindow          = nullptr;
-	static SDL_Renderer*	sdlRenderer        = nullptr;
 	static int              windowWidth        = 0;
 	static int              windowHeight       = 0;
 	static int              screenWidth        = 0;
@@ -27,6 +46,24 @@ namespace Renderer
 	static bool             initialCursorState = 1;
 
 	static Vector2i			sdlWindowPosition = Vector2i(SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED);
+
+	//////////////////////////////////////////////////////////////////////////
+
+	void blit(SDL_Renderer* renderer, SDL_Texture* _texture, SDL_Rect* srcRect, SDL_Rect* dstRect, Uint32 flipFlags)
+	{
+	    dstRect->x += (int)mMvp.r3().x();
+	    dstRect->y += (int)mMvp.r3().y();
+
+	    SDL_RenderSetScale(sdlRenderer, mMvp.r0().x(), mMvp.r1().y());
+	    if (flipFlags == 0)
+	        SDL_RenderCopy(renderer, _texture, srcRect, dstRect);
+	    else
+	    {
+	        int w, h;
+	        SDL_GetRendererOutputSize(renderer, &w, &h);
+	        SDL_RenderCopyEx(renderer, _texture, srcRect, dstRect, 0., NULL, (SDL_RendererFlip)flipFlags);
+	    }
+	}
 
 	static void setIcon()
 	{
@@ -124,6 +161,7 @@ namespace Renderer
 
 		windowFlags |= SDL_WINDOW_ALLOW_HIGHDPI;
 #endif
+		SDL_GL_SetAttribute(SDL_GL_SHARE_WITH_CURRENT_CONTEXT, 1);
 
 		if((sdlWindow = SDL_CreateWindow("EmulationStation", sdlWindowPosition.x(), sdlWindowPosition.y(), windowWidth, windowHeight, windowFlags)) == nullptr)
 		{
@@ -325,6 +363,7 @@ namespace Renderer
 
 	void drawRect(const float _x, const float _y, const float _w, const float _h, const unsigned int _color, const Blend::Factor _srcBlendFactor, const Blend::Factor _dstBlendFactor)
 	{
+        SDL_SetRenderDrawColor(Renderer::getWindowRenderer(), _color & 0xff, (_color >> 8) & 0xff, (_color >> 16) & 0xff, (_color >>24) & 0xff);
 		drawRect(_x, _y, _w, _h, _color, _color, true, _srcBlendFactor, _dstBlendFactor);
 	} // drawRect
 
@@ -332,23 +371,23 @@ namespace Renderer
 	{
 		const unsigned int color    = convertColor(_color);
 		const unsigned int colorEnd = convertColor(_colorEnd);
-		Vertex             vertices[4];
 
-		vertices[0] = { { _x     ,_y      }, { 0.0f, 0.0f }, color };
-		vertices[1] = { { _x     ,_y + _h }, { 0.0f, 0.0f }, horizontalGradient ? colorEnd : color };
-		vertices[2] = { { _x + _w,_y      }, { 0.0f, 0.0f }, horizontalGradient ? color : colorEnd };
-		vertices[3] = { { _x + _w,_y + _h }, { 0.0f, 0.0f }, colorEnd };
+		// TODO handle horizontalGradient and colorEnd
 
-		// round vertices
-		for(int i = 0; i < 4; ++i)
-			vertices[i].pos.round();
-
-		bindTexture(0);
-		drawTriangleStrips(vertices, 4, _srcBlendFactor, _dstBlendFactor);
+		SDL_Rect rect;
+		rect.x = _x;
+		rect.y = _y;
+		rect.w = _w;
+		rect.h = _h;
+		SDL_SetRenderDrawColor(sdlRenderer, color & 0xff, (color >> 8) & 0xff, (color >> 16) & 0xff, (color >> 24) & 0xff);
+		SDL_SetRenderDrawBlendMode(sdlRenderer, SDL_BLENDMODE_BLEND);
+		SDL_RenderFillRect(sdlRenderer, &rect);
+		//drawTriangleStrips(vertices, 4, _srcBlendFactor, _dstBlendFactor);
 
 	} // drawRect
 
 	SDL_Window* getSDLWindow()     { return sdlWindow; }
+	SDL_Renderer* getWindowRenderer() { return sdlRenderer; }
 	int         getWindowWidth()   { return windowWidth; }
 	int         getWindowHeight()  { return windowHeight; }
 	int         getScreenWidth()   { return screenWidth; }
@@ -386,21 +425,17 @@ namespace Renderer
 
 //////////////////////////////////////////////////////////////////////////
 
+    SDL_Texture* createTargetTexture(const Texture::Type _type, const bool _linear, const bool _repeat, const unsigned int _width, const unsigned int _height)
+    {
+            SDL_Texture* texture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET, _width, _height);
+            return texture;
+    }
+
 	SDL_Texture* createStreamingTexture(const Texture::Type _type, const bool _linear, const bool _repeat, const unsigned int _width, const unsigned int _height, void* _data)
 	{
-        SDL_Texture* texture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, _width, _height);
-        void* pixels = nullptr;
-        int pitch;
-        if (_data)
-        {
-        	if (SDL_LockTexture(texture, NULL, &pixels, &pitch) == 0)
-        	{
-        		for (int y = 0 ; y < _height ; y++)
-        			memcpy(pixels+y*pitch, _data+y*_height*sizeof(Uint32), _width*sizeof(Uint32));
-
-        		SDL_UnlockTexture(texture);
-        	}
-        }
+        SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(_data, _width, _height, 32, _width * 4, 0xff, 0xff00, 0xff0000, 0xff000000);
+        SDL_Texture* texture = SDL_CreateTextureFromSurface(sdlRenderer, surface);
+        SDL_FreeSurface(surface);
         return texture;
 	}
 
@@ -535,7 +570,8 @@ namespace Renderer
 		bindTexture(0);
 
 		std::vector<Vertex> vertex = createRoundRect(x, y, width, height, radius, color);
-		drawTriangleFan(vertex.data(), vertex.size(), _srcBlendFactor, _dstBlendFactor);
+		// TODO drawTriangleFan(vertex.data(), vertex.size(), _srcBlendFactor, _dstBlendFactor);
+        drawRect(x, y, width, height, color, _srcBlendFactor, _dstBlendFactor);
 	}
 
 	void enableRoundCornerStencil(float x, float y, float width, float height, float radius)
@@ -544,5 +580,94 @@ namespace Renderer
 		setStencil(vertex.data(), vertex.size());
 	}
 
+	void setSwapInterval()
+	{
+		// vsync
+		if(Settings::getInstance()->getBool("VSync"))
+		{
+			// SDL_GL_SetSwapInterval(0) for immediate updates (no vsync, default),
+			// 1 for updates synchronized with the vertical retrace,
+			// or -1 for late swap tearing.
+			// SDL_GL_SetSwapInterval returns 0 on success, -1 on error.
+			// if vsync is requested, try normal vsync; if that doesn't work, try late swap tearing
+			// if that doesn't work, report an error
+			if(SDL_GL_SetSwapInterval(1) != 0 && SDL_GL_SetSwapInterval(-1) != 0)
+				LOG(LogWarning) << "Tried to enable vsync, but failed! (" << SDL_GetError() << ")";
+		}
+		else
+			SDL_GL_SetSwapInterval(0);
+
+	} // setSwapInterval
+
+	void setViewport(const Rect& _viewport)
+	{
+		SDL_Rect viewport;
+		viewport.x = _viewport.x;
+		viewport.y = _viewport.y;
+		viewport.w = _viewport.w;
+		viewport.h = _viewport.h;
+		SDL_RenderSetViewport(sdlRenderer, &viewport);
+		
+		// glViewport starts at the bottom left of the window
+		//GL_CHECK_ERROR(glViewport( _viewport.x, getWindowHeight() - _viewport.y - _viewport.h, _viewport.w, _viewport.h));
+
+	} // setViewport
+
+	void swapBuffers()
+	{
+		SDL_RenderPresent(sdlRenderer);
+        SDL_SetRenderDrawColor(sdlRenderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+		SDL_RenderClear(sdlRenderer);
+		SDL_SetRenderDrawColor(sdlRenderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+	}
+
+	void setScissor(const Rect& _scissor)
+	{
+		if((_scissor.x == 0) && (_scissor.y == 0) && (_scissor.w == 0) && (_scissor.h == 0))
+		{
+			SDL_RenderSetClipRect(sdlRenderer, NULL);
+		}
+		else
+		{
+			SDL_Rect rect;
+			rect.x = _scissor.x;
+			rect.y = _scissor.y;
+			rect.w = _scissor.w;
+			rect.h = _scissor.h;
+			SDL_RenderSetClipRect(sdlRenderer, &rect);
+			//// glScissor starts at the bottom left of the window
+			//GL_CHECK_ERROR(glScissor(_scissor.x, getWindowHeight() - _scissor.y - _scissor.h, _scissor.w, _scissor.h));
+			//GL_CHECK_ERROR(glEnable(GL_SCISSOR_TEST));
+		}
+
+	} // setScissor
+
+	void setStencil(const Vertex* _vertices, const unsigned int _numVertices)
+	{
+	    // TODO
+	    /*useProgram(&shaderProgramColorNoTexture);
+
+		glEnable(GL_STENCIL_TEST);
+		glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+		glDepthMask(GL_FALSE);
+		glStencilFunc(GL_NEVER, 1, 0xFF);
+		glStencilOp(GL_REPLACE, GL_KEEP, GL_KEEP);
+		glStencilMask(0xFF);
+		glClear(GL_STENCIL_BUFFER_BIT);
+
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * _numVertices, _vertices, GL_DYNAMIC_DRAW);
+		glDrawArrays(GL_TRIANGLE_FAN, 0, _numVertices);
+
+		glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+		glDepthMask(GL_TRUE);
+		glStencilMask(0x00);
+		glStencilFunc(GL_EQUAL, 0, 0xFF);
+		glStencilFunc(GL_EQUAL, 1, 0xFF);*/
+	}
+
+	void disableStencil()
+	{
+	    //TODO glDisable(GL_STENCIL_TEST);
+	}
 
 } // Renderer::

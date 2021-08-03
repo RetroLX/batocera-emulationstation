@@ -375,7 +375,7 @@ void VideoVlcComponent::render(const Transform4x4f& parentTrans)
 		}
 
 		// Render it
-		Renderer::drawTriangleStrips(&vertices[0], 4);
+		//Renderer::drawTriangleStrips(&vertices[0], 4);
 
 		if (mRoundCorners > 0)
 			Renderer::disableStencil();
@@ -559,7 +559,7 @@ void VideoVlcComponent::startVideo()
 		mMedia = libvlc_media_new_path(mVLC, path.c_str());
 		if (mMedia)
 		{			
-			// use : vlc –long-help
+			// use : vlc ï¿½long-help
 			// WIN32 ? libvlc_media_add_option(mMedia, ":avcodec-hw=dxva2");
 			// RPI/OMX ? libvlc_media_add_option(mMedia, ":codec=mediacodec,iomx,all"); .
 

@@ -45,7 +45,13 @@ private:
 
 	float mValue;
 
-	Renderer::Vertex mVertices[8];
+	SDL_Rect srcRect1;
+	SDL_Rect dstRect1;
+	SDL_Rect srcRect2;
+	SDL_Rect dstRect2;
+
+	unsigned int mColorFilled;
+	unsigned int mColorUnfilled;
 
 	unsigned int mColorShift;
 	unsigned int mUnfilledColor;

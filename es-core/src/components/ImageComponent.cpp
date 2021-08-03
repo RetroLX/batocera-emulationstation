@@ -363,15 +363,26 @@ void ImageComponent::updateVertices()
 	// if we just round vertices at the end, edge cases occur near sizes of 0.5
 	const Vector2f     topLeft     = { mSize * mTopLeftCrop };
 	const Vector2f     bottomRight = { mSize * mBottomRightCrop };
-	const float        px          = mTexture->isTiled() ? mSize.x() / getTextureSize().x() : 1.0f;
-	const float        py          = mTexture->isTiled() ? mSize.y() / getTextureSize().y() : 1.0f;
+	const float        px          = mTexture->isTiled() ? mSize.x() : getTextureSize().x();
+	const float        py          = mTexture->isTiled() ? mSize.y() : getTextureSize().y();
 	const unsigned int color       = Renderer::convertColor(mColorShift);
 	const unsigned int colorEnd    = Renderer::convertColor(mColorShiftEnd);
-	
-	mVertices[0] = { { topLeft.x() + mPadding.x(),     topLeft.y() + mPadding.y()     },
+
+	srcRect.x = (int)(mTopLeftCrop.x() * getTextureSize().x());
+	srcRect.y = (int)(mTopLeftCrop.y() * getTextureSize().y());
+	srcRect.w = (int)(mBottomRightCrop.x() * px);
+	srcRect.h = (int)(mBottomRightCrop.y() * py);
+	dstRect.x = topLeft.x() + mPadding.x();
+	dstRect.y = topLeft.y() + mPadding.y();
+	dstRect.w = bottomRight.x() - mPadding.z() - dstRect.x;
+	dstRect.h = bottomRight.y() - mPadding.w() - dstRect.y;
+
+	flip = SDL_FLIP_NONE;
+
+	/*mVertices[0] = { { topLeft.x() + mPadding.x(),     topLeft.y() + mPadding.y()     },
 		{ mTopLeftCrop.x(),          py   - mTopLeftCrop.y()     }, color };
 
-	mVertices[1] = { { topLeft.x() + mPadding.x(),     bottomRight.y() - mPadding.w() }, 
+	mVertices[1] = { { topLeft.x() + mPadding.x(),     bottomRight.y() - mPadding.w() },
 		{ mTopLeftCrop.x(),          1.0f - mBottomRightCrop.y() }, mColorGradientHorizontal ? colorEnd : color };
 
 	mVertices[2] = { { bottomRight.x() - mPadding.z(), topLeft.y() + mPadding.y()	},
@@ -383,18 +394,7 @@ void ImageComponent::updateVertices()
 	// round vertices
 	for(int i = 0; i < 4; ++i)
 		mVertices[i].pos.round();
-
-	if(mFlipX)
-	{
-		for(int i = 0; i < 4; ++i)
-			mVertices[i].tex[0] = px - mVertices[i].tex[0];
-	}
-
-	if(mFlipY)
-	{
-		for(int i = 0; i < 4; ++i)
-			mVertices[i].tex[1] = py - mVertices[i].tex[1];
-	}
+    */
 
 	updateColors();
 	updateRoundCorners();
@@ -407,10 +407,10 @@ void ImageComponent::updateColors()
 	const unsigned int color = Renderer::convertColor(mColorShift & 0xFFFFFF00 | (unsigned char)((mColorShift & 0xFF) * opacity));
 	const unsigned int colorEnd = Renderer::convertColor(mColorShiftEnd & 0xFFFFFF00 | (unsigned char)((mColorShiftEnd & 0xFF) * opacity));
 	
-	mVertices[0].col = color;
+	/*mVertices[0].col = color;
 	mVertices[1].col = mColorGradientHorizontal ? colorEnd : color;
 	mVertices[2].col = mColorGradientHorizontal ? color : colorEnd;
-	mVertices[3].col = colorEnd;
+	mVertices[3].col = colorEnd;*/
 }
 
 void ImageComponent::updateRoundCorners()
@@ -510,7 +510,7 @@ void ImageComponent::render(const Transform4x4f& parentTrans)
 		if (mRoundCorners > 0 && mRoundCornerStencil.size() > 0)
 			Renderer::setStencil(mRoundCornerStencil.data(), mRoundCornerStencil.size());
 
-		Renderer::drawTriangleStrips(&mVertices[0], 4);
+        Renderer::blit(Renderer::getWindowRenderer(), this->mTexture->getTextureId(), &srcRect, &dstRect, (mFlipX ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE) | (mFlipY ? SDL_FLIP_VERTICAL : SDL_FLIP_NONE));
 
 		if (mRoundCorners > 0 && mRoundCornerStencil.size() > 0)
 			Renderer::disableStencil();
@@ -527,12 +527,16 @@ void ImageComponent::render(const Transform4x4f& parentTrans)
 			const unsigned int colorT = Renderer::convertColor((mColorShift & 0xffffff00) + (unsigned char)(255.0*alpha));
 			const unsigned int colorB = Renderer::convertColor((mColorShift & 0xffffff00) + (unsigned char)(255.0*alpha2));
 
-			int h = mVertices[1].pos.y() - mVertices[0].pos.y();
+			int h = dstRect.h; //mVertices[1].pos.y() - mVertices[0].pos.y();
 
 			if (mReflectOnBorders)
 				h = mTargetSize.y();
 
-			Renderer::Vertex mirrorVertices[4];
+			SDL_Rect srcMirrorRect;
+			SDL_Rect dstMirrorRect;
+
+			// TODO MIRROR
+			/*Renderer::Vertex mirrorVertices[4];
 
 			mirrorVertices[0] = {
 				{ mVertices[0].pos.x(), mVertices[0].pos.y() + h },
@@ -554,7 +558,7 @@ void ImageComponent::render(const Transform4x4f& parentTrans)
 				{ mVertices[3].tex.x(), mVertices[2].tex.y() },
 				colorB };
 
-			Renderer::drawTriangleStrips(&mirrorVertices[0], 4);
+			Renderer::drawTriangleStrips(&mirrorVertices[0], 4);*/
 		}
 
 		GuiComponent::renderChildren(trans);

@@ -101,7 +101,8 @@ private:
 	float* mRowHeights;
 	float* mColWidths;
 	
-	std::vector<Renderer::Vertex> mLines;
+	std::vector<SDL_Point> mLines;
+    SDL_Color mLinesColor;
 
 	unsigned int mSeparatorColor;
 

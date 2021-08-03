@@ -488,14 +488,25 @@ int ControllerActivityComponent::renderTexture(float x, float w, std::shared_ptr
 	float top = mSize.y() / 2.0f - sz.y() / 2.0f;
 	float left = x + w / 2.0f - sz.x() / 2.0f;
 
-	Renderer::Vertex vertices[4];
+	/*Renderer::Vertex vertices[4];
 
 	vertices[0] = { { left, top },{ 0.0f, 1.0f }, clr };
 	vertices[1] = { { left, sz.y() },{ 0.0f, 0.0f }, clr };
 	vertices[2] = { { left + sz.x(), top },{ 1.0f, 1.0f }, clr };
 	vertices[3] = { { left + sz.x(), sz.y() },{ 1.0f, 0.0f }, clr };
+    */
 
-	Renderer::drawTriangleStrips(&vertices[0], 4);
+	SDL_Rect srcRect;
+	SDL_Rect dstRect;
+	srcRect.x = 0;
+	srcRect.y = 0;
+	srcRect.w = sz.x();
+	srcRect.h = sz.y();
+	dstRect.x = left;
+	dstRect.y = top;
+	dstRect.w = sz.x();
+	dstRect.h = sz.y();
+	Renderer::blit(Renderer::getWindowRenderer(), texture->getTextureId(), &srcRect, &dstRect, 0);
 	Renderer::bindTexture(0);
 
 	return w + mSpacing;

@@ -1,5 +1,5 @@
 #include "scrapers/Scraper.h"
-
+#include "renderers/Renderer.h"
 #include "FileData.h"
 #include "ArcadeDBJSONScraper.h"
 #include "GamesDBJSONScraper.h"
@@ -539,33 +539,37 @@ bool resizeImage(const std::string& path, int maxWidth, int maxHeight)
 	SDL_RenderCopy(renderer, texture, &srcDest, &dstRect);
 	SDL_SetRenderTarget(renderer, NULL);
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
+	SDL_RenderFlush(renderer);
 	SDL_DestroyTexture(texture);
 
 	SDL_Surface* rescaledSurface = nullptr;
-	SDL_LockTextureToSurface(rescaledTexture, &dstRect, &rescaledSurface);
+	unsigned char* pixels = new unsigned char[dstRect.w * dstRect.h * 4];
+	SDL_RenderReadPixels(renderer, &dstRect,SDL_PIXELFORMAT_ARGB8888, pixels, dstRect.w * 4 );
+	SDL_DestroyTexture(rescaledTexture);
+	SDL_DestroyTexture(texture);
+	rescaledSurface = SDL_CreateRGBSurfaceFrom(pixels, dstRect.w, dstRect.h, 32, dstRect.w*4, 0xff, 0xff00, 0xff0000, 0xff000000);
 	if (rescaledSurface == nullptr)
 	{
-		SDL_DestroyTexture(rescaledTexture);
-		SDL_DestroyTexture(texture);
+	    LOG(LogError) << "Could not resize image! (cannot create RGB surface)";
 		return false;
 	}
 
 	if (isPNG)
 	{
 		IMG_SavePNG(rescaledSurface, path.c_str());
+        SDL_FreeSurface(rescaledSurface);
 		saved = true;
 	}
 	else if (isJPEG)
 	{
 		IMG_SaveJPG(rescaledSurface, path.c_str(), 90);
+		SDL_FreeSurface(rescaledSurface);
 		saved = true;
 	}
 	else
 	{
 		LOG(LogError) << "Could not resize image! (cannot save to this format)";
 	}
-	SDL_UnlockTexture(rescaledTexture);
-	SDL_DestroyTexture(rescaledTexture);
 
 	if(!saved)
 		LOG(LogError) << "Failed to save resized image!";

@@ -94,7 +94,6 @@ SDL_Texture* ImageIO::loadTextureFromMemoryRGBA32(const unsigned char * data, co
     else
     {
         LOG(LogError) << "Error - Failed to load image from memory!";
-        //TODO LOG(LogError) << "Error - File type " << (format == FIF_UNKNOWN ? "unknown" : "unsupported") << "!";
     }
     return nullptr;
 }

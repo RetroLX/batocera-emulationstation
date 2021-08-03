@@ -28,6 +28,12 @@
 Window::Window() : mNormalizeNextUpdate(false), mFrameTimeElapsed(0), mFrameCountElapsed(0), mAverageDeltaTime(10),
   mAllowSleep(true), mSleeping(false), mTimeSinceLastInput(0), mScreenSaver(NULL), mRenderScreenSaver(false), mClockElapsed(0) // batocera
 {		
+    if (!Renderer::init())
+    {
+        LOG(LogError) << "Renderer failed to initialize!";
+        assert(false);
+    }
+
 	mTransitionOffset = 0;
 
 	mHelp = new HelpComponent(this);
@@ -98,11 +104,11 @@ bool Window::init(bool initRenderer, bool initInputManager)
 
 	if (initRenderer)
 	{
-		if (!Renderer::init())
+		/*if (!Renderer::init())
 		{
 			LOG(LogError) << "Renderer failed to initialize!";
 			return false;
-		}
+		}*/
 	}
 	else 
 		Renderer::activateWindow();

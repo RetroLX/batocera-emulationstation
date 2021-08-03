@@ -133,7 +133,7 @@ void TextComponent::renderSingleGlow(const Transform4x4f& parentTrans, float yOf
 	trans.translate(off);
 
 	Renderer::setMatrix(trans);
-	mFont->renderTextCache(mTextCache.get());	
+	//TODO mFont->renderTextCache(mTextCache.get());
 }
 
 void TextComponent::renderGlow(const Transform4x4f& parentTrans, float yOff, float xOff)
@@ -277,7 +277,7 @@ void TextComponent::render(const Transform4x4f& parentTrans)
 	}
 		
 
-	mFont->renderTextCache(mTextCache.get());
+	//TODO mFont->renderTextCache(mTextCache.get());
 
 	// render currently selected item text again if
 	// marquee is scrolled far enough for it to repeat
@@ -294,7 +294,7 @@ void TextComponent::render(const Transform4x4f& parentTrans)
 		}
 
 		Renderer::setMatrix(trans);
-		mFont->renderTextCache(mTextCache.get());
+		//TODO mFont->renderTextCache(mTextCache.get());
 		Renderer::setMatrix(drawTrans);
 	}
 
@@ -321,7 +321,7 @@ void TextComponent::render(const Transform4x4f& parentTrans)
 		const unsigned int colorT = Renderer::convertColor((mColor & 0xffffff00) + (unsigned char)(255.0*alpha));
 		const unsigned int colorB = Renderer::convertColor((mColor & 0xffffff00) + (unsigned char)(255.0*alpha2));
 
-		mFont->renderGradientTextCache(mTextCache.get(), colorB, colorT);
+		//TODO mFont->renderGradientTextCache(mTextCache.get(), colorB, colorT);
 	}
 
 	endCustomClipRect();

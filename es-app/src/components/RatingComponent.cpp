@@ -94,32 +94,66 @@ void RatingComponent::updateVertices()
 	switch (mHorizontalAlignment)
 	{
 	case ALIGN_RIGHT:
-		mVertices[0] = { { sz - fw, 0.0f },{ 0.0f,              1.0f }, color };
-		mVertices[1] = { { sz - fw, h },{ 0.0f,              0.0f }, color };
-		mVertices[2] = { { sz - fw + w,    0.0f },{ mValue * numStars, 1.0f }, color };
-		mVertices[3] = { { sz - fw + w,    h },{ mValue * numStars, 0.0f }, color };
 
-		mVertices[4] = { { sz - fw, 0.0f },{ 0.0f,              1.0f }, unFilledColor };
-		mVertices[5] = { { sz - fw, h },{ 0.0f,              0.0f }, unFilledColor };
-		mVertices[6] = { { sz,   0.0f },{ numStars,          1.0f }, unFilledColor };
-		mVertices[7] = { { sz,   h },{ numStars,          0.0f }, unFilledColor };
+	    srcRect1.x = 0;
+	    srcRect1.w = mValue * numStars;
+	    srcRect1.y = 0;
+	    srcRect1.h = h;
+	    dstRect1.x = sz - fw;
+	    dstRect1.y = 0;
+	    dstRect1.w = w;
+	    dstRect1.h = h;
+		//mVertices[0] = { { sz - fw, 0.0f },{ 0.0f,              1.0f }, color };
+		//mVertices[1] = { { sz - fw, h },{ 0.0f,              0.0f }, color };
+		//mVertices[2] = { { sz - fw + w,    0.0f },{ mValue * numStars, 1.0f }, color };
+		//mVertices[3] = { { sz - fw + w,    h },{ mValue * numStars, 0.0f }, color };
+
+		srcRect2.x = 0;
+		srcRect2.w = numStars;
+		srcRect2.y = 0;
+		srcRect2.h = h;
+		dstRect2.x = sz - fw;
+		dstRect2.y = 0;
+		dstRect2.w = fw;
+		dstRect2.h = h;
+		//mVertices[4] = { { sz - fw, 0.0f },{ 0.0f,              1.0f }, unFilledColor };
+		//mVertices[5] = { { sz - fw, h },{ 0.0f,              0.0f }, unFilledColor };
+		//mVertices[6] = { { sz,   0.0f },{ numStars,          1.0f }, unFilledColor };
+		//mVertices[7] = { { sz,   h },{ numStars,          0.0f }, unFilledColor };
 		break;
 
 	default:
-		mVertices[0] = { { 0.0f, 0.0f }, { 0.0f,              1.0f }, color };
-		mVertices[1] = { { 0.0f, h    }, { 0.0f,              0.0f }, color };
-		mVertices[2] = { { w,    0.0f }, { mValue * numStars, 1.0f }, color };
-		mVertices[3] = { { w,    h    }, { mValue * numStars, 0.0f }, color };
 
-		mVertices[4] = { { 0.0f, 0.0f }, { 0.0f,              1.0f }, unFilledColor };
-		mVertices[5] = { { 0.0f, h    }, { 0.0f,              0.0f }, unFilledColor };
-		mVertices[6] = { { fw,   0.0f }, { numStars,          1.0f }, unFilledColor };
-		mVertices[7] = { { fw,   h    }, { numStars,          0.0f }, unFilledColor };
+	    srcRect1.x = 0;
+	    srcRect1.y = 0;
+	    srcRect1.w = mValue * numStars;
+	    srcRect1.h = h;
+	    dstRect1.x = 0;
+	    dstRect1.y = 0;
+	    dstRect1.w = w;
+	    dstRect1.h = h;
+		//mVertices[0] = { { 0.0f, 0.0f }, { 0.0f,              1.0f }, color };
+		//mVertices[1] = { { 0.0f, h    }, { 0.0f,              0.0f }, color };
+		//mVertices[2] = { { w,    0.0f }, { mValue * numStars, 1.0f }, color };
+		//mVertices[3] = { { w,    h    }, { mValue * numStars, 0.0f }, color };
+
+		srcRect2.x = 0;
+		srcRect2.y = 0;
+		srcRect2.w = numStars;
+		srcRect2.h = h;
+		dstRect2.x = 0;
+		dstRect2.y = 0;
+		dstRect2.w = fw;
+		dstRect2.h = h;
+		//mVertices[4] = { { 0.0f, 0.0f }, { 0.0f,              1.0f }, unFilledColor };
+		//mVertices[5] = { { 0.0f, h    }, { 0.0f,              0.0f }, unFilledColor };
+		//mVertices[6] = { { fw,   0.0f }, { numStars,          1.0f }, unFilledColor };
+		//mVertices[7] = { { fw,   h    }, { numStars,          0.0f }, unFilledColor };
 		break;
 	}
 	// round vertices
-	for (int i = 0; i < 8; ++i)
-		mVertices[i].pos.round();
+	//for (int i = 0; i < 8; ++i)
+	//	mVertices[i].pos.round();
 }
 
 void RatingComponent::updateColors()
@@ -127,12 +161,9 @@ void RatingComponent::updateColors()
 	float opacity = mOpacity / 255.0;
 	
 	const unsigned int color = Renderer::convertColor(mColorShift & 0xFFFFFF00 | (unsigned char)((mColorShift & 0xFF) * opacity));
-	for (int i = 0; i < 4; i++)
-		mVertices[i].col = color;
-
 	const unsigned int unFilledColor = Renderer::convertColor(mUnfilledColor & 0xFFFFFF00 | (unsigned char)((mUnfilledColor & 0xFF) * opacity));
-	for (int i = 4; i < 8; i++)
-		mVertices[i].col = unFilledColor;
+	mColorFilled = color;
+	mColorUnfilled = color;
 }
 
 void RatingComponent::render(const Transform4x4f& parentTrans)
@@ -157,13 +188,13 @@ void RatingComponent::render(const Transform4x4f& parentTrans)
 
 	if (mUnfilledTexture->bind())
 	{
-		Renderer::drawTriangleStrips(&mVertices[4], 4);
+	    Renderer::blit(Renderer::getWindowRenderer(), mUnfilledTexture->getTextureId(), &srcRect2, &dstRect2);
 		Renderer::bindTexture(0);
 	}
 
 	if (mFilledTexture->bind())
 	{
-		Renderer::drawTriangleStrips(&mVertices[0], 4);
+	    Renderer::blit(Renderer::getWindowRenderer(), mFilledTexture->getTextureId(), &srcRect1, &dstRect1);
 		Renderer::bindTexture(0);
 	}
 

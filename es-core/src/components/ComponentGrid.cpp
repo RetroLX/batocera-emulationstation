@@ -177,23 +177,23 @@ void ComponentGrid::updateSeparators()
 
 		if(it->border & BORDER_TOP || drawAll)
 		{
-			mLines.push_back( { { pos.x(),               pos.y()               }, { 0.0f, 0.0f }, color } );
-			mLines.push_back( { { pos.x() + size.x(),    pos.y()               }, { 0.0f, 0.0f }, color } );
+		    mLines.push_back( { (int)pos.x(),               (int)(pos.y())               } );
+			mLines.push_back( { (int)(pos.x() + size.x()), (int)(pos.y())               } );
 		}
 		if(it->border & BORDER_BOTTOM || drawAll)
 		{
-			mLines.push_back( { { pos.x(),               pos.y() + size.y()    }, { 0.0f, 0.0f }, color } );
-			mLines.push_back( { { pos.x() + size.x(),    mLines.back().pos.y() }, { 0.0f, 0.0f }, color } );
+		    mLines.push_back( { (int)pos.x(),               (int)(pos.y() + size.y())    });
+		    mLines.push_back( { (int)(pos.x() + size.x()),(int)(    mLines.back().y) });
 		}
 		if(it->border & BORDER_LEFT || drawAll)
 		{
-			mLines.push_back( { { pos.x(),               pos.y()               }, { 0.0f, 0.0f }, color } );
-			mLines.push_back( { { pos.x(),               pos.y() + size.y()    }, { 0.0f, 0.0f }, color } );
+			mLines.push_back( { pos.x(),               pos.y()               });
+			mLines.push_back( { pos.x(),               pos.y() + size.y()    });
 		}
 		if(it->border & BORDER_RIGHT || drawAll)
 		{
-			mLines.push_back( { { pos.x() + size.x(),    pos.y()               }, { 0.0f, 0.0f }, color } );
-			mLines.push_back( { { mLines.back().pos.x(), pos.y() + size.y()    }, { 0.0f, 0.0f }, color } );
+			mLines.push_back( { pos.x() + size.x(),    pos.y()         });
+			mLines.push_back( { mLines.back().x, pos.y() + size.y()    });
 		}
 	}
 }
@@ -364,7 +364,8 @@ void ComponentGrid::render(const Transform4x4f& parentTrans)
 	{
 		Renderer::setMatrix(trans);
 		Renderer::bindTexture(0);
-		Renderer::drawLines(&mLines[0], mLines.size());
+        //SDL_SetRenderDrawColor(Renderer::getWindowRenderer(), mLinesColor);
+        SDL_RenderDrawLines(Renderer::getWindowRenderer(), mLines.data(), mLines.size());
 	}
 }
 

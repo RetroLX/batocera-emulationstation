@@ -1473,9 +1473,9 @@ std::string SystemData::getConfigPath(bool forWrite)
 		return customPath;
 #endif
 
-	std::string userdataPath = Utils::FileSystem::getEsConfigPath() + "/es_systems.cfg"; // /userdata/system/configs/emulationstation/es_systems.cfg
+	/*std::string userdataPath = Utils::FileSystem::getEsConfigPath() + "/es_systems.cfg"; // /userdata/system/configs/emulationstation/es_systems.cfg
 	if(forWrite || Utils::FileSystem::exists(userdataPath))
-		return userdataPath;
+		return userdataPath;*/
 
 #if !WIN32
 	std::string customPath = Utils::FileSystem::getSharedConfigPath() + "/es_systems.cfg"; // /usr/share/emulationstation/es_systems.cfg

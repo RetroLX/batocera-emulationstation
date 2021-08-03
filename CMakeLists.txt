@@ -90,12 +90,11 @@ elseif(${GLSystem} MATCHES "OpenGL ES 2.0")
 else()
     find_package(OpenGLES REQUIRED)
 endif()
-find_package(Freetype REQUIRED)
 # batocera / background musics
 find_package(SDL2MIXER REQUIRED)
 # batocera / customisations
 find_package(SDL2 REQUIRED)
-#find_package(SDL2_ttf REQUIRED)
+find_package(SDL2_ttf REQUIRED)
 find_package(SDL2_image REQUIRED)
 find_package(CURL REQUIRED)
 find_package(VLC REQUIRED)
@@ -181,7 +180,6 @@ endif()
 #-------------------------------------------------------------------------------
 #add include directories
 set(COMMON_INCLUDE_DIRS
-    ${FREETYPE_INCLUDE_DIRS}
     # batocera / background musics
     ${SDLMIXER_INCLUDE_DIR}
     # batocera / customisations    
@@ -255,13 +253,12 @@ elseif(DEFINED VERO4K)
     )
 endif()
 
-#    ${SDL2_TTF_LIBRARY}
 set(COMMON_LIBRARIES
-    ${FREETYPE_LIBRARIES}
     ${SDL2_LIBRARY}
     # batocera / background musics
     ${SDLMIXER_LIBRARY}
     ${SDL2_IMAGE_LIBRARY}
+    ${SDL2_TTF_LIBRARY}
     # batocera / customisations    
     ${CURL_LIBRARIES}
     ${VLC_LIBRARIES}

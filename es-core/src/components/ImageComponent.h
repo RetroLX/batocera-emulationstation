@@ -142,7 +142,10 @@ private:
 	// Calculates the correct mSize from our resizing information (set by setResize/setMaxSize).
 	// Used internally whenever the resizing parameters or texture change.
 
-	Renderer::Vertex mVertices[4];
+	//Renderer::Vertex mVertices[4];
+    SDL_Rect srcRect;
+    SDL_Rect dstRect;
+    SDL_RendererFlip flip;
 
 	void updateVertices();
 	void updateColors();

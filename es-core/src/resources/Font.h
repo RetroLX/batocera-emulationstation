@@ -7,9 +7,9 @@
 #include "renderers/Renderer.h"
 #include "resources/ResourceManager.h"
 #include "ThemeData.h"
-#include <ft2build.h>
-#include FT_FREETYPE_H
 #include <vector>
+#include <SDL.h>
+#include <SDL_ttf.h>
 
 class TextCache;
 class TextureResource;
@@ -77,7 +77,6 @@ public:
 	static size_t getTotalMemUsage(); // returns an approximation of total VRAM used by font textures (in bytes)
 
 private:
-	static FT_Library sLibrary;
 	static std::map< std::pair<std::string, int>, std::weak_ptr<Font> > sFontMap;
 
 	Font(int size, const std::string& path);
@@ -85,7 +84,7 @@ private:
 	class FontTexture
 	{
 	public:
-		unsigned int textureId;
+		SDL_Texture* textureId;
 		Vector2i textureSize;
 
 		Vector2i writePos;
@@ -103,7 +102,8 @@ private:
 	struct FontFace
 	{
 		const ResourceData data;
-		FT_Face face;
+        SDL_Surface* surface;
+        TTF_Font *mFont;
 
 		FontFace(ResourceData&& d, int size);
 		virtual ~FontFace();
@@ -116,7 +116,7 @@ private:
 	void getTextureForNewGlyph(const Vector2i& glyphSize, FontTexture*& tex_out, Vector2i& cursor_out);
 
 	std::map< unsigned int, std::unique_ptr<FontFace> > mFaceCache;
-	FT_Face getFaceForChar(unsigned int id);
+	SDL_Surface* getSurfaceForChar(unsigned int id);
 	void clearFaceCache();
 
 	struct Glyph
@@ -167,15 +167,22 @@ class TextCache
 {
 protected:
 
-	struct VertexList
+	struct TextRect
 	{
-		std::vector<Renderer::Vertex> verts;
-		unsigned int* textureIdPtr; // this is a pointer because the texture ID can change during deinit/reinit (when launching a game)
+		SDL_Rect srcRect;
+		SDL_Rect dstRect;
+		Uint32 color;
 	};
 
-	std::vector<VertexList> vertexLists;
+	struct TextRectList
+	{
+		std::vector<TextRect> textRects;
+		SDL_Texture** textureIdPtr; // this is a pointer because the texture ID can change during deinit/reinit (when launching a game)
+	};
+
 	std::vector<TextImageSubstitute> imageSubstitutes;
 	bool renderingGlow;
+	std::vector<TextRectList> textRectsLists;
 
 public:
 	TextCache()

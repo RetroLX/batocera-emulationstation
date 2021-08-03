@@ -5,7 +5,7 @@
 #include <sstream>
 #include <exception>
 	
-#define LOG(level) if(!Log::Enabled() || level > Log::getReportingLevel()) ; else Log().get(level)
+#define LOG(level) /*if(!Log::Enabled() || level > Log::getReportingLevel()) ; else*/ Log().get(level)
 
 #define TRYCATCH(m, x) { try { x; } \
 catch (const std::exception& e) { LOG(LogError) << m << " Exception " << e.what(); Log::flush(); throw e; } \
