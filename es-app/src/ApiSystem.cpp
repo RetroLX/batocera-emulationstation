@@ -1572,11 +1572,17 @@ std::vector<PadInfo> ApiSystem::getPadsInfo()
 
 std::string ApiSystem::getRunningArchitecture()
 {
-	auto res = executeEnumerationScript("uname -m");
-	if (res.size() > 0)
-		return res[0];
+        LOG(LogDebug) << "ApiSystem::getRunningArchitecture";
 
-	return "";
+        std::ifstream ifs("/usr/share/retrolx/retrolx.arch");
+        if (ifs.good())
+        {
+                std::string contents;
+                std::getline(ifs, contents);
+                return contents;
+        }
+
+        return "";
 }
 
 std::string ApiSystem::getHostsName()
