@@ -160,7 +160,7 @@ void ViewController::goToSystemView(SystemData* system, bool forceImmediate)
 {
 	SystemData* dest = system;
 
-	if (system != nullptr && system->isCollection())
+	if (system->isCollection())
 	{
 		SystemData* bundle = CollectionSystemManager::get()->getCustomCollectionsBundle();
 		if (bundle != nullptr)
@@ -182,19 +182,17 @@ void ViewController::goToSystemView(SystemData* system, bool forceImmediate)
 
 	auto systemList = getSystemListView();
 
-	if (systemList != nullptr)
-	{
-		if (mState.viewing == GAME_LIST && mCurrentView)
-			systemList->setPosition(mCurrentView->getPosition().x(), systemList->getPosition().y());
-		else
-			systemList->setPosition(getSystemId(dest) * (float)Renderer::getScreenWidth(), systemList->getPosition().y());
+	if (mState.viewing == GAME_LIST && mCurrentView)
+		systemList->setPosition(mCurrentView->getPosition().x(), systemList->getPosition().y());
+	else
+		systemList->setPosition(getSystemId(dest) * (float)Renderer::getScreenWidth(), systemList->getPosition().y());
 
-		mState.viewing = SYSTEM_SELECT;
-		mState.system = dest;
+	mState.viewing = SYSTEM_SELECT;
+	mState.system = dest;
 
-		systemList->goToSystem(dest, false);
-		mCurrentView = systemList;
-	}
+	systemList->goToSystem(dest, false);
+
+	mCurrentView = systemList;
 
 	// mCurrentView->onShow();
 //	PowerSaver::pause();
@@ -1045,9 +1043,6 @@ SystemData* ViewController::getSelectedSystem()
 {
 	if (mState.viewing == SYSTEM_SELECT)
 	{
-        if (mSystemListView->size() == 0)
-            return nullptr;
-
 		int idx = mSystemListView->getCursorIndex();
 		if (idx >= 0 && idx < mSystemListView->getObjects().size())
 			return mSystemListView->getObjects()[mSystemListView->getCursorIndex()];
@@ -1263,10 +1258,7 @@ void ViewController::reloadAllGames(Window* window, bool deleteCurrentGui, bool 
 	Utils::FileSystem::FileSystemCacheActivator fsc;
 
 	auto viewMode = ViewController::get()->getViewMode();
-    auto system = ViewController::get()->getSelectedSystem();
-    if (system == nullptr)
-        return;
-    auto systemName = system->getName();
+	auto systemName = ViewController::get()->getSelectedSystem()->getName();
 
 	window->closeSplashScreen();
 	window->renderSplashScreen(_("Loading..."));

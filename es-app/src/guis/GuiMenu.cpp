@@ -472,7 +472,7 @@ void GuiMenu::addVersionInfo()
 			mVersion.setText(aboutInfo + buildDate);
 		else
 #endif
-		mVersion.setText("BATOCERA.LINUX ES V" + ApiSystem::getInstance()->getVersion() + buildDate);
+		mVersion.setText("RetroLX ES V" + ApiSystem::getInstance()->getVersion() + buildDate);
 	}
 
 	mVersion.setHorizontalAlignment(ALIGN_CENTER);
@@ -3645,7 +3645,7 @@ void GuiMenu::openQuitMenu_batocera_static(Window *window, bool quickAccessMenu,
 #if WIN32	
 #define BATOCERA_MANUAL_FILE Utils::FileSystem::getEsConfigPath() + "/notice.pdf"
 #else
-#define BATOCERA_MANUAL_FILE "/usr/share/batocera/doc/notice.pdf"
+#define BATOCERA_MANUAL_FILE "/usr/share/retrolx/doc/notice.pdf"
 #endif
 
 		if (ApiSystem::getInstance()->isScriptingSupported(ApiSystem::ScriptId::PDFEXTRACTION) && Utils::FileSystem::exists(BATOCERA_MANUAL_FILE))
@@ -4366,7 +4366,7 @@ std::vector<DecorationSetInfo> GuiMenu::getDecorationsSets(SystemData* system)
 
 #else
 	std::vector<std::string> paths = {
-		"/usr/share/batocera/datainit/decorations",
+		"/usr/share/retrolx/datainit/decorations",
 		"/userdata/decorations"
 	};
 #endif

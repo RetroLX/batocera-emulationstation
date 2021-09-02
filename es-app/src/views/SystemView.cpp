@@ -729,9 +729,6 @@ void SystemView::updateExtraTextBinding()
 
 void SystemView::onCursorChanged(const CursorState& /*state*/)
 {
-    if (size() == 0)
-        return;
-
 	if (AudioManager::isInitialized())
 		AudioManager::getInstance()->changePlaylist(getSelected()->getTheme());
 
@@ -1031,12 +1028,8 @@ std::vector<HelpPrompt> SystemView::getHelpPrompts()
 HelpStyle SystemView::getHelpStyle()
 {
 	HelpStyle style;
-	if (!mEntries.empty())
-	{
-		style.applyTheme(mEntries.at(mCursor).object->getTheme(), "system");
-		return style;
-	}
-	return GuiComponent::getHelpStyle();
+	style.applyTheme(mEntries.at(mCursor).object->getTheme(), "system");
+	return style;
 }
 
 void  SystemView::onThemeChanged(const std::shared_ptr<ThemeData>& theme)

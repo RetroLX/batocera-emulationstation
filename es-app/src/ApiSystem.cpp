@@ -1417,7 +1417,7 @@ std::vector<std::string> ApiSystem::getShaderList(const std::string systemName)
 
 	std::vector<std::string> ret;
 
-	std::vector<std::string> folderList = { "/usr/share/batocera/shaders/configs", "/userdata/shaders/configs" };
+	std::vector<std::string> folderList = { "/usr/share/retrolx/shaders/configs", "/userdata/shaders/configs" };
 	for (auto folder : folderList)
 	{
 		for (auto file : Utils::FileSystem::getDirContent(folder, true))
