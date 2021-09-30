@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: emulationstation\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-02 10:15+0200\n"
+"POT-Creation-Date: 2021-09-27 07:58+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Seis\n"
 "Language-Team: \n"
@@ -1482,6 +1482,9 @@ msgstr "MOSTRAR RELOJ EN FORMATO 12 HORAS"
 msgid "POWER SAVER MODES"
 msgstr "MODO AHORRO DE ENERGÍA"
 
+msgid "TEXT TO SPEECH"
+msgstr ""
+
 msgid "UI MODE"
 msgstr "MODO DE INTERFAZ"
 
@@ -1518,6 +1521,9 @@ msgstr "SALIDA DE VÍDEO"
 
 msgid "AUDIO OUTPUT"
 msgstr "SALIDA DE AUDIO"
+
+msgid "AUDIO PROFILE"
+msgstr ""
 
 msgid "SCREEN ROTATION"
 msgstr "ORIENTACION DE PANTALLA"
@@ -1878,6 +1884,9 @@ msgstr "ICONO"
 
 msgid "ICON AND TEXT"
 msgstr "ICONO Y TEXTO"
+
+msgid "IGNORE LEADING ARTICLES WHEN SORTING"
+msgstr ""
 
 msgid "VOLUME"
 msgstr "VOLUMEN"
@@ -2291,6 +2300,9 @@ msgstr "AÑO DE LANZAMIENTO, SISTEMA, ASCENDENTE"
 msgid "RELEASE YEAR, SYSTEM, DESCENDING"
 msgstr "AÑO DE LANZAMIENTO, SISTEMA, DESCENDENTE"
 
+msgid "A,AN,THE"
+msgstr ""
+
 msgid "Extracting"
 msgstr "Extrayendo"
 
@@ -2499,6 +2511,12 @@ msgstr "MOVER CURSOR"
 msgid "EDIT"
 msgstr "EDITAR"
 
+msgid "ENABLED"
+msgstr ""
+
+msgid "DISABLED"
+msgstr ""
+
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -2537,6 +2555,12 @@ msgstr "%d m"
 #, c-format
 msgid "%d s"
 msgstr "%d s"
+
+msgid "TEXT TO SPEECH ENABLED"
+msgstr ""
+
+msgid "TEXT TO SPEECH DISABLED"
+msgstr ""
 
 #~ msgid "FORGET A BLUETOOTH CONTROLLER"
 #~ msgstr "DESVINCULAR CONTROL BLUETOOTH"
