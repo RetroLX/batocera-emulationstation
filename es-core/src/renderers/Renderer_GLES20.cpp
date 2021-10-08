@@ -28,6 +28,10 @@ namespace Renderer
 	static Shader  	fragmentShaderColorNoTexture;
 	static ShaderProgram    shaderProgramColorNoTexture;
 
+	//static Shader  	vertexShaderNoTexture;
+	static Shader  	fragmentShaderAlpha;
+	static ShaderProgram    shaderProgramAlpha;
+
 	static GLuint        vertexBuffer     = 0;
 
 //////////////////////////////////////////////////////////////////////////
@@ -44,6 +48,8 @@ namespace Renderer
 				GL_CHECK_ERROR(glUniformMatrix4fv(shaderProgramColorTexture.mvpUniform, 1, GL_FALSE, (float*)&mvpMatrix));
 			else  if (currentProgram == &shaderProgramColorNoTexture)
 				GL_CHECK_ERROR(glUniformMatrix4fv(shaderProgramColorNoTexture.mvpUniform, 1, GL_FALSE, (float*)&mvpMatrix));
+			else  if (currentProgram == &shaderProgramAlpha)
+				GL_CHECK_ERROR(glUniformMatrix4fv(shaderProgramAlpha.mvpUniform, 1, GL_FALSE, (float*)&mvpMatrix));
 
 			return;
 		}
@@ -55,6 +61,13 @@ namespace Renderer
 				GL_CHECK_ERROR(glDisableVertexAttribArray(shaderProgramColorTexture.posAttrib));
 				GL_CHECK_ERROR(glDisableVertexAttribArray(shaderProgramColorTexture.colAttrib));
 				GL_CHECK_ERROR(glDisableVertexAttribArray(shaderProgramColorTexture.texAttrib));
+			}
+
+			if (currentProgram == &shaderProgramAlpha)
+			{
+				GL_CHECK_ERROR(glDisableVertexAttribArray(shaderProgramAlpha.posAttrib));
+				GL_CHECK_ERROR(glDisableVertexAttribArray(shaderProgramAlpha.colAttrib));
+				GL_CHECK_ERROR(glDisableVertexAttribArray(shaderProgramAlpha.texAttrib));
 			}
 
 			if (currentProgram == &shaderProgramColorNoTexture)
@@ -79,6 +92,21 @@ namespace Renderer
 
 			GL_CHECK_ERROR(glVertexAttribPointer(shaderProgramColorTexture.texAttrib, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, tex)));
 			GL_CHECK_ERROR(glEnableVertexAttribArray(shaderProgramColorTexture.texAttrib));
+		}
+
+		if (currentProgram == &shaderProgramAlpha)
+		{
+			GL_CHECK_ERROR(glUseProgram(shaderProgramAlpha.id));
+			GL_CHECK_ERROR(glUniformMatrix4fv(shaderProgramAlpha.mvpUniform, 1, GL_FALSE, (float*)&mvpMatrix));
+
+			GL_CHECK_ERROR(glVertexAttribPointer(shaderProgramAlpha.posAttrib, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, pos)));
+			GL_CHECK_ERROR(glEnableVertexAttribArray(shaderProgramAlpha.posAttrib));
+
+			GL_CHECK_ERROR(glVertexAttribPointer(shaderProgramAlpha.colAttrib, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), (const void*)offsetof(Vertex, col)));
+			GL_CHECK_ERROR(glEnableVertexAttribArray(shaderProgramAlpha.colAttrib));
+
+			GL_CHECK_ERROR(glVertexAttribPointer(shaderProgramAlpha.texAttrib, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, tex)));
+			GL_CHECK_ERROR(glEnableVertexAttribArray(shaderProgramAlpha.texAttrib));
 		}
 
 		if (currentProgram == &shaderProgramColorNoTexture)
@@ -115,7 +143,7 @@ namespace Renderer
 		// fragment shader (no texture)
 		const GLchar* fragmentSourceNoTexture =
 			SHADER_VERSION_STRING
-			"precision highp float;     \n"
+			"precision mediump float;     \n"
 			"varying   vec4  v_col;     \n"
 			"void main(void)            \n"
 			"{                          \n"
@@ -155,7 +183,7 @@ namespace Renderer
 		// fragment shader (texture)
 		const GLchar* fragmentSourceTexture =
 			SHADER_VERSION_STRING
-			"precision highp float;       \n"
+			"precision mediump float;       \n"
 #if defined(USE_OPENGLES_20)
 			"precision mediump sampler2D; \n"
 #endif
@@ -182,6 +210,39 @@ namespace Renderer
 		shaderProgramColorTexture.texAttrib = glGetAttribLocation(shaderProgramColorTexture.id, "a_tex");
 		shaderProgramColorTexture.mvpUniform = glGetUniformLocation(shaderProgramColorTexture.id, "u_mvp");
 		GLint texUniform = glGetUniformLocation(shaderProgramColorTexture.id, "u_tex");
+		GL_CHECK_ERROR(glUniform1i(texUniform, 0));
+
+		// fragment shader (alpha texture)
+		const GLchar* fragmentSourceAlpha =
+			SHADER_VERSION_STRING
+			"precision mediump float;       \n"
+#if defined(USE_OPENGLES_20)
+			"precision mediump sampler2D; \n"
+#endif
+			"varying   vec4      v_col; \n"
+			"varying   vec2      v_tex; \n"
+			"uniform   sampler2D u_tex; \n"
+			"void main(void)                                              \n"
+			"{                                                            \n"
+			"    vec4 a = vec4(1.0, 1.0, 1.0, texture2D(u_tex, v_tex).a); \n"
+			"    gl_FragColor = a * v_col;      					      \n"
+			"}                                                            \n";
+		
+		// Compile each shader, link them to make a full program
+		//const GLuint vertexShaderColorNoTextureId = glCreateShader(GL_VERTEX_SHADER);
+		//result = vertexShaderTexture.compile(vertexShaderColorNoTextureId, vertexSourceTexture);
+
+		const GLuint fragmentShaderAlphaId = glCreateShader(GL_FRAGMENT_SHADER);
+		result = fragmentShaderAlpha.compile(fragmentShaderAlphaId, fragmentSourceAlpha);
+		result = shaderProgramAlpha.linkShaderProgram(vertexShaderTexture, fragmentShaderAlpha);
+		
+		// Set shader active, retrieve attributes and uniforms locations
+		GL_CHECK_ERROR(glUseProgram(shaderProgramAlpha.id));
+		shaderProgramAlpha.posAttrib = glGetAttribLocation(shaderProgramAlpha.id, "a_pos");
+		shaderProgramAlpha.colAttrib = glGetAttribLocation(shaderProgramAlpha.id, "a_col");
+		shaderProgramAlpha.texAttrib = glGetAttribLocation(shaderProgramAlpha.id, "a_tex");
+		shaderProgramAlpha.mvpUniform = glGetUniformLocation(shaderProgramAlpha.id, "u_mvp");
+		texUniform = glGetUniformLocation(shaderProgramAlpha.id, "u_tex");
 		GL_CHECK_ERROR(glUniform1i(texUniform, 0));
 
 		useProgram(nullptr);
@@ -223,9 +284,9 @@ namespace Renderer
 	{
 		switch(_type)
 		{
-			case Texture::RGBA:  { return GL_RGBA;            } break;
-			case Texture::ALPHA: { return GL_LUMINANCE_ALPHA; } break;
-			default:             { return GL_ZERO;            }
+			case Texture::RGBA:  { return GL_RGBA;  } break;
+			case Texture::ALPHA: { return GL_ALPHA; } break;
+			default:             { return GL_ZERO;  }
 		}
 
 	} // convertTextureType
@@ -418,39 +479,12 @@ namespace Renderer
 		GL_CHECK_ERROR(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
 		GL_CHECK_ERROR(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, _linear ? GL_LINEAR : GL_NEAREST));
 
-		// Regular GL_ALPHA textures are black + alpha in shaders
-		// Create a GL_LUMINANCE_ALPHA texture instead so its white + alpha
-		
-		if (type == GL_LUMINANCE_ALPHA && _data != nullptr)
+		glTexImage2D(GL_TEXTURE_2D, 0, type, _width, _height, 0, type, GL_UNSIGNED_BYTE, _data);
+		if (glGetError() != GL_NO_ERROR)
 		{
-			uint8_t* a_data  = (uint8_t*)_data;
-			uint8_t* la_data = new uint8_t[_width * _height * 2];
-			memset(la_data, 255, _width * _height * 2);
-			if (a_data)
-			{
-				for(uint32_t i=0; i<(_width * _height); ++i)
-					la_data[(i * 2) + 1] = a_data[i];
-			}
-
-			glTexImage2D(GL_TEXTURE_2D, 0, type, _width, _height, 0, type, GL_UNSIGNED_BYTE, la_data);
-			delete[] la_data;
-
-			if (glGetError() != GL_NO_ERROR)
-			{
-				LOG(LogError) << "CreateTexture error: glTexImage2D failed";
-				destroyTexture(texture);
-				return 0;
-			}
-		}
-		else
-		{
-			glTexImage2D(GL_TEXTURE_2D, 0, type, _width, _height, 0, type, GL_UNSIGNED_BYTE, _data);
-			if (glGetError() != GL_NO_ERROR)
-			{
-				LOG(LogError) << "CreateTexture error: glTexImage2D failed";
-				destroyTexture(texture);
-				return 0;
-			}
+			LOG(LogError) << "CreateTexture error: glTexImage2D failed";
+			destroyTexture(texture);
+			return 0;
 		}
 
 		return texture;
@@ -472,26 +506,7 @@ namespace Renderer
 		const GLenum type = convertTextureType(_type);
 
 		bindTexture(_texture);
-
-		// Regular GL_ALPHA textures are black + alpha in shaders
-		// Create a GL_LUMINANCE_ALPHA texture instead so its white + alpha
-		if(type == GL_LUMINANCE_ALPHA)
-		{
-			uint8_t* a_data  = (uint8_t*)_data;
-			uint8_t* la_data = new uint8_t[_width * _height * 2];
-			memset(la_data, 255, _width * _height * 2);
-			if (a_data)
-			{
-				for(uint32_t i=0; i<(_width * _height); ++i)
-					la_data[(i * 2) + 1] = a_data[i];				
-			}
-
-			GL_CHECK_ERROR(glTexSubImage2D(GL_TEXTURE_2D, 0, _x, _y, _width, _height, type, GL_UNSIGNED_BYTE, la_data));
-			delete[] la_data;
-		}
-		else
-			GL_CHECK_ERROR(glTexSubImage2D(GL_TEXTURE_2D, 0, _x, _y, _width, _height, type, GL_UNSIGNED_BYTE, _data));
-
+		GL_CHECK_ERROR(glTexSubImage2D(GL_TEXTURE_2D, 0, _x, _y, _width, _height, type, GL_UNSIGNED_BYTE, _data));
 		bindTexture(0);
 
 	} // updateTexture
@@ -552,7 +567,7 @@ namespace Renderer
 	void drawTriangleStrips(const Vertex* _vertices, const unsigned int _numVertices, const Blend::Factor _srcBlendFactor, const Blend::Factor _dstBlendFactor)
 	{
 		// Pass buffer data
-		GL_CHECK_ERROR(glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * _numVertices, _vertices, GL_DYNAMIC_DRAW));		
+		GL_CHECK_ERROR(glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * _numVertices, _vertices, GL_DYNAMIC_DRAW));
 
 		// Setup shader
 		if (boundTexture != 0)
@@ -569,6 +584,32 @@ namespace Renderer
 		}
 		else
 		{
+			GL_CHECK_ERROR(glDisable(GL_BLEND));
+		}
+		GL_CHECK_ERROR(glDrawArrays(GL_TRIANGLE_STRIP, 0, _numVertices));
+		if (blend)
+			GL_CHECK_ERROR(glDisable(GL_BLEND));
+
+	} // drawTriangleStrips
+
+	void drawAlphaTriangleStrips(const Vertex* _vertices, const unsigned int _numVertices, const Blend::Factor _srcBlendFactor, const Blend::Factor _dstBlendFactor)
+	{
+		// Pass buffer data
+		GL_CHECK_ERROR(glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * _numVertices, _vertices, GL_DYNAMIC_DRAW));
+
+		// Setup shader
+		useProgram(&shaderProgramAlpha);
+
+		// Do rendering
+		bool blend = (_srcBlendFactor != Blend::ONE && _dstBlendFactor != Blend::ONE);
+		if (blend)
+		{
+			GL_CHECK_ERROR(glEnable(GL_BLEND));
+			GL_CHECK_ERROR(glBlendFunc(convertBlendFactor(_srcBlendFactor), convertBlendFactor(_dstBlendFactor)));
+		}
+		else
+		{
+			LOG(LogWarning) << "Text no blend";
 			GL_CHECK_ERROR(glDisable(GL_BLEND));
 		}
 		GL_CHECK_ERROR(glDrawArrays(GL_TRIANGLE_STRIP, 0, _numVertices));

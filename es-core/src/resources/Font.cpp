@@ -445,7 +445,7 @@ void Font::renderTextCache(TextCache* cache)
 		}
 
 		if (tex != 0)
-			Renderer::drawTriangleStrips(&vertex.verts[0], vertex.verts.size());
+			Renderer::drawAlphaTriangleStrips(&vertex.verts[0], vertex.verts.size());
 	}
 
 	if (cache->renderingGlow)
