@@ -416,6 +416,8 @@ int main(int argc, char* argv[])
 	signal(SIGSEGV, signalHandler);
 	// signal(SIGTERM, signalHandler);
 
+    ApiSystem::getInstance();
+
 	srand((unsigned int)time(NULL));
 
 	std::locale::global(std::locale("C"));

@@ -249,6 +249,7 @@ private:
     bool mCached;
 
     std::string mVersion;
+    std::string mHostName;
     std::vector<std::string> mTimezones;
     std::vector<std::string> mVideoModes;
 };

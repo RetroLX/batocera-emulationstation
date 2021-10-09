@@ -64,18 +64,20 @@ ApiSystem *ApiSystem::getInstance()
 #if WIN32
 		ApiSystem::instance = new Win32ApiSystem();
 #else
-		ApiSystem::instance = new ApiSystem();
+    {
+        ApiSystem::instance = new ApiSystem();
+        ApiSystem::instance->cacheValues();
+        ApiSystem::instance->mCached = true;
+    }
 #endif
-
-    // Cache values
-    ApiSystem::instance->cacheValues();
-    ApiSystem::instance->mCached = true;
 
 	return ApiSystem::instance;
 }
 
 void ApiSystem::cacheValues()
 {
+    this->mCached = false;
+    this->mHostName = getHostsName();
     this->mVersion = getVersion();
     this->mTimezones = getTimezones();
     this->mVideoModes = getVideoModes();
@@ -1660,6 +1662,9 @@ std::string ApiSystem::getRunningArchitecture()
 
 std::string ApiSystem::getHostsName()
 {
+    if (mCached)
+        return mHostName;
+
 	auto hostName = SystemConf::getInstance()->get("system.hostname");
 	if (!hostName.empty())
 		return hostName;
