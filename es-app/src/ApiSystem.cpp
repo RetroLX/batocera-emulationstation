@@ -51,7 +51,10 @@
 #include "RetroAchievements.h"
 #include "utils/ZipFile.h"
 
-ApiSystem::ApiSystem() { }
+ApiSystem::ApiSystem()
+{
+    mCached = false;
+}
 
 ApiSystem* ApiSystem::instance = nullptr;
 
@@ -64,7 +67,18 @@ ApiSystem *ApiSystem::getInstance()
 		ApiSystem::instance = new ApiSystem();
 #endif
 
+    // Cache values
+    ApiSystem::instance->cacheValues();
+    ApiSystem::instance->mCached = true;
+
 	return ApiSystem::instance;
+}
+
+void ApiSystem::cacheValues()
+{
+    this->mVersion = getVersion();
+    this->mTimezones = getTimezones();
+    this->mVideoModes = getVideoModes();
 }
 
 unsigned long ApiSystem::getFreeSpaceGB(std::string mountpoint) 
@@ -126,6 +140,9 @@ bool ApiSystem::isFreeSpaceLimit()
 std::string ApiSystem::getVersion() 
 {
 	LOG(LogDebug) << "ApiSystem::getVersion";
+
+    if (mCached)
+        return mVersion;
 
 	std::ifstream ifs("/usr/share/retrolx/retrolx.version");
 	if (ifs.good()) 
@@ -431,7 +448,9 @@ std::vector<std::string> ApiSystem::getAvailableStorageDevices()
 
 std::vector<std::string> ApiSystem::getVideoModes() 
 {
-	return executeEnumerationScript("batocera-resolution listModes");
+    if (mCached)
+        return mVideoModes;
+    return executeEnumerationScript("batocera-resolution listModes");
 }
 
 std::vector<std::string> ApiSystem::getAvailableBackupDevices() 
@@ -1521,6 +1540,9 @@ std::vector<std::string> ApiSystem::getTimezones()
 	std::vector<std::string> ret;
 
 	LOG(LogDebug) << "ApiSystem::getTimezones";
+
+    if (mCached)
+        return mTimezones;
 
 	std::vector<std::string> folderList = { "/usr/share/zoneinfo/" };
 	for (auto folder : folderList)

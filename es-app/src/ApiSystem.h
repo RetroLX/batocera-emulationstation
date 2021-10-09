@@ -243,6 +243,14 @@ protected:
 
     void launchExternalWindow_before(Window *window);
     void launchExternalWindow_after(Window *window);
+
+private:
+    void cacheValues();
+    bool mCached;
+
+    std::string mVersion;
+    std::vector<std::string> mTimezones;
+    std::vector<std::string> mVideoModes;
 };
 
 #endif
