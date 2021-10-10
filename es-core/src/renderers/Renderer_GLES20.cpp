@@ -592,13 +592,15 @@ namespace Renderer
 
 	} // drawTriangleStrips
 
-	void drawAlphaTriangleStrips(const Vertex* _vertices, const unsigned int _numVertices, const Blend::Factor _srcBlendFactor, const Blend::Factor _dstBlendFactor)
+	void drawAlphaText(const Vertex* _vertices, const unsigned int _numVertices, const Blend::Factor _srcBlendFactor, const Blend::Factor _dstBlendFactor, bool first)
 	{
 		// Pass buffer data
-		GL_CHECK_ERROR(glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * _numVertices, _vertices, GL_DYNAMIC_DRAW));
+        if (first)
+		    GL_CHECK_ERROR(glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * _numVertices, _vertices, GL_DYNAMIC_DRAW));
 
 		// Setup shader
-		useProgram(&shaderProgramAlpha);
+        if (first)
+		    useProgram(&shaderProgramAlpha);
 
 		// Do rendering
 		bool blend = (_srcBlendFactor != Blend::ONE && _dstBlendFactor != Blend::ONE);

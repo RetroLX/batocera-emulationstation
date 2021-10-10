@@ -423,7 +423,7 @@ void Font::rebuildTextures()
 	}
 }
 
-void Font::renderTextCache(TextCache* cache)
+void Font::renderTextCache(TextCache* cache, bool first)
 {
 	if(cache == NULL)
 	{
@@ -445,7 +445,7 @@ void Font::renderTextCache(TextCache* cache)
 		}
 
 		if (tex != 0)
-			Renderer::drawAlphaTriangleStrips(&vertex.verts[0], vertex.verts.size());
+			Renderer::drawAlphaText(&vertex.verts[0], vertex.verts.size(), Renderer::Blend::SRC_ALPHA, Renderer::Blend::ONE_MINUS_SRC_ALPHA, first);
 	}
 
 	if (cache->renderingGlow)
@@ -519,7 +519,7 @@ void Font::renderGradientTextCache(TextCache* cache, unsigned int colorTop, unsi
 		}
 
 		Renderer::bindTexture(*it->textureIdPtr);
-		Renderer::drawTriangleStrips(&vxs[0], vxs.size());		
+		Renderer::drawAlphaText(&vxs[0], vxs.size());
 	}
 }
 

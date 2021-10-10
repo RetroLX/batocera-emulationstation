@@ -161,19 +161,39 @@ void TextComponent::renderGlow(const Transform4x4f& parentTrans, float yOff, flo
 		int x = -mGlowSize;
 		int y = -mGlowSize;
 
-		renderSingleGlow(glowTrans, yOff, x, y);
+        Vector3f off = Vector3f(mPadding.x() + x + mGlowOffset.x(), mPadding.y() + yOff + y + mGlowOffset.y(), 0);
+        Transform4x4f trans = glowTrans * getTransform();
+        trans.translate(off);
+        Renderer::setMatrix(trans);
+        mFont->renderTextCache(mTextCache.get(), true);
+
+        for (int i = 0; i < 2 * mGlowSize; i++)
+        {
+            trans.translate(Vector3f(1,0,0));
+            Renderer::setMatrix(trans);
+            mFont->renderTextCache(mTextCache.get(), false);
+        }
 
 		for (int i = 0; i < 2 * mGlowSize; i++)
-			renderSingleGlow(glowTrans, yOff, ++x, y);
+        {
+            trans.translate(Vector3f(0,1,0));
+            Renderer::setMatrix(trans);
+            mFont->renderTextCache(mTextCache.get(), false);
+        }
 
 		for (int i = 0; i < 2 * mGlowSize; i++)
-			renderSingleGlow(glowTrans, yOff, x, ++y);
+        {
+            trans.translate(Vector3f(-1,0,0));
+            Renderer::setMatrix(trans);
+            mFont->renderTextCache(mTextCache.get(), false);
+        }
 
 		for (int i = 0; i < 2 * mGlowSize; i++)
-			renderSingleGlow(glowTrans, yOff, --x, y);
-
-		for (int i = 0; i < 2 * mGlowSize; i++)
-			renderSingleGlow(glowTrans, yOff, x, --y);
+        {
+            trans.translate(Vector3f(0,-1,0));
+            Renderer::setMatrix(trans);
+            mFont->renderTextCache(mTextCache.get(), false);
+        }
 	}
 
 	mTextCache->setRenderingGlow(false);
