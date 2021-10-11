@@ -504,6 +504,8 @@ bool SystemView::input(InputConfig* config, Input input)
 
 		if(config->isMappedTo(BUTTON_OK, input))
 		{
+            if (size() == 0)
+                return true;
 			stopScrolling();
 			ViewController::get()->goToGameList(getSelected());
 			return true;

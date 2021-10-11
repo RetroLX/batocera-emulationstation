@@ -9,6 +9,7 @@ NinePatchComponent::NinePatchComponent(Window* window, const std::string& path, 
 	mEdgeColor(edgeColor), mCenterColor(centerColor),
 	mVertices(NULL), mPadding(Vector4f(0, 0, 0, 0))
 {
+    mRoundedVertices.clear();
 	mTimer = 0;
 	mAnimateTiming = 0;
 	mAnimateColor = 0xFFFFFFFF;
@@ -24,6 +25,7 @@ void NinePatchComponent::setOpacity(unsigned char opacity)
 
 	mOpacity = opacity;
 	updateColors();
+    mRoundedVertices.clear();
 }
 
 NinePatchComponent::~NinePatchComponent()
@@ -163,8 +165,13 @@ void NinePatchComponent::render(const Transform4x4f& parentTrans)
 		
 		if (mCornerSize.x() > 0)
 		{
-			int radius = Math::max(mSize.x(), mSize.y()) * mCornerSize.x();			
-			Renderer::drawRoundRect(0, 0, mSize.x(), mSize.y(), radius, edgeColor);
+            if (mRoundedVertices.size()== 0)
+            {
+                int radius = Math::max(mSize.x(), mSize.y()) * mCornerSize.x();
+                mRoundedVertices = Renderer::createRoundRect(0, 0, mSize.x(), mSize.y(), radius, edgeColor);
+            }
+            Renderer::bindTexture(0);
+			Renderer::drawTriangleFan(mRoundedVertices.data(), mRoundedVertices.size());
 		}
 		else
 			Renderer::drawRect(0.0, 0.0, mSize.x(), mSize.y(), edgeColor, edgeColor);
@@ -209,6 +216,7 @@ void NinePatchComponent::onSizeChanged()
 
 	mPreviousSize = mSize;
 	buildVertices();
+    mRoundedVertices.clear();
 }
 
 const Vector2f& NinePatchComponent::getCornerSize() const
@@ -223,6 +231,7 @@ void NinePatchComponent::setCornerSize(float sizeX, float sizeY)
 
 	mCornerSize = Vector2f(sizeX, sizeY);
 	buildVertices();
+    mRoundedVertices.clear();
 }
 
 void NinePatchComponent::fitTo(Vector2f size, Vector3f position, Vector2f padding)
@@ -262,6 +271,7 @@ void NinePatchComponent::setEdgeColor(unsigned int edgeColor)
 
 	mEdgeColor = edgeColor;
 	updateColors();
+    mRoundedVertices.clear();
 }
 
 void NinePatchComponent::setCenterColor(unsigned int centerColor)

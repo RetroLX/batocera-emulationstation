@@ -60,6 +60,7 @@ private:
 	void updateColors();
 
 	Renderer::Vertex* mVertices;
+    std::vector<Renderer::Vertex> mRoundedVertices;
 
 	std::string mPath;
 	Vector2f mCornerSize;
