@@ -149,10 +149,22 @@ void TextComponent::renderGlow(const Transform4x4f& parentTrans, float yOff, flo
 		int a = Math::min(0xFF, (mGlowColor & 0xFF) * 2);
 		mTextCache->setColor((mGlowColor & 0xFFFFFF00) | (unsigned char)(a * (mOpacity / 255.0)));
 
-		renderSingleGlow(glowTrans, yOff, 1, 0);
-		renderSingleGlow(glowTrans, yOff, 0, 1);
-		renderSingleGlow(glowTrans, yOff, -1, 0);
-		renderSingleGlow(glowTrans, yOff, 0, -1);
+        Vector3f off = Vector3f(mPadding.x() + mGlowOffset.x(), mPadding.y() + yOff + mGlowOffset.y(), 0);
+        Transform4x4f trans = parentTrans * getTransform();
+        trans.translate(off);
+
+        trans.translate(Vector3f(1,0,0));
+        Renderer::setMatrix(trans);
+        mFont->renderTextCache(mTextCache.get(),true);
+        trans.translate(Vector3f(-1,1,0));
+        Renderer::setMatrix(trans);
+        mFont->renderTextCache(mTextCache.get(),false);
+        trans.translate(Vector3f(-1,-1,0));
+        Renderer::setMatrix(trans);
+        mFont->renderTextCache(mTextCache.get(),false);
+        trans.translate(Vector3f(0,-1,0));
+        Renderer::setMatrix(trans);
+        mFont->renderTextCache(mTextCache.get(),false);
 	}
 	else
 	{
