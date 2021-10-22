@@ -2058,7 +2058,7 @@ bool SystemData::hasEmulatorSelection()
 			cc++;
 	}
 
-	return ec > 1 || cc > 1;
+	return ec >= 1 || cc >= 1;
 }
 
 SystemData* SystemData::getSystem(const std::string name)
