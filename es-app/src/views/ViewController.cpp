@@ -161,45 +161,39 @@ void ViewController::goToSystemView(SystemData* system, bool forceImmediate)
 {
 	SystemData* dest = system;
 
-	if (system != nullptr && system->isCollection())
+	int systemId = getSystemId(dest);
+
+	if (system->isCollection())
 	{
 		SystemData* bundle = CollectionSystemManager::get()->getCustomCollectionsBundle();
-		if (bundle != nullptr)
-		{
-			for (auto child : bundle->getRootFolder()->getChildren())
-			{
-				if (child->getType() == FOLDER && child->getName() == system->getName())
-				{
-					dest = bundle;
-					break;
-				}
-			}
-		}
+		if (bundle != nullptr && systemId < 0)
+			dest = bundle;
 	}
 
 	// Tell any current view it's about to be hidden
 	if (mCurrentView)
 		mCurrentView->onHide();
 
+	// Realign system view
 	auto systemList = getSystemListView();
-
-	if (systemList != nullptr)
+	systemList->setPosition(systemId * (float)Renderer::getScreenWidth(), systemList->getPosition().y());
+	
+	// Realign every gamelist views
+	for (auto gameList : mGameListViews)
 	{
-		if (mState.viewing == GAME_LIST && mCurrentView)
-			systemList->setPosition(mCurrentView->getPosition().x(), systemList->getPosition().y());
-		else
-			systemList->setPosition(getSystemId(dest) * (float)Renderer::getScreenWidth(), systemList->getPosition().y());
-
-		mState.viewing = SYSTEM_SELECT;
-		mState.system = dest;
-
-		systemList->goToSystem(dest, false);
-		mCurrentView = systemList;
+		int id = getSystemId(gameList.first);
+		gameList.second->setPosition(id * (float)Renderer::getScreenWidth(), (float)Renderer::getScreenHeight() * 2);
 	}
 
-	// mCurrentView->onShow();
-//	PowerSaver::pause();
-//	PowerSaver::resume();
+	// Realign translation
+	mCamera.translation().x() = -(systemId * (float)Renderer::getScreenWidth());
+
+	mState.viewing = SYSTEM_SELECT;
+	mState.system = dest;
+
+	systemList->goToSystem(dest, false);
+
+	mCurrentView = systemList;
 
 	playViewTransition(forceImmediate);
 }
@@ -259,7 +253,8 @@ void ViewController::goToGameList(SystemData* system, bool forceImmediate)
 
 	std::shared_ptr<IGameListView> view = getGameListView(destinationSystem);
 
-	if(mState.viewing == SYSTEM_SELECT)
+
+	if (mState.viewing == SYSTEM_SELECT)
 	{
 		// move system list
 		auto sysList = getSystemListView();
@@ -457,7 +452,7 @@ bool ViewController::checkLaunchOptions(FileData* game, LaunchGameOptions option
 
 	if (!game->isExtensionCompatible())
 	{
-		auto gui = new GuiMsgBox(mWindow, _("WARNING : THIS GAME'S FORMAT IS NOT SUPPORTED BY THE CURRENT EMULATOR/CORE.\nDO YOU WANT TO LAUNCH IT ANYWAY ?"),
+		auto gui = new GuiMsgBox(mWindow, _("WARNING: THE EMULATOR/CORE CURRENTLY SET DOES NOT SUPPORT THIS GAME'S FILE FORMAT.\nDO YOU WANT TO LAUNCH IT ANYWAY?"),
 			_("YES"), [this, game, options, center] { launch(game, options, center, false); },
 			_("NO"), nullptr, ICON_ERROR);
 
@@ -477,7 +472,7 @@ bool ViewController::checkLaunchOptions(FileData* game, LaunchGameOptions option
 				bool hasMissing = std::find_if(it->bios.cbegin(), it->bios.cend(), [&systemName](const BiosFile& x) { return x.status == "MISSING"; }) != it->bios.cend();
 				if (hasMissing)
 				{
-					auto gui = new GuiMsgBox(mWindow, _("WARNING : THE SYSTEM HAS MISSING BIOS AND THE GAME MAY NOT WORK CORRECTLY.\nDO YOU WANT TO LAUNCH IT ANYWAY ?"),
+					auto gui = new GuiMsgBox(mWindow, _("WARNING: THE SYSTEM HAS MISSING BIOS FILE(S) AND THE GAME MAY NOT WORK CORRECTLY.\nDO YOU WANT TO LAUNCH IT ANYWAY?"),
 						_("YES"), [this, game, options, center] { launch(game, options, center, false); },
 						_("NO"), nullptr, ICON_ERROR);
 
@@ -506,7 +501,7 @@ void ViewController::launch(FileData* game, LaunchGameOptions options, Vector3f 
 	{
 		auto ext = Utils::String::toLower(Utils::FileSystem::getExtension(game->getPath()));
 
-		if (ext == ".mp4" || ext == ".avi" || ext == ".mkv")
+		if (ext == ".mp4" || ext == ".avi" || ext == ".mkv" || ext == ".webm")
 			GuiVideoViewer::playVideo(mWindow, game->getPath());
 		else if (ext == ".pdf")
 			GuiImageViewer::showPdf(mWindow, game->getPath());
@@ -963,7 +958,10 @@ void ViewController::preload()
 	for(auto it = SystemData::sSystemVector.cbegin(); it != SystemData::sSystemVector.cend(); it++)
 	{		
 		if ((*it)->isGroupChildSystem() || !(*it)->isVisible())
+		{
+			i++;
 			continue;
+		}
 
 		if (splash)
 		{

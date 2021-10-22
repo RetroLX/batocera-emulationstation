@@ -1016,7 +1016,7 @@ std::vector<HelpPrompt> SystemView::getHelpPrompts()
 	if (netPlay)
 	{
 		prompts.push_back(HelpPrompt("x", _("NETPLAY")));
-		prompts.push_back(HelpPrompt("y", _("SEARCH") + std::string(" / ") + _("RANDOM"))); // QUICK 
+		prompts.push_back(HelpPrompt("y", _("SEARCH") + std::string("/") + _("RANDOM"))); // QUICK 
 	}
 	else
 	{
@@ -1031,6 +1031,8 @@ std::vector<HelpPrompt> SystemView::getHelpPrompts()
 		prompts.push_back(HelpPrompt("F1", _("FILES")));
 	}
 #endif
+
+	// prompts.push_back(HelpPrompt("F3", _("SCREEN READER"))); -> Not interesting since most devices don't have Keyboard
 
 	return prompts;
 }
@@ -1723,6 +1725,10 @@ void SystemView::onShow()
 
 	for (auto sb : mStaticVideoBackgrounds)
 		sb->onShow();
+
+	if (getSelected() != nullptr)
+		TextToSpeech::getInstance()->say(getSelected()->getFullName());
+
 }
 
 void SystemView::onHide()

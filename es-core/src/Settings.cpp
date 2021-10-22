@@ -142,7 +142,7 @@ void Settings::setDefaults()
 	mIntMap["MaxVRAM"] = 128;
 #elif defined(_RPI_)
 	// Rpi 0, 1
-	mIntMap["MaxVRAM"] = 80;
+	mIntMap["MaxVRAM"] = 128;
 #else
 	// Other boards
 	mIntMap["MaxVRAM"] = 100;
@@ -246,6 +246,7 @@ void Settings::setDefaults()
 	mBoolMap["ThreadedLoading"] = true;
 	mBoolMap["AsyncImages"] = true;
 	mBoolMap["PreloadUI"] = false;
+	mBoolMap["PreloadMedias"] = false;	
 	mBoolMap["OptimizeVRAM"] = true;
 	mBoolMap["OptimizeVideo"] = true;
 

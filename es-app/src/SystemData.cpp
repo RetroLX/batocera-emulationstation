@@ -81,7 +81,8 @@ SystemData::SystemData(const SystemMetadata& meta, SystemEnvironmentData* envDat
 	else
 	{
 		// virtual systems are updated afterwards, we're just creating the data structure
-		mRootFolder = new FolderData("" + mMetadata.fullName, this);
+		mRootFolder = new FolderData(mMetadata.fullName, this);
+		mRootFolder->getMetadata().set(MetaDataId::Name, mMetadata.fullName);
 	}
 
 	mRootFolder->getMetadata().resetChangedFlag();
@@ -95,6 +96,9 @@ SystemData::SystemData(const SystemMetadata& meta, SystemEnvironmentData* envDat
 		setSystemViewMode(defaultView, gridSizeOverride, false);
 
 		setIsGameSystemStatus();
+
+		if (Settings::PreloadMedias())
+			getSaveStateRepository();
 	}
 }
 
@@ -205,7 +209,8 @@ void SystemData::populateFolder(FolderData* folder, std::unordered_map<std::stri
 	std::string filePath;
 	std::string extension;
 	bool isGame;
-	bool showHidden = Settings::getInstance()->getBool("ShowHiddenFiles");
+	bool showHidden = Settings::ShowHiddenFiles();
+	bool preloadMedias = Settings::PreloadMedias();
 
 	auto shv = Settings::getInstance()->getString(getName() + ".ShowHiddenFiles");
 	if (shv == "1") showHidden = true;
@@ -245,6 +250,23 @@ void SystemData::populateFolder(FolderData* folder, std::unordered_map<std::stri
 		if(!isGame && fileInfo.directory)
 		{
 			std::string fn = Utils::String::toLower(Utils::FileSystem::getFileName(filePath));
+
+			if (preloadMedias && (!mHidden || Settings::HiddenSystemsShowGames()))
+			{
+				// Recurse list files in medias folder, just to let OS build filesystem cache 
+				if (fn == "media" || fn == "medias")
+				{
+					Utils::FileSystem::getDirContent(filePath, true);
+					continue;
+				}
+
+				// List files in folder, just to get OS build filesystem cache 
+				if (fn == "manuals" || fn == "images" || fn == "videos" || Utils::String::startsWith(fn, "downloaded_"))
+				{
+					Utils::FileSystem::getDirectoryFiles(filePath);
+					continue;
+				}
+			}
 
 			// Don't loose time looking in downloaded_images, downloaded_videos & media folders
 			if (fn == "media" || fn == "medias" || fn == "images" || fn == "manuals" || fn == "videos" || fn == "assets" || Utils::String::startsWith(fn, "downloaded_") || Utils::String::startsWith(fn, "."))
