@@ -433,8 +433,28 @@ std::string FileData::getlaunchCommand(LaunchGameOptions options, bool includeCo
 			if (forceCore)
 				break;
 		}
-	}
+	}	
+	/*else if (!isExtensionCompatible())
+	{
+		auto extension = Utils::String::toLower(Utils::FileSystem::getExtension(gameToUpdate->getPath()));
 
+		for (auto emul : system->getEmulators())
+		{
+			if (std::find(emul.incompatibleExtensions.cbegin(), emul.incompatibleExtensions.cend(), extension) == emul.incompatibleExtensions.cend())
+			{
+				for (auto coreZ : emul.cores)
+				{
+					if (std::find(coreZ.incompatibleExtensions.cbegin(), coreZ.incompatibleExtensions.cend(), extension) == coreZ.incompatibleExtensions.cend())
+					{
+						emulator = emul.name;
+						core = coreZ.name;
+						break;
+					}
+				}
+			}
+		}
+	}*/
+	
 	std::string command = system->getLaunchCommand(emulator, core);
 
 	if (forceCore)
@@ -803,7 +823,7 @@ const std::vector<FileData*> FolderData::getChildrenListToDisplay()
 
 	std::string showFoldersMode = getSystem()->getFolderViewMode();
 	
-	bool showHiddenFiles = Settings::getInstance()->getBool("ShowHiddenFiles");
+	bool showHiddenFiles = Settings::ShowHiddenFiles();
 
 	auto shv = Settings::getInstance()->getString(getSystem()->getName() + ".ShowHiddenFiles");
 	if (shv == "1") showHiddenFiles = true;
@@ -972,7 +992,7 @@ FileData* FolderData::findUniqueGameForFolder()
 	{
 		if (game->getHidden())
 		{
-			bool showHiddenFiles = Settings::getInstance()->getBool("ShowHiddenFiles") && !UIModeController::getInstance()->isUIModeKiosk();
+			bool showHiddenFiles = Settings::ShowHiddenFiles() && !UIModeController::getInstance()->isUIModeKiosk();
 
 			auto shv = Settings::getInstance()->getString(getSystem()->getName() + ".ShowHiddenFiles");
 			if (shv == "1") showHiddenFiles = true;
@@ -1017,7 +1037,7 @@ std::vector<FileData*> FolderData::getFilesRecursive(unsigned int typeMask, bool
 		return fld->isVirtualStorage();
 	};
 
-	bool showHiddenFiles = Settings::getInstance()->getBool("ShowHiddenFiles") && !UIModeController::getInstance()->isUIModeKiosk();
+	bool showHiddenFiles = Settings::ShowHiddenFiles() && !UIModeController::getInstance()->isUIModeKiosk();
 
 	auto shv = Settings::getInstance()->getString(getSystem()->getName() + ".ShowHiddenFiles");
 	if (shv == "1") showHiddenFiles = true;
