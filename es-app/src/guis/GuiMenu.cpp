@@ -240,7 +240,7 @@ void GuiMenu::openScraperSettings()
 	// scrape from
 	auto scraper_list = std::make_shared< OptionListComponent< std::string > >(mWindow, _("SCRAPING DATABASE"), false);
 	std::vector<std::string> scrapers = Scraper::getScraperList();
-
+	
 	// Select either the first entry of the one read from the settings, just in case the scraper from settings has vanished.
 	for(auto it = scrapers.cbegin(); it != scrapers.cend(); it++)
 		scraper_list->add(*it, *it, *it == scraper);
@@ -254,227 +254,153 @@ void GuiMenu::openScraperSettings()
 		scraper = scraper_list->getSelected();
 	}
 
-	if (scraper == "ScreenScraper")
+	auto scrap = Scraper::getScraper(scraper);
+	if (scrap != nullptr)
 	{
-		// Image source : <image> tag
 		std::string imageSourceName = Settings::getInstance()->getString("ScrapperImageSrc");
 		auto imageSource = std::make_shared< OptionListComponent<std::string> >(mWindow, _("IMAGE SOURCE"), false);
-		imageSource->add(_("SCREENSHOT"), "ss", imageSourceName == "ss");
-		imageSource->add(_("TITLE SCREENSHOT"), "sstitle", imageSourceName == "sstitle");
-		imageSource->add(_("MIX V1"), "mixrbv1", imageSourceName == "mixrbv1");
-		imageSource->add(_("MIX V2"), "mixrbv2", imageSourceName == "mixrbv2");
-		imageSource->add(_("BOX 2D"), "box-2D", imageSourceName == "box-2D");
-		imageSource->add(_("BOX 3D"), "box-3D", imageSourceName == "box-3D");
-		imageSource->add(_("FAN ART"), "fanart", imageSourceName == "fanart");
-		imageSource->add(_("NONE"), "", imageSourceName.empty());
 
-		if (!imageSource->hasSelection())
-			imageSource->selectFirstItem();
-
-		s->addWithLabel(_("IMAGE SOURCE"), imageSource);
-		s->addSaveFunc([imageSource] { Settings::getInstance()->setString("ScrapperImageSrc", imageSource->getSelected()); });
-
-		// Box source : <thumbnail> tag
-		std::string thumbSourceName = Settings::getInstance()->getString("ScrapperThumbSrc");
-		auto thumbSource = std::make_shared< OptionListComponent<std::string> >(mWindow, _("BOX SOURCE"), false);
-		thumbSource->add(_("NONE"), "", thumbSourceName.empty());
-		thumbSource->add(_("BOX 2D"), "box-2D", thumbSourceName == "box-2D");
-		thumbSource->add(_("BOX 3D"), "box-3D", thumbSourceName == "box-3D");
-
-		if (!thumbSource->hasSelection())
-			thumbSource->selectFirstItem();
-
-		s->addWithLabel(_("BOX SOURCE"), thumbSource);
-		s->addSaveFunc([thumbSource] { Settings::getInstance()->setString("ScrapperThumbSrc", thumbSource->getSelected()); });
-
-		imageSource->setSelectedChangedCallback([this, thumbSource](std::string value)
+		if (scrap->isMediaSupported(Scraper::ScraperMediaSource::Screenshot) ||
+			scrap->isMediaSupported(Scraper::ScraperMediaSource::Box2d) ||
+			scrap->isMediaSupported(Scraper::ScraperMediaSource::Box3d) ||
+			scrap->isMediaSupported(Scraper::ScraperMediaSource::Mix) ||
+			scrap->isMediaSupported(Scraper::ScraperMediaSource::FanArt) ||
+			scrap->isMediaSupported(Scraper::ScraperMediaSource::TitleShot))		
 		{
-			if (value == "box-2D")
-				thumbSource->remove(_("BOX 2D"));
-			else
-				thumbSource->add(_("BOX 2D"), "box-2D", false);
+			// Image source : <image> tag
 
-			if (value == "box-3D")
-				thumbSource->remove(_("BOX 3D"));
-			else
-				thumbSource->add(_("BOX 3D"), "box-3D", false);
-		});
+			if (scrap->isMediaSupported(Scraper::ScraperMediaSource::Screenshot))
+				imageSource->add(_("SCREENSHOT"), "ss", imageSourceName == "ss");
 
-		// Logo source : <marquee> tag
-		std::string logoSourceName = Settings::getInstance()->getString("ScrapperLogoSrc");
-		auto logoSource = std::make_shared< OptionListComponent<std::string> >(mWindow, _("LOGO SOURCE"), false);
-		logoSource->add(_("NONE"), "", logoSourceName.empty());
-		logoSource->add(_("WHEEL"), "wheel", logoSourceName == "wheel");
-		logoSource->add(_("MARQUEE"), "marquee", logoSourceName == "marquee");
+			if (scrap->isMediaSupported(Scraper::ScraperMediaSource::TitleShot))
+				imageSource->add(_("TITLE SCREENSHOT"), "sstitle", imageSourceName == "sstitle");
 
-		if (!logoSource->hasSelection())
-			logoSource->selectFirstItem();
+			if (scrap->isMediaSupported(Scraper::ScraperMediaSource::Mix))
+			{
+				imageSource->add(_("MIX V1"), "mixrbv1", imageSourceName == "mixrbv1");
+				imageSource->add(_("MIX V2"), "mixrbv2", imageSourceName == "mixrbv2");
+			}
 
-		s->addWithLabel(_("LOGO SOURCE"), logoSource);
-		s->addSaveFunc([logoSource] { Settings::getInstance()->setString("ScrapperLogoSrc", logoSource->getSelected()); });
+			if (scrap->isMediaSupported(Scraper::ScraperMediaSource::Box2d))
+				imageSource->add(_("BOX 2D"), "box-2D", imageSourceName == "box-2D");
 
-		// scrape ratings
-		auto scrape_ratings = std::make_shared<SwitchComponent>(mWindow);
-		scrape_ratings->setState(Settings::getInstance()->getBool("ScrapeRatings"));
-		s->addWithLabel(_("SCRAPE RATINGS"), scrape_ratings); // batocera
-		s->addSaveFunc([scrape_ratings] { Settings::getInstance()->setBool("ScrapeRatings", scrape_ratings->getState()); });
+			if (scrap->isMediaSupported(Scraper::ScraperMediaSource::Box3d))
+				imageSource->add(_("BOX 3D"), "box-3D", imageSourceName == "box-3D");
 
-		// scrape video
-		auto scrape_video = std::make_shared<SwitchComponent>(mWindow);
-		scrape_video->setState(Settings::getInstance()->getBool("ScrapeVideos"));
-		s->addWithLabel(_("SCRAPE VIDEOS"), scrape_video);
-		s->addSaveFunc([scrape_video] { Settings::getInstance()->setBool("ScrapeVideos", scrape_video->getState()); });
+			if (scrap->isMediaSupported(Scraper::ScraperMediaSource::FanArt))
+				imageSource->add(_("FAN ART"), "fanart", imageSourceName == "fanart");
+
+			imageSource->add(_("NONE"), "", imageSourceName.empty());
+
+			if (!imageSource->hasSelection())
+				imageSource->selectFirstItem();
+
+			s->addWithLabel(_("IMAGE SOURCE"), imageSource);
+			s->addSaveFunc([imageSource] { Settings::getInstance()->setString("ScrapperImageSrc", imageSource->getSelected()); });
+		}
+
+		if (scrap->isMediaSupported(Scraper::ScraperMediaSource::Box2d) || scrap->isMediaSupported(Scraper::ScraperMediaSource::Box3d))
+		{
+			// Box source : <thumbnail> tag
+			std::string thumbSourceName = Settings::getInstance()->getString("ScrapperThumbSrc");
+			auto thumbSource = std::make_shared< OptionListComponent<std::string> >(mWindow, _("BOX SOURCE"), false);
+			thumbSource->add(_("NONE"), "", thumbSourceName.empty());
+
+			if (scrap->isMediaSupported(Scraper::ScraperMediaSource::Box2d))
+				thumbSource->add(_("BOX 2D"), "box-2D", thumbSourceName == "box-2D");
+
+			if (scrap->isMediaSupported(Scraper::ScraperMediaSource::Box3d))//if (scraper == "HfsDB")
+				thumbSource->add(_("BOX 3D"), "box-3D", thumbSourceName == "box-3D");
+
+			if (!thumbSource->hasSelection())
+				thumbSource->selectFirstItem();
+
+			s->addWithLabel(_("BOX SOURCE"), thumbSource);
+			s->addSaveFunc([thumbSource] { Settings::getInstance()->setString("ScrapperThumbSrc", thumbSource->getSelected()); });
 		
-		// SCRAPE FANART
-		auto scrape_fanart = std::make_shared<SwitchComponent>(mWindow);
-		scrape_fanart->setState(Settings::getInstance()->getBool("ScrapeFanart"));
-		s->addWithLabel(_("SCRAPE FANART"), scrape_fanart);
-		s->addSaveFunc([scrape_fanart] { Settings::getInstance()->setBool("ScrapeFanart", scrape_fanart->getState()); });
+			imageSource->setSelectedChangedCallback([this, scrap, thumbSource](std::string value)
+			{
+				if (scrap->isMediaSupported(Scraper::ScraperMediaSource::Box2d))
+				{
+					if (value == "box-2D")
+						thumbSource->remove(_("BOX 2D"));
+					else
+						thumbSource->add(_("BOX 2D"), "box-2D", false);
+				}
 
-		// SCRAPE BOX BACKSIDE
-		auto scrape_boxBack = std::make_shared<SwitchComponent>(mWindow);
-		scrape_boxBack->setState(Settings::getInstance()->getBool("ScrapeBoxBack"));
-		s->addWithLabel(_("SCRAPE BOX BACKSIDE"), scrape_boxBack);
-		s->addSaveFunc([scrape_boxBack] { Settings::getInstance()->setBool("ScrapeBoxBack", scrape_boxBack->getState()); });
+				if (scrap->isMediaSupported(Scraper::ScraperMediaSource::Box3d))
+				{
+					if (value == "box-3D")
+						thumbSource->remove(_("BOX 3D"));
+					else
+						thumbSource->add(_("BOX 3D"), "box-3D", false);
+				}
+			});
+		}
 
-		// SCRAPE MAP		
-		auto scrape_map = std::make_shared<SwitchComponent>(mWindow);
-		scrape_map->setState(Settings::getInstance()->getBool("ScrapeMap"));
-		s->addWithLabel(_("SCRAPE MAP"), scrape_map);
-		s->addSaveFunc([scrape_map] { Settings::getInstance()->setBool("ScrapeMap", scrape_map->getState()); });
+		if (scrap->isMediaSupported(Scraper::ScraperMediaSource::Marquee) || scrap->isMediaSupported(Scraper::ScraperMediaSource::Wheel))
+		{
+			// Logo source : <marquee> tag
+			std::string logoSourceName = Settings::getInstance()->getString("ScrapperLogoSrc");
 
-		// SCRAPE TITLESHOT
+			auto logoSource = std::make_shared< OptionListComponent<std::string> >(mWindow, _("LOGO SOURCE"), false);
+			logoSource->add(_("NONE"), "", logoSourceName.empty());
+
+			if (scrap->isMediaSupported(Scraper::ScraperMediaSource::Wheel))
+				logoSource->add(_("WHEEL"), "wheel", logoSourceName == "wheel");
+
+			if (scrap->isMediaSupported(Scraper::ScraperMediaSource::Marquee)) // if (scraper == "HfsDB")
+				logoSource->add(_("MARQUEE"), "marquee", logoSourceName == "marquee");
+
+			if (!logoSource->hasSelection())
+				logoSource->selectFirstItem();
+
+			s->addWithLabel(_("LOGO SOURCE"), logoSource);
+			s->addSaveFunc([logoSource] { Settings::getInstance()->setString("ScrapperLogoSrc", logoSource->getSelected()); });
+		}
+
+		auto addSwitchComponent = [this, s](const std::string& label, const std::string& settingName)
+		{
+			auto item = std::make_shared<SwitchComponent>(mWindow);
+			item->setState(Settings::getInstance()->getBool(settingName));
+			s->addWithLabel(label, item); // batocera
+			s->addSaveFunc([item, settingName] { Settings::getInstance()->setBool(settingName, item->getState()); });
+		};
+
+		if (scrap->isMediaSupported(Scraper::ScraperMediaSource::Ratings))
+			addSwitchComponent(_("SCRAPE RATINGS"), "ScrapeRatings");
+
+		if (scrap->isMediaSupported(Scraper::ScraperMediaSource::Video))
+			addSwitchComponent(_("SCRAPE VIDEOS"), "ScrapeVideos");
+
+		if (scrap->isMediaSupported(Scraper::ScraperMediaSource::FanArt))
+			addSwitchComponent(_("SCRAPE FANART"), "ScrapeFanart");
+
+		if (scrap->isMediaSupported(Scraper::ScraperMediaSource::BoxBack))
+			addSwitchComponent(_("SCRAPE BOX BACKSIDE"), "ScrapeBoxBack");
+
+		if (scrap->isMediaSupported(Scraper::ScraperMediaSource::Map))
+			addSwitchComponent(_("SCRAPE MAP"), "ScrapeMap");
+
 		/*
-		auto scrape_titleshot = std::make_shared<SwitchComponent>(mWindow);
-		scrape_titleshot->setState(Settings::getInstance()->getBool("ScrapeTitleShot"));
-		s->addWithLabel(_("SCRAPE TITLESHOT"), scrape_titleshot);
-		s->addSaveFunc([scrape_titleshot] { Settings::getInstance()->setBool("ScrapeTitleShot", scrape_titleshot->getState()); });
-		
-		
-		// SCRAPE CARTRIDGE
-		auto scrape_cartridge = std::make_shared<SwitchComponent>(mWindow);
-		scrape_cartridge->setState(Settings::getInstance()->getBool("ScrapeCartridge"));
-		s->addWithLabel(_("SCRAPE CARTRIDGE"), scrape_cartridge);
-		s->addSaveFunc([scrape_cartridge] { Settings::getInstance()->setBool("ScrapeCartridge", scrape_cartridge->getState()); });
+		if (scrap->isMediaSupported(Scraper::ScraperMediaSource::TitleShot))
+			addSwitch(_("SCRAPE TITLESHOT"), "ScrapeTitleShot");
+
+		if (scrap->isMediaSupported(Scraper::ScraperMediaSource::Cartridge))
+			addSwitch(_("SCRAPE CARTRIDGE"), "ScrapeCartridge");
 		*/
-		// SCRAPE MANUAL
-		auto scrape_manual = std::make_shared<SwitchComponent>(mWindow);
-		scrape_manual->setState(Settings::getInstance()->getBool("ScrapeManual"));
-		s->addWithLabel(_("SCRAPE MANUAL"), scrape_manual);
-		s->addSaveFunc([scrape_manual] { Settings::getInstance()->setBool("ScrapeManual", scrape_manual->getState()); });
 
-		// SCRAPE PAD TO KEYBOARD
-		auto scrapePadToKey = std::make_shared<SwitchComponent>(mWindow);
-		scrapePadToKey->setState(Settings::getInstance()->getBool("ScrapePadToKey"));
-		s->addWithLabel(_("SCRAPE PADTOKEY SETTINGS"), scrapePadToKey);
-		s->addSaveFunc([scrapePadToKey] { Settings::getInstance()->setBool("ScrapePadToKey", scrapePadToKey->getState()); });
-		
-		// Account		
-		s->addInputTextRow(_("USERNAME"), "ScreenScraperUser", false, true);
-		s->addInputTextRow(_("PASSWORD"), "ScreenScraperPass", true, true);
-	}
-	else
-	{
-		std::string imageSourceName = Settings::getInstance()->getString("ScrapperImageSrc");
-		auto imageSource = std::make_shared< OptionListComponent<std::string> >(mWindow, _("IMAGE SOURCE"), false);
+		if (scrap->isMediaSupported(Scraper::ScraperMediaSource::Manual))
+			addSwitchComponent(_("SCRAPE MANUAL"), "ScrapeManual");
 
-		// Image source : <image> tag
-			
-		imageSource->add(_("SCREENSHOT"), "ss", imageSourceName == "ss");
-		imageSource->add(_("TITLE SCREENSHOT"), "sstitle", imageSourceName == "sstitle");
-		imageSource->add(_("BOX 2D"), "box-2D", imageSourceName == "box-2D");
-		imageSource->add(_("FAN ART"), "fanart", imageSourceName == "fanart");
+		if (scrap->isMediaSupported(Scraper::ScraperMediaSource::PadToKey))
+			addSwitchComponent(_("SCRAPE PADTOKEY SETTINGS"), "ScrapePadToKey");
 
-		if (!imageSource->hasSelection())
-			imageSource->selectFirstItem();
-
-		s->addWithLabel(_("IMAGE SOURCE"), imageSource);
-		s->addSaveFunc([imageSource] { Settings::getInstance()->setString("ScrapperImageSrc", imageSource->getSelected()); });
-
-		// Box source : <thumbnail> tag
-		std::string thumbSourceName = Settings::getInstance()->getString("ScrapperThumbSrc");
-		auto thumbSource = std::make_shared< OptionListComponent<std::string> >(mWindow, _("BOX SOURCE"), false);
-		thumbSource->add(_("NONE"), "", thumbSourceName.empty());
-		thumbSource->add(_("BOX 2D"), "box-2D", thumbSourceName == "box-2D");
-		
-		if (scraper == "HfsDB")
-			thumbSource->add(_("BOX 3D"), "box-3D", thumbSourceName == "box-3D");
-
-		if (!thumbSource->hasSelection())
-			thumbSource->selectFirstItem();
-
-		s->addWithLabel(_("BOX SOURCE"), thumbSource);
-		s->addSaveFunc([thumbSource] { Settings::getInstance()->setString("ScrapperThumbSrc", thumbSource->getSelected()); });
-
-		imageSource->setSelectedChangedCallback([this, thumbSource](std::string value)
-		{
-			if (value == "box-2D")
-				thumbSource->remove(_("BOX 2D"));
-			else
-				thumbSource->add(_("BOX 2D"), "box-2D", false);
-		});
-
-		// Logo source : <marquee> tag
-		std::string logoSourceName = Settings::getInstance()->getString("ScrapperLogoSrc");
-		auto logoSource = std::make_shared< OptionListComponent<std::string> >(mWindow, _("LOGO SOURCE"), false);
-		logoSource->add(_("NONE"), "", logoSourceName.empty());
-		logoSource->add(_("WHEEL"), "wheel", logoSourceName == "wheel");
-		
-		if (scraper == "HfsDB")
-			logoSource->add(_("MARQUEE"), "marquee", logoSourceName == "marquee");
-
-		if (!logoSource->hasSelection())
-			logoSource->selectFirstItem();
-
-		s->addWithLabel(_("LOGO SOURCE"), logoSource);
-		s->addSaveFunc([logoSource] { Settings::getInstance()->setString("ScrapperLogoSrc", logoSource->getSelected()); });
-
-		if (scraper == "TheGamesDB")
-		{
-			// SCRAPE FANART
-			auto scrape_fanart = std::make_shared<SwitchComponent>(mWindow);
-			scrape_fanart->setState(Settings::getInstance()->getBool("ScrapeFanart"));
-			s->addWithLabel(_("SCRAPE FANART"), scrape_fanart);
-			s->addSaveFunc([scrape_fanart] { Settings::getInstance()->setBool("ScrapeFanart", scrape_fanart->getState()); });
-
-			// SCRAPE BOX BACKSIDE
-			auto scrape_boxBack = std::make_shared<SwitchComponent>(mWindow);
-			scrape_boxBack->setState(Settings::getInstance()->getBool("ScrapeBoxBack"));
-			s->addWithLabel(_("SCRAPE BOX BACKSIDE"), scrape_boxBack);
-			s->addSaveFunc([scrape_boxBack] { Settings::getInstance()->setBool("ScrapeBoxBack", scrape_boxBack->getState()); });
-		}
-		else if (scraper == "HfsDB")
-		{
-			// SCRAPE FANART
-			auto scrape_fanart = std::make_shared<SwitchComponent>(mWindow);
-			scrape_fanart->setState(Settings::getInstance()->getBool("ScrapeFanart"));
-			s->addWithLabel(_("SCRAPE FANART"), scrape_fanart);
-			s->addSaveFunc([scrape_fanart] { Settings::getInstance()->setBool("ScrapeFanart", scrape_fanart->getState()); });
-
-			// scrape video
-			auto scrape_video = std::make_shared<SwitchComponent>(mWindow);
-			scrape_video->setState(Settings::getInstance()->getBool("ScrapeVideos"));
-			s->addWithLabel(_("SCRAPE VIDEOS"), scrape_video);
-			s->addSaveFunc([scrape_video] { Settings::getInstance()->setBool("ScrapeVideos", scrape_video->getState()); });
-
-			// SCRAPE BOX BACKSIDE
-			auto scrape_boxBack = std::make_shared<SwitchComponent>(mWindow);
-			scrape_boxBack->setState(Settings::getInstance()->getBool("ScrapeBoxBack"));
-			s->addWithLabel(_("SCRAPE BOX BACKSIDE"), scrape_boxBack);
-			s->addSaveFunc([scrape_boxBack] { Settings::getInstance()->setBool("ScrapeBoxBack", scrape_boxBack->getState()); });
-
-			// SCRAPE MANUAL
-			auto scrape_manual = std::make_shared<SwitchComponent>(mWindow);
-			scrape_manual->setState(Settings::getInstance()->getBool("ScrapeManual"));
-			s->addWithLabel(_("SCRAPE MANUAL"), scrape_manual);
-			s->addSaveFunc([scrape_manual] { Settings::getInstance()->setBool("ScrapeManual", scrape_manual->getState()); });
-		}
-		else
-		{		// scrape video
-			auto scrape_video = std::make_shared<SwitchComponent>(mWindow);
-			scrape_video->setState(Settings::getInstance()->getBool("ScrapeVideos"));
-			s->addWithLabel(_("SCRAPE VIDEOS"), scrape_video);
-			s->addSaveFunc([scrape_video] { Settings::getInstance()->setBool("ScrapeVideos", scrape_video->getState()); });
+		// ScreenScraper Account		
+		if (scraper == "ScreenScraper")
+		{			
+			s->addInputTextRow(_("USERNAME"), "ScreenScraperUser", false, true);
+			s->addInputTextRow(_("PASSWORD"), "ScreenScraperPass", true, true);
 		}
 	}
 		
@@ -1081,13 +1007,13 @@ void GuiMenu::openDeveloperSettings()
 	// preload UI
 	auto preloadUI = std::make_shared<SwitchComponent>(mWindow);
 	preloadUI->setState(Settings::getInstance()->getBool("PreloadUI"));
-	s->addWithLabel(_("PRELOAD UI"), preloadUI);
+	s->addWithDescription(_("PRELOAD UI ELEMENTS ON BOOT"), _("Reduces lag when entering gamelists from the system menu, increases boot time"), preloadUI);
 	s->addSaveFunc([preloadUI] { Settings::getInstance()->setBool("PreloadUI", preloadUI->getState()); });
 
 	// preload Medias
 	auto preloadMedias = std::make_shared<SwitchComponent>(mWindow);
 	preloadMedias->setState(Settings::getInstance()->getBool("PreloadMedias"));
-	s->addWithDescription(_("PRELOAD MEDIAS FILESYSTEM"), _("REDUCE UI LAGS OVER STARTUP TIME"), preloadMedias);
+	s->addWithDescription(_("PRELOAD METADATA MEDIA ON BOOT"), _("Reduces lag when scrolling through a fully scraped gamelist, increases boot time"), preloadMedias);
 	s->addSaveFunc([preloadMedias] { Settings::setPreloadMedias(preloadMedias->getState()); });
 	
 	// threaded loading
@@ -2001,6 +1927,19 @@ void GuiMenu::openRetroachievementsSettings()
 	mWindow->pushGui(retroachievements);
 }
 
+template <typename StructType, typename FieldSelectorUnaryFn>
+static auto groupBy(const std::vector<StructType>& instances, const FieldSelectorUnaryFn& fieldChooser)
+   -> std::map<decltype(fieldChooser(StructType())), std::vector<StructType>> // For C++ 11
+{
+	StructType _;
+	using FieldType = decltype(fieldChooser(_));
+	std::map<FieldType, std::vector<StructType>> instancesByField;
+	for (auto& instance : instances)
+		instancesByField[fieldChooser(instance)].push_back(instance);
+
+	return instancesByField;
+}
+
 void GuiMenu::openNetplaySettings()
 {
 	GuiSettings* settings = new GuiSettings(mWindow, _("NETPLAY SETTINGS").c_str());
@@ -2067,6 +2006,30 @@ void GuiMenu::openNetplaySettings()
 	
 	mWindow->pushGui(settings);
 }
+
+void GuiMenu::addDecorationSetOptionListComponent(Window* window, GuiSettings* parentWindow, const std::vector<DecorationSetInfo>& sets, const std::string& configName)
+{
+	auto decorations = std::make_shared<OptionListComponent<std::string> >(window, _("DECORATION SET"), false);
+	decorations->setRowTemplate([window, sets](std::string data, ComponentListRow& row) { createDecorationItemTemplate(window, sets, data, row); });
+
+	std::vector<std::string> items = { _("AUTO"), _("NONE") };
+	for (auto set : sets)
+		items.push_back(set.name);
+
+	std::string bezel = SystemConf::getInstance()->get(configName + ".bezel");
+
+	for (auto item : items)
+		decorations->add(item, item, (bezel == item) || (bezel == "none" && item == _("NONE")) || (bezel == "" && item == _("AUTO")));
+
+	if (!decorations->hasSelection())
+		decorations->selectFirstItem();
+
+	parentWindow->addWithLabel(_("DECORATION SET"), decorations);
+	parentWindow->addSaveFunc([decorations, configName]
+	{
+		SystemConf::getInstance()->set(configName + ".bezel", decorations->getSelected() == _("NONE") ? "none" : decorations->getSelected() == _("AUTO") ? "" : decorations->getSelected());
+	});
+};
 
 void GuiMenu::openGamesSettings_batocera() 
 {
@@ -2135,11 +2098,14 @@ void GuiMenu::openGamesSettings_batocera()
 	auto autosave_enabled = std::make_shared<OptionListComponent<std::string>>(mWindow, _("AUTO SAVE/LOAD ON GAME LAUNCH"));
 	autosave_enabled->addRange({ { _("OFF"), "auto" },{ _("ON") , "1" },{ _("SHOW SAVE STATES") , "2" },{ _("SHOW SAVE STATES IF NOT EMPTY") , "3" } }, SystemConf::getInstance()->get("global.autosave"));
 	s->addWithLabel(_("AUTO SAVE/LOAD ON GAME LAUNCH"), autosave_enabled);
-	s->addSaveFunc([autosave_enabled] 
-	{ 
-		SystemConf::getInstance()->set("global.autosave", autosave_enabled->getSelected()); 
-	});
+	s->addSaveFunc([autosave_enabled] { SystemConf::getInstance()->set("global.autosave", autosave_enabled->getSelected()); });
 	
+	// Incremental savestates
+	auto incrementalSaveStates = std::make_shared<SwitchComponent>(mWindow);
+	incrementalSaveStates->setState(SystemConf::getInstance()->get("global.incrementalsavestates") != "0");
+	s->addWithLabel(_("INCREMENTAL SAVESTATES"), incrementalSaveStates);
+	s->addSaveFunc([incrementalSaveStates] { SystemConf::getInstance()->set("global.incrementalsavestates", incrementalSaveStates->getState() ? "" : "0"); });
+
 	// Shaders preset
 	if (ApiSystem::getInstance()->isScriptingSupported(ApiSystem::SHADERS))
 	{
@@ -2166,37 +2132,18 @@ void GuiMenu::openGamesSettings_batocera()
 	// decorations
 	if (ApiSystem::getInstance()->isScriptingSupported(ApiSystem::DECORATIONS))
 	{		
-		s->addEntry(_("DECORATIONS"), true, [this]
+		auto sets = GuiMenu::getDecorationsSets(ViewController::get()->getState().getSystem());
+		if (sets.size() > 0)
 		{
-			GuiSettings *decorations_window = new GuiSettings(mWindow, _("DECORATIONS").c_str());
-			Window* window = mWindow;
-			auto sets = GuiMenu::getDecorationsSets(ViewController::get()->getState().getSystem());
-			if (sets.size() > 0)
+#if defined(WIN32) || defined(_DEBUG)
+			addDecorationSetOptionListComponent(mWindow, s, sets);
+#else
+			s->addEntry(_("DECORATIONS"), true, [this, sets]
 			{
-				auto decorations = std::make_shared<OptionListComponent<std::string> >(mWindow, _("DECORATION SET"), false);
-				decorations->setRowTemplate([window, sets](std::string data, ComponentListRow& row)
-				{
-					createDecorationItemTemplate(window, sets, data, row);
-				});
+				GuiSettings *decorations_window = new GuiSettings(mWindow, _("DECORATIONS").c_str());
 
-				std::vector<std::string> decorations_item;
-				decorations_item.push_back(_("AUTO"));
-				decorations_item.push_back(_("NONE"));
-				for (auto set : sets)
-					decorations_item.push_back(set.name);
+				addDecorationSetOptionListComponent(mWindow, decorations_window, sets);
 
-				for (auto it = decorations_item.begin(); it != decorations_item.end(); it++)
-					decorations->add(*it, *it,
-					(SystemConf::getInstance()->get("global.bezel") == *it) ||
-						(SystemConf::getInstance()->get("global.bezel") == "none" && *it == _("NONE")) ||
-						(SystemConf::getInstance()->get("global.bezel") == "" && *it == _("AUTO")));
-
-				decorations_window->addWithLabel(_("DECORATION SET"), decorations);
-				decorations_window->addSaveFunc([decorations]
-				{
-					SystemConf::getInstance()->set("global.bezel", decorations->getSelected() == _("NONE") ? "none" : decorations->getSelected() == _("AUTO") ? "" : decorations->getSelected());
-				});
-#if !defined(WIN32) || defined(_DEBUG)
 				// stretch bezels
 				auto bezel_stretch_enabled = std::make_shared<OptionListComponent<std::string>>(mWindow, _("STRETCH BEZELS (4K & ULTRAWIDE)"));
 				bezel_stretch_enabled->add(_("AUTO"), "auto", SystemConf::getInstance()->get("global.bezel_stretch") != "0" && SystemConf::getInstance()->get("global.bezel_stretch") != "1");
@@ -2209,6 +2156,7 @@ void GuiMenu::openGamesSettings_batocera()
 						SystemConf::getInstance()->saveSystemConf();
 						}
 						});
+
 				// tattoo and controller overlays
 				auto bezel_tattoo = std::make_shared<OptionListComponent<std::string>>(mWindow, _("SHOW CONTROLLER OVERLAYS"));
 				bezel_tattoo->add(_("AUTO"), "auto", SystemConf::getInstance()->get("global.bezel.tattoo") != "0"
@@ -2224,6 +2172,7 @@ void GuiMenu::openGamesSettings_batocera()
 						SystemConf::getInstance()->saveSystemConf();
 						}
 						});
+
 				auto bezel_tattoo_corner = std::make_shared<OptionListComponent<std::string>>(mWindow, _("OVERLAY CORNER"));
 				bezel_tattoo_corner->add(_("AUTO"), "auto", SystemConf::getInstance()->get("global.bezel.tattoo_corner") != "NW"
 						&& SystemConf::getInstance()->get("global.bezel.tattoo_corner") != "NE"
@@ -2241,10 +2190,11 @@ void GuiMenu::openGamesSettings_batocera()
 						}
 						});
 				decorations_window->addInputTextRow(_("CUSTOM .PNG IMAGE PATH"), "global.bezel.tattoo_file", false);
+
+				mWindow->pushGui(decorations_window);
+			});			
 #endif
-			}
-			mWindow->pushGui(decorations_window);
-		});
+		}
 	}
 	
 	// latency reduction
@@ -2315,31 +2265,71 @@ void GuiMenu::openGamesSettings_batocera()
 
 		mWindow->pushGui(ai_service);
 	});
-	
-	// Load global custom features
-	for (auto feat : SystemData::mGlobalFeatures)
+
+	auto groups = groupBy(SystemData::mGlobalFeatures, [](const CustomFeature& item) { return item.submenu; });
+	for (auto group : groups)
 	{
-		std::string storageName = "global." + feat.value;
-		std::string storedValue = SystemConf::getInstance()->get(storageName);
+		if (!group.first.empty())
+		{				
+			s->addEntry(group.first, true, [this, group]
+			{
+				GuiSettings* groupSettings = new GuiSettings(mWindow, _(group.first.c_str()));
 
-		auto cf = std::make_shared<OptionListComponent<std::string>>(mWindow, _(feat.name.c_str()));
-		cf->add(_("AUTO"), "", storedValue.empty() || storedValue == "auto");
+				for (auto feat : group.second)
+				{
+					std::string storageName = "global." + feat.value;
+					std::string storedValue = SystemConf::getInstance()->get(storageName);
 
-		for (auto fval : feat.choices)
-			cf->add(_(fval.name.c_str()), fval.value, storedValue == fval.value);
+					auto cf = std::make_shared<OptionListComponent<std::string>>(mWindow, _(feat.name.c_str()));
+					cf->add(_("AUTO"), "", storedValue.empty() || storedValue == "auto");
 
-		if (!cf->hasSelection())
-			cf->selectFirstItem();
+					for (auto fval : feat.choices)
+						cf->add(_(fval.name.c_str()), fval.value, storedValue == fval.value);
 
-		if (!feat.description.empty())
-			s->addWithDescription(_(feat.name.c_str()), _(feat.description.c_str()), cf);
+					if (!cf->hasSelection())
+						cf->selectFirstItem();
+
+					if (!feat.description.empty())
+						groupSettings->addWithDescription(_(feat.name.c_str()), _(feat.description.c_str()), cf);
+					else
+						groupSettings->addWithLabel(_(feat.name.c_str()), cf);
+
+					groupSettings->addSaveFunc([cf, storageName] { SystemConf::getInstance()->set(storageName, cf->getSelected()); });
+				}
+
+				mWindow->pushGui(groupSettings);
+			});
+		}
 		else
-			s->addWithLabel(_(feat.name.c_str()), cf);
+		{
+			// Load global custom features
+			for (auto feat : group.second)
+			{
+				std::string storageName = "global." + feat.value;
+				std::string storedValue = SystemConf::getInstance()->get(storageName);
 
-		s->addSaveFunc([cf, storageName] { SystemConf::getInstance()->set(storageName, cf->getSelected()); });
+				auto cf = std::make_shared<OptionListComponent<std::string>>(mWindow, _(feat.name.c_str()));
+				cf->add(_("AUTO"), "", storedValue.empty() || storedValue == "auto");
+
+				for (auto fval : feat.choices)
+					cf->add(_(fval.name.c_str()), fval.value, storedValue == fval.value);
+
+				if (!cf->hasSelection())
+					cf->selectFirstItem();
+
+				if (!feat.description.empty())
+					s->addWithDescription(_(feat.name.c_str()), _(feat.description.c_str()), cf);
+				else
+					s->addWithLabel(_(feat.name.c_str()), cf);
+
+				s->addSaveFunc([cf, storageName] { SystemConf::getInstance()->set(storageName, cf->getSelected()); });
+			}
+		}
 	}
 
 	// Custom config for systems
+	s->addGroup(_("SETTINGS"));
+
 	s->addEntry(_("PER SYSTEM ADVANCED CONFIGURATION"), true, [this, s, window]
 	{
 		s->save();
@@ -4091,40 +4081,20 @@ void GuiMenu::popSpecificConfigurationGui(Window* mWindow, std::string title, st
 	}
 
 	// decorations
-	if (ApiSystem::getInstance()->isScriptingSupported(ApiSystem::DECORATIONS))
-	if (systemData->isFeatureSupported(currentEmulator, currentCore, EmulatorFeatures::decoration))
+	if (ApiSystem::getInstance()->isScriptingSupported(ApiSystem::DECORATIONS) && systemData->isFeatureSupported(currentEmulator, currentCore, EmulatorFeatures::decoration))
 	{
-		systemConfiguration->addEntry(_("DECORATIONS"), true, [mWindow, configName, systemData]
+		auto sets = GuiMenu::getDecorationsSets(systemData);
+		if (sets.size() > 0)
 		{
-			GuiSettings *decorations_window = new GuiSettings(mWindow, _("DECORATIONS").c_str());
-			Window* window = mWindow;
-			auto sets = GuiMenu::getDecorationsSets(systemData);
-			if (sets.size() > 0)
+#if defined(WIN32) || defined(_DEBUG)
+			addDecorationSetOptionListComponent(mWindow, systemConfiguration, sets, configName);
+#else
+			systemConfiguration->addEntry(_("DECORATIONS"), true, [mWindow, configName, systemData, sets]
 			{
-				auto decorations = std::make_shared<OptionListComponent<std::string> >(mWindow, _("DECORATION SET"), false);
-				decorations->setRowTemplate([window, sets](std::string data, ComponentListRow& row)
-				{
-					createDecorationItemTemplate(window, sets, data, row);
-				});
+				GuiSettings* decorations_window = new GuiSettings(mWindow, _("DECORATIONS").c_str());
 
-				std::vector<std::string> decorations_item;
-				decorations_item.push_back(_("AUTO"));
-				decorations_item.push_back(_("NONE"));
-				for (auto set : sets)
-					decorations_item.push_back(set.name);
-
-				for (auto it = decorations_item.begin(); it != decorations_item.end(); it++)
-					decorations->add(*it, *it,
-					(SystemConf::getInstance()->get(configName + ".bezel") == *it) ||
-						(SystemConf::getInstance()->get(configName + ".bezel") == "none" && *it == _("NONE")) ||
-						(SystemConf::getInstance()->get(configName + ".bezel") == "" && *it == _("AUTO")));
-
-				decorations_window->addWithLabel(_("DECORATION SET"), decorations);
-				decorations_window->addSaveFunc([decorations, configName]
-				{
-					SystemConf::getInstance()->set(configName + ".bezel", decorations->getSelected() == _("NONE") ? "none" : decorations->getSelected() == _("AUTO") ? "" : decorations->getSelected());
-				});
-#if !defined(WIN32) || defined(_DEBUG)
+				addDecorationSetOptionListComponent(mWindow, decorations_window, sets, configName);
+				
 				// stretch bezels
 				auto bezel_stretch_enabled = std::make_shared<OptionListComponent<std::string>>(mWindow, _("STRETCH BEZELS (4K & ULTRAWIDE)"));
 				bezel_stretch_enabled->add(_("AUTO"), "auto", SystemConf::getInstance()->get(configName + ".bezel_stretch") != "0" && SystemConf::getInstance()->get(configName + ".bezel_stretch") != "1");
@@ -4132,50 +4102,54 @@ void GuiMenu::popSpecificConfigurationGui(Window* mWindow, std::string title, st
 				bezel_stretch_enabled->add(_("OFF"), "0", SystemConf::getInstance()->get(configName + ".bezel_stretch") == "0");
 				decorations_window->addWithLabel(_("STRETCH BEZELS (4K & ULTRAWIDE)"), bezel_stretch_enabled);
 				decorations_window->addSaveFunc([bezel_stretch_enabled, configName] {
-						if (bezel_stretch_enabled->changed()) {
+					if (bezel_stretch_enabled->changed()) {
 						SystemConf::getInstance()->set(configName + ".bezel_stretch", bezel_stretch_enabled->getSelected());
 						SystemConf::getInstance()->saveSystemConf();
-						}
-						});
+					}
+				});
+
 				// tattoo and controller overlays
 				auto bezel_tattoo = std::make_shared<OptionListComponent<std::string>>(mWindow, _("SHOW CONTROLLER OVERLAYS"));
 				bezel_tattoo->add(_("AUTO"), "auto", SystemConf::getInstance()->get(configName + ".bezel.tattoo") != "0"
-						&& SystemConf::getInstance()->get(configName + ".bezel.tattoo") != "system"
-						&& SystemConf::getInstance()->get(configName + ".bezel.tattoo") != "custom");
+					&& SystemConf::getInstance()->get(configName + ".bezel.tattoo") != "system"
+					&& SystemConf::getInstance()->get(configName + ".bezel.tattoo") != "custom");
 				bezel_tattoo->add(_("NO"), "0", SystemConf::getInstance()->get(configName + ".bezel.tattoo") == "0");
 				bezel_tattoo->add(_("SYSTEM CONTROLLERS"), "system", SystemConf::getInstance()->get(configName + ".bezel.tattoo") == "system");
 				bezel_tattoo->add(_("CUSTOM .PNG IMAGE"), "custom", SystemConf::getInstance()->get(configName + ".bezel.tattoo") == "custom");
 				decorations_window->addWithLabel(_("SHOW CONTROLLER OVERLAYS"), bezel_tattoo);
 				decorations_window->addSaveFunc([bezel_tattoo, configName] {
-						if (bezel_tattoo->changed()) {
+					if (bezel_tattoo->changed()) {
 						SystemConf::getInstance()->set(configName + ".bezel.tattoo", bezel_tattoo->getSelected());
 						SystemConf::getInstance()->saveSystemConf();
-						}
-						});
+					}
+				});
+
 				auto bezel_tattoo_corner = std::make_shared<OptionListComponent<std::string>>(mWindow, _("OVERLAY CORNER"));
 				bezel_tattoo_corner->add(_("AUTO"), "auto", SystemConf::getInstance()->get(configName + ".bezel.tattoo_corner") != "NW"
-						&& SystemConf::getInstance()->get(configName + ".bezel.tattoo_corner") != "NE"
-						&& SystemConf::getInstance()->get(configName + ".bezel.tattoo_corner") != "SE"
-						&& SystemConf::getInstance()->get(configName + ".bezel.tattoo_corner") != "SW");
+					&& SystemConf::getInstance()->get(configName + ".bezel.tattoo_corner") != "NE"
+					&& SystemConf::getInstance()->get(configName + ".bezel.tattoo_corner") != "SE"
+					&& SystemConf::getInstance()->get(configName + ".bezel.tattoo_corner") != "SW");
 				bezel_tattoo_corner->add(_("NORTH WEST"), "NW", SystemConf::getInstance()->get(configName + ".bezel.tattoo_corner") == "NW");
 				bezel_tattoo_corner->add(_("NORTH EAST"), "NE", SystemConf::getInstance()->get(configName + ".bezel.tattoo_corner") == "NE");
 				bezel_tattoo_corner->add(_("SOUTH EAST"), "SE", SystemConf::getInstance()->get(configName + ".bezel.tattoo_corner") == "SE");
 				bezel_tattoo_corner->add(_("SOUTH WEST"), "SW", SystemConf::getInstance()->get(configName + ".bezel.tattoo_corner") == "SW");
 				decorations_window->addWithLabel(_("OVERLAY CORNER"), bezel_tattoo_corner);
 				decorations_window->addSaveFunc([bezel_tattoo_corner, configName] {
-						if (bezel_tattoo_corner->changed()) {
+					if (bezel_tattoo_corner->changed()) {
 						SystemConf::getInstance()->set(configName + ".bezel.tattoo_corner", bezel_tattoo_corner->getSelected());
 						SystemConf::getInstance()->saveSystemConf();
-						}
-						});
+					}
+				});
+
 				std::string tatpath = configName + ".bezel.tattoo_file";
 				const char *bezelpath = const_cast<char*>(tatpath.data());
 				decorations_window->addInputTextRow(_("CUSTOM .PNG IMAGE PATH"), bezelpath, false);
-#endif
-			}
-			mWindow->pushGui(decorations_window);
-		});
-	}
+
+				mWindow->pushGui(decorations_window);
+			});
+#endif		
+		}
+	}	
 
 	if (systemData->isFeatureSupported(currentEmulator, currentCore, EmulatorFeatures::latency_reduction))	
 		systemConfiguration->addEntry(_("LATENCY REDUCTION"), true, [mWindow, configName] { openLatencyReductionConfiguration(mWindow, configName); });
@@ -4393,29 +4367,71 @@ void GuiMenu::popSpecificConfigurationGui(Window* mWindow, std::string title, st
 
 	// Load per-game / per-emulator / per-system custom features
 	std::vector<CustomFeature> customFeatures = systemData->getCustomFeatures(currentEmulator, currentCore);
-	for (auto feat : customFeatures)
+
+	auto groups = groupBy(customFeatures, [](const CustomFeature& item) { return item.submenu; });
+	for (auto group : groups)
 	{
-		std::string storageName = configName + "." + feat.value;
-		std::string storedValue = SystemConf::getInstance()->get(storageName);
+		if (!group.first.empty())
+		{
+			systemConfiguration->addEntry(group.first, true, [configName, mWindow, group]
+			{
+				GuiSettings* groupSettings = new GuiSettings(mWindow, _(group.first.c_str()));
 
-		auto cf = std::make_shared<OptionListComponent<std::string>>(mWindow, _(feat.name.c_str()));
-		cf->add(_("AUTO"), "", storedValue.empty() || storedValue == "auto");
+				for (auto feat : group.second)
+				{
+					std::string storageName = configName + "." + feat.value;
+					std::string storedValue = SystemConf::getInstance()->get(storageName);
 
-		for(auto fval : feat.choices)
-			cf->add(_(fval.name.c_str()), fval.value, storedValue == fval.value);
+					auto cf = std::make_shared<OptionListComponent<std::string>>(mWindow, _(feat.name.c_str()));
+					cf->add(_("AUTO"), "", storedValue.empty() || storedValue == "auto");
 
-		if (!cf->hasSelection())
-			cf->selectFirstItem();
+					for (auto fval : feat.choices)
+						cf->add(_(fval.name.c_str()), fval.value, storedValue == fval.value);
 
-		if (!feat.description.empty())
-			systemConfiguration->addWithDescription(_(feat.name.c_str()), _(feat.description.c_str()), cf);
+					if (!cf->hasSelection())
+						cf->selectFirstItem();
+
+					if (!feat.description.empty())
+						groupSettings->addWithDescription(_(feat.name.c_str()), _(feat.description.c_str()), cf);
+					else
+						groupSettings->addWithLabel(_(feat.name.c_str()), cf);
+
+					groupSettings->addSaveFunc([cf, storageName]
+					{
+						SystemConf::getInstance()->set(storageName, cf->getSelected());
+					});
+				}
+
+				mWindow->pushGui(groupSettings);
+			});
+		}
 		else
-			systemConfiguration->addWithLabel(_(feat.name.c_str()), cf);
+		{
+			for (auto feat : group.second)
+			{
+				std::string storageName = configName + "." + feat.value;
+				std::string storedValue = SystemConf::getInstance()->get(storageName);
 
-		systemConfiguration->addSaveFunc([cf, storageName] 
-		{			
-			SystemConf::getInstance()->set(storageName, cf->getSelected());
-		});
+				auto cf = std::make_shared<OptionListComponent<std::string>>(mWindow, _(feat.name.c_str()));
+				cf->add(_("AUTO"), "", storedValue.empty() || storedValue == "auto");
+
+				for (auto fval : feat.choices)
+					cf->add(_(fval.name.c_str()), fval.value, storedValue == fval.value);
+
+				if (!cf->hasSelection())
+					cf->selectFirstItem();
+
+				if (!feat.description.empty())
+					systemConfiguration->addWithDescription(_(feat.name.c_str()), _(feat.description.c_str()), cf);
+				else
+					systemConfiguration->addWithLabel(_(feat.name.c_str()), cf);
+
+				systemConfiguration->addSaveFunc([cf, storageName]
+				{
+					SystemConf::getInstance()->set(storageName, cf->getSelected());
+				});
+			}
+		}
 	}
 
 	// automatic controller configuration
@@ -4445,10 +4461,11 @@ void GuiMenu::popSpecificConfigurationGui(Window* mWindow, std::string title, st
 		systemConfiguration->addWithLabel(_("LAUNCH THIS GAME AT STARTUP"), bootgame);
 		systemConfiguration->addSaveFunc([bootgame, fileData, gamePath]
 		{ 
-        if (bootgame->changed()) {
-			SystemConf::getInstance()->set("global.bootgame.path", bootgame->getState() ? gamePath : "");
-			SystemConf::getInstance()->set("global.bootgame.cmd", bootgame->getState() ? fileData->getlaunchCommand(LaunchGameOptions(), false) : "");
-        }
+			if (bootgame->changed()) 
+			{
+				SystemConf::getInstance()->set("global.bootgame.path", bootgame->getState() ? gamePath : "");
+				SystemConf::getInstance()->set("global.bootgame.cmd", bootgame->getState() ? fileData->getlaunchCommand(false) : "");
+			}
 		});
 	}
 
