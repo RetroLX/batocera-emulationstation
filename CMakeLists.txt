@@ -287,7 +287,8 @@ set(COMMON_LIBRARIES
     pugixml
     nanosvg
     id3v2
-	libcheevos	
+    libcheevos
+    SOIL2
 )
 
 if(ENABLE_PULSE)

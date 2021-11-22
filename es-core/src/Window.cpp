@@ -32,7 +32,6 @@ Window::Window() : mNormalizeNextUpdate(false), mFrameTimeElapsed(0), mFrameCoun
 
 	mHelp = new HelpComponent(this);
 	mBackgroundOverlay = new ImageComponent(this);
-	mBackgroundOverlay->setImage(":/scroll_gradient.png"); // batocera
 
 	mSplash = nullptr;
 }
@@ -111,6 +110,8 @@ bool Window::init(bool initRenderer, bool initInputManager)
 		InputManager::getInstance()->init();
 
 	ResourceManager::getInstance()->reloadAll();
+
+    mBackgroundOverlay->setImage(":/scroll_gradient.png"); // batocera
 
 	//keep a reference to the default fonts, so they don't keep getting destroyed/recreated
 	if(mDefaultFonts.empty())

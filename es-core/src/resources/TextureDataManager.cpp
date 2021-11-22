@@ -8,16 +8,16 @@
 
 TextureDataManager::TextureDataManager()
 {
-	unsigned char data[5 * 5 * 4];
+	unsigned char data[4 * 4 * 4];
 	mBlank = std::make_shared<TextureData>(false, false);
-	for (int i = 0; i < (5 * 5); ++i)
+	for (int i = 0; i < (4 * 4); ++i)
 	{
 		data[i * 4] = 0; // (i % 2) * 255;
 		data[i*4+1] = 0; // (i % 2) * 255;
 		data[i*4+2] = 0; // (i % 2) * 255;
 		data[i*4+3] = 0;
 	}
-	mBlank->initFromRGBA(data, 5, 5);
+	mBlank->initFromRGBA(data, 4, 4, true);
 	mLoader = new TextureLoader(this);
 }
 

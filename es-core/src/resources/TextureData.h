@@ -19,8 +19,9 @@ public:
 	//!!!! Needs to be canonical path. Caller should check for duplicates before calling this
 	void initFromPath(const std::string& path);
 	bool initSVGFromMemory(const unsigned char* fileData, size_t length);
+    bool initPKMFromMemory(const unsigned char* fileData, size_t length);
 	bool initImageFromMemory(const unsigned char* fileData, size_t length);
-	bool initFromRGBA(unsigned char* dataRGBA, size_t width, size_t height, bool copyData = true);
+	bool initFromRGBA(unsigned char* dataRGBA, size_t width, size_t height, bool copyData = false);
 
 	// Read the data into memory if necessary
 	bool load(bool updateCache = false);

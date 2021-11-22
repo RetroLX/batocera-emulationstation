@@ -149,9 +149,43 @@ bool TextureData::initSVGFromMemory(const unsigned char* fileData, size_t length
 	return true;
 }
 
+#include <SOIL2/src/SOIL2/SOIL2.h>
+
+bool TextureData::initPKMFromMemory(const unsigned char* fileData, size_t length)
+{
+    size_t width, height;
+
+    // If already initialised then don't read again
+    {
+        std::unique_lock<std::mutex> lock(mMutex);
+        if (mTextureID != 0)
+            return true;
+    }
+
+    MaxSizeInfo maxSize(Renderer::getScreenWidth(), Renderer::getScreenHeight(), false);
+    if (!mMaxSize.empty())
+        maxSize = mMaxSize;
+
+/* loaded a file via PhysicsFS, need to decompress the image from RAM, */
+/* where it's in a buffer: unsigned char *image_in_RAM */
+    mTextureID = SOIL_load_OGL_texture_from_memory(fileData, length, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+
+/* check for an error during the load process */
+    if( 0 == mTextureID )
+    {
+        LOG(LogError) << "SOIL loading error: " << SOIL_last_result();
+        LOG(LogError) << "Could not initialize texture from memory, invalid data!  (file path: " << mPath << ", data ptr: " << (size_t)fileData << ", reported size: " << length << ")";
+        return false;
+    }
+
+    mSourceWidth = (float) width;
+    mSourceHeight = (float) height;
+    mScalable = false;
+}
+
 bool TextureData::initImageFromMemory(const unsigned char* fileData, size_t length)
 {
-	size_t width, height;
+	int width, height, channels;
 
 	// If already initialised then don't read again
 	{
@@ -164,18 +198,23 @@ bool TextureData::initImageFromMemory(const unsigned char* fileData, size_t leng
 	if (!mMaxSize.empty())
 		maxSize = mMaxSize;
 
-	unsigned char* imageRGBA = ImageIO::loadFromMemoryRGBA32((const unsigned char*)(fileData), length, width, height, &maxSize, &mBaseSize, &mPackedSize);
-	if (imageRGBA == nullptr)
+    unsigned char* data = SOIL_load_image_from_memory(fileData, length, &width, &height, &channels, SOIL_LOAD_RGBA);
+    mSourceWidth = (float) width;
+    mSourceHeight = (float) height;
+    mTextureID = SOIL_create_OGL_texture(data, &width, &height, 4, SOIL_CREATE_NEW_ID, SOIL_FLAG_MULTIPLY_ALPHA | SOIL_FLAG_INVERT_Y);
+	if (mTextureID == 0)
 	{
+        SOIL_free_image_data(data);
 		LOG(LogError) << "Could not initialize texture from memory, invalid data!  (file path: " << mPath << ", data ptr: " << (size_t)fileData << ", reported size: " << length << ")";
 		return false;
 	}
 
-	mSourceWidth = (float) width;
-	mSourceHeight = (float) height;
+    mWidth = width;
+    mHeight = height;
 	mScalable = false;
-
-	return initFromRGBA(imageRGBA, width, height, false);
+    mIsExternalDataRGBA = false;
+    mDataRGBA = nullptr;
+    return true;
 }
 
 bool TextureData::initFromRGBA(unsigned char* dataRGBA, size_t width, size_t height, bool copyData)
@@ -299,6 +338,10 @@ bool TextureData::load(bool updateCache)
 			mScalable = true;
 			retval = initSVGFromMemory((const unsigned char*)data.ptr.get(), data.length);
 		}
+        else if (mPath.substr(mPath.size() - 4, std::string::npos) == ".pkm")
+        {
+            retval = initPKMFromMemory((const unsigned char*)data.ptr.get(), data.length);
+        }
 		else
 			retval = initImageFromMemory((const unsigned char*)data.ptr.get(), data.length);
 

@@ -10,12 +10,10 @@
 #include <mutex>
 #include "renderers/Renderer.h"
 
-#define STB_IMAGE_IMPLEMENTATION
+#include <SOIL2/src/SOIL2/SOIL2.h>
+
 #define STB_IMAGE_RESIZE_IMPLEMENTATION
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "stbimage/stb_image.h"
 #include "stbimage/stb_image_resize.h"
-#include "stbimage/stb_image_write.h"
 
 //you can pass 0 for width or height to keep aspect ratio
 bool ImageIO::resizeImage(const std::string& path, int maxWidth, int maxHeight)
@@ -28,15 +26,7 @@ bool ImageIO::resizeImage(const std::string& path, int maxWidth, int maxHeight)
 	
 	//detect the filetype
 	int imgSizeX, imgSizeY, imgChannels;
-	if (stbi_info(path.c_str(), &imgSizeX, &imgSizeY, &imgChannels) != 1)
-	{
-		LOG(LogError) << "Error - could not detect filetype for image \"" << path << "\"!";
-		return false;
-	}
-
-	//make sure we can read this filetype first, then load it
-	stbi_set_flip_vertically_on_load(1);
-	stbi_uc* image = stbi_load(path.c_str(), &imgSizeX, &imgSizeY, &imgChannels, imgChannels);
+	unsigned char* image = SOIL_load_image(path.c_str(), &imgSizeX, &imgSizeY, &imgChannels, SOIL_LOAD_RGBA);
 	if (image == nullptr)
 	{
 		LOG(LogError) << "Error - file format reading not supported for image \"" << path << "\"!";
@@ -45,7 +35,7 @@ bool ImageIO::resizeImage(const std::string& path, int maxWidth, int maxHeight)
 
 	if (imgSizeX == 0 || imgSizeY == 0)
 	{
-		stbi_image_free(image);
+		SOIL_free_image_data(image);
 		return true;
 	}
 
@@ -59,7 +49,7 @@ bool ImageIO::resizeImage(const std::string& path, int maxWidth, int maxHeight)
 	
 	if (width <= maxWidth && height <= maxHeight)
 	{
-		stbi_image_free(image);
+		SOIL_free_image_data(image);
 		return true;
 	}
 	
@@ -71,16 +61,16 @@ bool ImageIO::resizeImage(const std::string& path, int maxWidth, int maxHeight)
 		delete[] stbiResizedBitmap;
 		return false;
 	}
-	stbi_image_free(image);
+	SOIL_free_image_data(image);
 		
 	bool saved = false;
 	
 	try
 	{
 		if (imgChannels == 4)
-			saved = (stbi_write_png(path.c_str(), maxWidth, maxHeight, imgChannels, stbiResizedBitmap, 0) == 1);
+			saved = (SOIL_save_image_quality(path.c_str(), SOIL_SAVE_TYPE_PNG, maxWidth, maxHeight, imgChannels, stbiResizedBitmap, 0) == 1);
 		else
-			saved = (stbi_write_jpg(path.c_str(),maxWidth, maxHeight, imgChannels, stbiResizedBitmap, 90) == 1);
+			saved = (SOIL_save_image_quality(path.c_str(), SOIL_SAVE_TYPE_JPG, maxWidth, maxHeight, imgChannels, stbiResizedBitmap, 90) == 1);
 	}
 	catch(...) { }
 
@@ -108,84 +98,53 @@ unsigned char* ImageIO::loadFromMemoryRGBA32(const unsigned char * data, const s
 
 	// Check image is supported by stb_image
 	int imgSizeX, imgSizeY, imgChannels;
-	if (stbi_info_from_memory(data, size, &imgSizeX, &imgSizeY, &imgChannels) != 1)
+	unsigned char* stbiBitmap = SOIL_load_image_from_memory(data, size, &imgSizeX, &imgSizeY, &imgChannels, SOIL_LOAD_RGBA);
+	if (stbiBitmap == nullptr)
 	{
 			LOG(LogError) << "Error - Failed to decode image from memory!";
 			return nullptr;
 	}
 	
-	// Do the load through stb_image
-	stbi_set_flip_vertically_on_load(1);
-	stbi_uc* stbiBitmap = stbi_load_from_memory(data, size, &imgSizeX, &imgSizeY, &imgChannels, 4);
-	if (stbiBitmap != nullptr) 
+	width = imgSizeX;
+	height = imgSizeY;
+
+	if (baseSize != nullptr)
+		*baseSize = Vector2i(width, height);
+
+	if (maxSize != nullptr && maxSize->x() > 0 && maxSize->y() > 0 && (width > maxSize->x() || height > maxSize->y()))
 	{
-		width = imgSizeX;
-		height = imgSizeY;
+		Vector2i sz = adjustPictureSize(Vector2i(width, height), Vector2i(maxSize->x(), maxSize->y()), maxSize->externalZoom());
 
-		if (baseSize != nullptr)
-			*baseSize = Vector2i(width, height);
-
-		if (maxSize != nullptr && maxSize->x() > 0 && maxSize->y() > 0 && (width > maxSize->x() || height > maxSize->y()))
+		if (sz.x() > Renderer::getScreenWidth() || sz.y() > Renderer::getScreenHeight())
+			sz = adjustPictureSize(sz, Vector2i(Renderer::getScreenWidth(), Renderer::getScreenHeight()), false);
+		
+		if (sz.x() != width || sz.y() != height)
 		{
-			Vector2i sz = adjustPictureSize(Vector2i(width, height), Vector2i(maxSize->x(), maxSize->y()), maxSize->externalZoom());
+			LOG(LogDebug) << "ImageIO : rescaling image from " << std::string(std::to_string(width) + "x" + std::to_string(height)).c_str() << " to " << std::string(std::to_string(sz.x()) + "x" + std::to_string(sz.y())).c_str();
 
-			if (sz.x() > Renderer::getScreenWidth() || sz.y() > Renderer::getScreenHeight())
-				sz = adjustPictureSize(sz, Vector2i(Renderer::getScreenWidth(), Renderer::getScreenHeight()), false);
+			// Rescale through stb_image_resize (FreeImage was using FILTER_BOX)
+			stbiResizedBitmap = new unsigned char[sz.x() * sz.y() * 4];
+			if (stbir_resize_uint8(stbiBitmap, width, height, 0, stbiResizedBitmap, sz.x(), sz.y(), 0, 4) != 1)
+			{
+				LOG(LogError) << "Error - Failed to resize image from memory!";
+				delete[] stbiResizedBitmap;
+				return nullptr;
+			}
+			SOIL_free_image_data(stbiBitmap);
+
+			width = sz.x();
+			height = sz.y();
 			
-			if (sz.x() != width || sz.y() != height)
-			{
-				LOG(LogDebug) << "ImageIO : rescaling image from " << std::string(std::to_string(width) + "x" + std::to_string(height)).c_str() << " to " << std::string(std::to_string(sz.x()) + "x" + std::to_string(sz.y())).c_str();
-
-				// Rescale through stb_image_resize (FreeImage was using FILTER_BOX)
-				stbiResizedBitmap = new unsigned char[sz.x() * sz.y() * 4];
-				if (stbir_resize_uint8(stbiBitmap, width, height, 0, stbiResizedBitmap, sz.x(), sz.y(), 0, 4) != 1)
-				{
-					LOG(LogError) << "Error - Failed to resize image from memory!";
-					delete[] stbiResizedBitmap;
-					return nullptr;
-				}
-				stbi_image_free(stbiBitmap);
-
-				width = sz.x();
-				height = sz.y();
-				
-				if (packedSize != nullptr)
-					*packedSize = Vector2i(width, height);
-				
-				stbiBitmap = stbiResizedBitmap;
-			}
+			if (packedSize != nullptr)
+				*packedSize = Vector2i(width, height);
+			
+			stbiBitmap = stbiResizedBitmap;
 		}
-
-		LOG(LogDebug) << "ImageIO : returning decoded image ";
-
-		/*unsigned char* tempData = new unsigned char[width * height * 4];
-
-		int w = (int)width;
-
-		for (int y = (int)height; --y >= 0; )
-		{
-			unsigned int* argb = (unsigned int*)FreeImage_GetScanLine(fiBitmap, y);
-			unsigned int* abgr = (unsigned int*)(tempData + (y * width * 4));
-			for (int x = w; --x >= 0;)
-			{
-				unsigned int c = argb[x];
-				abgr[x] = (c & 0xFF00FF00) | ((c & 0xFF) << 16) | ((c >> 16) & 0xFF);
-			}
-		}
-
-		FreeImage_Unload(fiBitmap);
-		FreeImage_CloseMemory(fiMemory);*/
-
-		return stbiBitmap;
-
-	}
-	else
-	{
-			LOG(LogError) << "Error - Failed to load image from memory!";
-			return nullptr;
 	}
 
-	return nullptr;
+	LOG(LogDebug) << "ImageIO : returning decoded image ";
+
+	return stbiBitmap;
 }
 
 void ImageIO::flipPixelsVert(unsigned char* imagePx, const size_t& width, const size_t& height)
