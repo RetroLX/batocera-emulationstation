@@ -60,7 +60,7 @@ ThreadedHasher::ThreadedHasher(Window* window, HasherType type, std::queue<FileD
 ThreadedHasher::~ThreadedHasher()
 {
 	if ((mType & HASH_CHEEVOS_MD5) == HASH_CHEEVOS_MD5)
-		mWindow->displayNotificationMessage(ICONINDEX + _("INDEXING COMPLETED") + std::string(". ") + _("UPDATE GAMES LISTS TO APPLY CHANGES."));
+		mWindow->displayNotificationMessage(ICONINDEX + _("INDEXING COMPLETED") + std::string(". ") + _("UPDATE GAMELISTS TO APPLY CHANGES."));
 
 	mWndNotification->close();
 	mWndNotification = nullptr;
@@ -149,19 +149,30 @@ void ThreadedHasher::run()
 	}
 }
 
-void ThreadedHasher::start(Window* window, HasherType type, bool forceAllGames, bool silent)
+bool ThreadedHasher::checkCloseIfRunning(Window* window)
+{
+	if (ThreadedHasher::mInstance != nullptr)
+	{
+		window->pushGui(new GuiMsgBox(window, _("GAME HASHING IS RUNNING. DO YOU WANT TO STOP IT?"), _("YES"), []
+		{
+			ThreadedHasher::stop();
+		}, _("NO"), nullptr));
+
+		return false;
+	}
+
+	return true;
+}
+
+void ThreadedHasher::start(Window* window, HasherType type, bool forceAllGames, bool silent, std::set<std::string>* systems)
 {
 	if (ThreadedHasher::mInstance != nullptr)
 	{
 		if (silent)
 			return;
 
-		window->pushGui(new GuiMsgBox(window, _("GAME HASHING IS RUNNING. DO YOU WANT TO STOP IT ?"), _("YES"), []
-		{
-			ThreadedHasher::stop();
-		}, _("NO"), nullptr));
-
-		return;
+		if (!checkCloseIfRunning(window))
+			return;
 	}
 	
 	std::queue<FileData*> searchQueue;
@@ -174,6 +185,12 @@ void ThreadedHasher::start(Window* window, HasherType type, bool forceAllGames, 
 		if (!takeNetplay && !takeCheevos)
 			continue;
 
+		if (!sys->isVisible())
+			continue;
+
+		if (systems != nullptr && systems->find(sys->getName()) == systems->cend())
+			continue;
+
 		for (auto file : sys->getRootFolder()->getFilesRecursive(GAME))
 		{
 			bool netPlay = takeNetplay && (forceAllGames || file->getMetadata(MetaDataId::Crc32).empty());
@@ -182,7 +199,8 @@ void ThreadedHasher::start(Window* window, HasherType type, bool forceAllGames, 
 			if (cheevos)
 			{
 				std::string ext = Utils::String::toLower(Utils::FileSystem::getExtension(file->getPath()));
-				if (ext == ".pbp")
+				
+				if (ext == ".pbp" || ext == ".cso") // Currently unsupported formats
 					cheevos = false;
 			}
 

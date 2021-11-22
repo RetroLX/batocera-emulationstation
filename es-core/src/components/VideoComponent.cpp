@@ -55,7 +55,7 @@ void VideoComponent::setScreensaverMode(bool isScreensaver)
 
 VideoComponent::VideoComponent(Window* window) :
 	GuiComponent(window),
-	mStaticImage(window, true),
+	mStaticImage(window, !Settings::AllImagesAsync()),
 	mVideoHeight(0),
 	mVideoWidth(0),
 	mStartDelayed(false),
@@ -108,7 +108,7 @@ void VideoComponent::onSizeChanged()
 	mStaticImage.onSizeChanged();
 }
 
-bool VideoComponent::setVideo(std::string path)
+bool VideoComponent::setVideo(std::string path, bool checkFileExists)
 {
 	if (path == mVideoPath)
 		return !path.empty();
@@ -125,7 +125,7 @@ bool VideoComponent::setVideo(std::string path)
 	mStartDelayed = false;
 
 	// If the file exists then set the new video
-	if (!fullPath.empty() && ResourceManager::getInstance()->fileExists(fullPath))
+	if (!fullPath.empty() && (!checkFileExists || ResourceManager::getInstance()->fileExists(fullPath)))
 	{
 		// Return true to show that we are going to attempt to play a video
 		return true;
@@ -581,7 +581,6 @@ void VideoComponent::topWindow(bool isTop)
 	mDisable = !isTop;
 	manageState();
 }
-
 
 void VideoComponent::setPlaylist(std::shared_ptr<IPlaylist> playList)
 {

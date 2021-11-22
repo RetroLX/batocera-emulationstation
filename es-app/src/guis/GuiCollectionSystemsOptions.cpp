@@ -286,7 +286,7 @@ void GuiCollectionSystemsOptions::initializeMenu()
 	addWithLabel(_("SHOW GAMES OF HIDDEN SYSTEMS IN COLLECTIONS"), alsoHideGames);
 	addSaveFunc([this, alsoHideGames]
 	{
-		if (Settings::getInstance()->setBool("HiddenSystemsShowGames", alsoHideGames->getState()))
+		if (Settings::setHiddenSystemsShowGames(alsoHideGames->getState()))
 		{
 			FileData::resetSettings();
 			setVariable("reloadSystems", true);
@@ -295,7 +295,7 @@ void GuiCollectionSystemsOptions::initializeMenu()
 	
 #if defined(WIN32) && !defined(_DEBUG)		
 	if (!ApiSystem::getInstance()->isScriptingSupported(ApiSystem::GAMESETTINGS))
-		addEntry(_("UPDATE GAMES LISTS"), false, [this] { GuiMenu::updateGameLists(mWindow); }); // Game List Update
+		addEntry(_("UPDATE GAMELISTS"), false, [this] { GuiMenu::updateGameLists(mWindow); }); // Game List Update
 #endif		
 	
 	addSaveFunc([this]

@@ -322,6 +322,17 @@ namespace Utils
 
 		} // getDirContent
 
+#if WIN32
+		static time_t to_time_t(FILETIME& ft)
+		{
+			ULARGE_INTEGER ull;
+			ull.LowPart = ft.dwLowDateTime;
+			ull.HighPart = ft.dwHighDateTime;
+			time_t ret = (ull.QuadPart / 10000000ULL - 11644473600ULL);
+			return ret;
+		}
+#endif
+
 		fileList getDirectoryFiles(const std::string& _path)
 		{
 			std::string path = getGenericPath(_path);
@@ -382,6 +393,8 @@ namespace Utils
 						fi.path = path + "/" + name;
 						fi.hidden = (findData.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN) == FILE_ATTRIBUTE_HIDDEN;
 						fi.directory = (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY;
+						fi.creationTime = to_time_t(findData.ftCreationTime);
+
 						contentList.push_back(fi);
 
 						FileCache::add(fi.path, FileCache((DWORD)findData.dwFileAttributes));
@@ -1219,18 +1232,19 @@ namespace Utils
 			return gp + filename;
 		}
 
-		size_t getFileSize(const std::string& _path)
+		unsigned long long getFileSize(const std::string& _path)
 		{
 			std::string path = getGenericPath(_path);
 			struct stat64 info;
 
+
 #if defined(_WIN32)
 			if ((_wstat64(Utils::String::convertToWideString(path).c_str(), &info) == 0))
-				return (size_t)info.st_size;			
+				return (unsigned long long)info.st_size;
 #else
 			// check if stat64 succeeded
 			if ((stat64(path.c_str(), &info) == 0))
-				return (size_t)info.st_size;
+				return (unsigned long long)info.st_size;
 #endif
 
 			return 0;

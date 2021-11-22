@@ -47,20 +47,22 @@ namespace Utils
 		std::string getEsConfigPath();
 		std::string getSharedConfigPath();
 
-		// FCA
 		struct FileInfo
 		{
 		public:
 			std::string path;
 			bool hidden;
 			bool directory;
+#if WIN32
+			time_t creationTime;
+#endif
 		};
 
 		typedef std::list<FileInfo> fileList;
 
 		fileList	getDirectoryFiles(const std::string& _path);
 		std::string combine(const std::string& _path, const std::string& filename);
-		size_t		getFileSize(const std::string& _path);
+		unsigned long long	getFileSize(const std::string& _path);
 
 		Utils::Time::DateTime getFileCreationDate(const std::string& _path);
 		Utils::Time::DateTime getFileModificationDate(const std::string& _path);

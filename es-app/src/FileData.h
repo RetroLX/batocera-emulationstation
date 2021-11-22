@@ -94,6 +94,8 @@ public:
 	virtual const bool getKidGame();
 	virtual const bool hasCheevos();
 
+	std::vector<std::string> getFileMedias();
+
 	const std::string getConfigurationName();
 
 	inline bool isPlaceHolder() { return mType == PLACEHOLDER; };	
@@ -113,7 +115,10 @@ public:
 	// As above, but also remove parenthesis
 	std::string getCleanName();
 
-	bool launchGame(Window* window, LaunchGameOptions options = LaunchGameOptions());
+	std::string getlaunchCommand(bool includeControllers = true) { LaunchGameOptions options; return getlaunchCommand(options, includeControllers); };
+	std::string getlaunchCommand(LaunchGameOptions& options, bool includeControllers = true);
+
+	bool		launchGame(Window* window, LaunchGameOptions options = LaunchGameOptions());
 
 	static void resetSettings();
 	

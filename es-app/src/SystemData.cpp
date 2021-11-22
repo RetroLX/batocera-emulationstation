@@ -81,7 +81,8 @@ SystemData::SystemData(const SystemMetadata& meta, SystemEnvironmentData* envDat
 	else
 	{
 		// virtual systems are updated afterwards, we're just creating the data structure
-		mRootFolder = new FolderData("" + mMetadata.fullName, this);
+		mRootFolder = new FolderData(mMetadata.fullName, this);
+		mRootFolder->getMetadata().set(MetaDataId::Name, mMetadata.fullName);
 	}
 
 	mRootFolder->getMetadata().resetChangedFlag();
@@ -95,6 +96,9 @@ SystemData::SystemData(const SystemMetadata& meta, SystemEnvironmentData* envDat
 		setSystemViewMode(defaultView, gridSizeOverride, false);
 
 		setIsGameSystemStatus();
+
+		if (Settings::PreloadMedias())
+			getSaveStateRepository();
 	}
 }
 
@@ -205,7 +209,8 @@ void SystemData::populateFolder(FolderData* folder, std::unordered_map<std::stri
 	std::string filePath;
 	std::string extension;
 	bool isGame;
-	bool showHidden = Settings::getInstance()->getBool("ShowHiddenFiles");
+	bool showHidden = Settings::ShowHiddenFiles();
+	bool preloadMedias = Settings::PreloadMedias();
 
 	auto shv = Settings::getInstance()->getString(getName() + ".ShowHiddenFiles");
 	if (shv == "1") showHidden = true;
@@ -245,6 +250,23 @@ void SystemData::populateFolder(FolderData* folder, std::unordered_map<std::stri
 		if(!isGame && fileInfo.directory)
 		{
 			std::string fn = Utils::String::toLower(Utils::FileSystem::getFileName(filePath));
+
+			if (preloadMedias && (!mHidden || Settings::HiddenSystemsShowGames()))
+			{
+				// Recurse list files in medias folder, just to let OS build filesystem cache 
+				if (fn == "media" || fn == "medias")
+				{
+					Utils::FileSystem::getDirContent(filePath, true);
+					continue;
+				}
+
+				// List files in folder, just to get OS build filesystem cache 
+				if (fn == "manuals" || fn == "images" || fn == "videos" || Utils::String::startsWith(fn, "downloaded_"))
+				{
+					Utils::FileSystem::getDirectoryFiles(filePath);
+					continue;
+				}
+			}
 
 			// Don't loose time looking in downloaded_images, downloaded_videos & media folders
 			if (fn == "media" || fn == "medias" || fn == "images" || fn == "manuals" || fn == "videos" || fn == "assets" || Utils::String::startsWith(fn, "downloaded_") || Utils::String::startsWith(fn, "."))
@@ -506,6 +528,9 @@ std::vector<CustomFeature>  SystemData::loadCustomFeatures(pugi::xml_node node)
 		
 		if (featureNode.attribute("description"))
 			feat.description = featureNode.attribute("description").value();
+
+		if (featureNode.attribute("submenu"))
+			feat.submenu = featureNode.attribute("submenu").value();
 
 		if (featureNode.attribute("value"))
 			feat.value = featureNode.attribute("value").value();
@@ -1144,12 +1169,20 @@ bool SystemData::loadConfig(Window* window)
 		}
 	}
 
-	if (window != nullptr && SystemConf::getInstance()->getBool("global.netplay") && !ThreadedHasher::isRunning())
+	if (window != nullptr && !ThreadedHasher::isRunning())
 	{
-		if (Settings::getInstance()->getBool("NetPlayCheckIndexesAtStart"))
-			ThreadedHasher::start(window, ThreadedHasher::HASH_NETPLAY_CRC, false, true);
+		int checkIndex = 0;
+
+		if (Settings::getInstance()->getBool("CheevosCheckIndexesAtStart"))
+			checkIndex |= (int) ThreadedHasher::HASH_CHEEVOS_MD5;
+
+		if (SystemConf::getInstance()->getBool("global.netplay") && Settings::getInstance()->getBool("NetPlayCheckIndexesAtStart"))
+			checkIndex |= (int) ThreadedHasher::HASH_NETPLAY_CRC;
+
+		if (checkIndex != 0)
+			ThreadedHasher::start(window, (ThreadedHasher::HasherType)checkIndex, false, true);
 	}
-	
+
 	return true;
 }
 
@@ -1801,9 +1834,21 @@ std::string SystemData::getCompatibleCoreNames(EmulatorFeatures::Features featur
 	std::string ret;
 
 	for (auto emul : mEmulators)
-		for (auto core : emul.cores)
-			if ((core.features & EmulatorFeatures::cheevos) == EmulatorFeatures::cheevos)
-				ret += ret.empty() ? core.name : ", " + core.name;
+	{
+		if ((emul.features & EmulatorFeatures::cheevos) == EmulatorFeatures::cheevos)
+			ret += ret.empty() ? emul.name : ", " + emul.name;
+		else
+		{
+			for (auto core : emul.cores)
+			{
+				if ((core.features & EmulatorFeatures::cheevos) == EmulatorFeatures::cheevos)
+				{
+					std::string name = emul.name == core.name ? core.name : emul.name + "/" + core.name;
+					ret += ret.empty() ? name : ", " + name;
+				}
+			}
+		}
+	}
 
 	return ret;
 }
@@ -2036,7 +2081,7 @@ bool SystemData::hasEmulatorSelection()
 			cc++;
 	}
 
-	return ec > 1 || cc > 1;
+	return ec >= 1 || cc >= 1;
 }
 
 SystemData* SystemData::getSystem(const std::string name)

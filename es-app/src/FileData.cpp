@@ -186,7 +186,7 @@ const std::string FileData::getThumbnailPath()
 				auto ext = Utils::String::toLower(Utils::FileSystem::getExtension(thumbnail));
 				if (ext == ".pdf" && ResourceManager::getInstance()->fileExists(":/pdf.jpg"))
 					return ":/pdf.jpg";
-				else if ((ext == ".mp4" || ext == ".avi" || ext == ".mkv") && ResourceManager::getInstance()->fileExists(":/vid.jpg"))
+				else if ((ext == ".mp4" || ext == ".avi" || ext == ".mkv" || ext == ".webm") && ResourceManager::getInstance()->fileExists(":/vid.jpg"))
 					return ":/vid.jpg";
 			}
 		}
@@ -218,6 +218,31 @@ const bool FileData::hasCheevos()
 		return getSourceFileData()->getSystem()->isCheevosSupported();
 
 	return false;
+}
+
+std::vector<std::string> FileData::getFileMedias()
+{
+	std::vector<std::string> ret;
+
+	for (auto mdd : mMetadata.getMDD())
+	{
+		if (mdd.type != MetaDataType::MD_PATH)
+			continue;
+
+		if (mdd.id == MetaDataId::Video || mdd.id == MetaDataId::Manual || mdd.id == MetaDataId::Magazine)
+			continue;
+
+		std::string path = mMetadata.get(mdd.key);
+
+		auto ext = Utils::String::toLower(Utils::FileSystem::getExtension(path));
+		if (ext != ".jpg" && ext != ".png" && ext != ".jpeg" && ext != ".gif")
+			continue;
+		
+		if (Utils::FileSystem::exists(path))
+			ret.push_back(path);
+	}
+
+	return ret;
 }
 
 void FileData::resetSettings() 
@@ -255,7 +280,7 @@ const std::string FileData::getVideoPath()
 		else if (getType() == GAME)
 		{
 			auto ext = Utils::String::toLower(Utils::FileSystem::getExtension(getPath()));
-			if (ext == ".mp4" || ext == ".avi" || ext == ".mkv")
+			if (ext == ".mp4" || ext == ".avi" || ext == ".mkv" || ext == "webm")
 				return getPath();
 		}
 	}
@@ -326,7 +351,7 @@ const std::string FileData::getImagePath()
 				auto ext = Utils::String::toLower(Utils::FileSystem::getExtension(image));
 				if (ext == ".pdf" && ResourceManager::getInstance()->fileExists(":/pdf.jpg"))
 					return ":/pdf.jpg";
-				else if ((ext == ".mp4" || ext == ".avi" || ext == ".mkv") && ResourceManager::getInstance()->fileExists(":/vid.jpg"))
+				else if ((ext == ".mp4" || ext == ".avi" || ext == ".mkv" || ext == ".webm") && ResourceManager::getInstance()->fileExists(":/vid.jpg"))
 					return ":/vid.jpg";
 			}
 		}
@@ -371,28 +396,19 @@ FileData* FileData::getSourceFileData()
 	return this;
 }
 
-
-bool FileData::launchGame(Window* window, LaunchGameOptions options)
+std::string FileData::getlaunchCommand(LaunchGameOptions& options, bool includeControllers)
 {
-	LOG(LogInfo) << "Attempting to launch game...";
-
 	FileData* gameToUpdate = getSourceFileData();
 	if (gameToUpdate == nullptr)
-		return false;
+		return "";
 
 	SystemData* system = gameToUpdate->getSystem();
 	if (system == nullptr)
-		return false;
-
-	AudioManager::getInstance()->deinit(); // batocera
-	VolumeControl::getInstance()->deinit();
+		return "";
 
 	// batocera / must really;-) be done before window->deinit while it closes joysticks
 	const std::string controllersConfig = InputManager::getInstance()->configureEmulators();
 
-	bool hideWindow = Settings::getInstance()->getBool("HideWindow");
-	window->deinit(hideWindow);
-	
 	std::string systemName = system->getName();
 	std::string emulator = getEmulator();
 	std::string core = getCore();
@@ -417,8 +433,28 @@ bool FileData::launchGame(Window* window, LaunchGameOptions options)
 			if (forceCore)
 				break;
 		}
-	}
+	}	
+	/*else if (!isExtensionCompatible())
+	{
+		auto extension = Utils::String::toLower(Utils::FileSystem::getExtension(gameToUpdate->getPath()));
 
+		for (auto emul : system->getEmulators())
+		{
+			if (std::find(emul.incompatibleExtensions.cbegin(), emul.incompatibleExtensions.cend(), extension) == emul.incompatibleExtensions.cend())
+			{
+				for (auto coreZ : emul.cores)
+				{
+					if (std::find(coreZ.incompatibleExtensions.cbegin(), coreZ.incompatibleExtensions.cend(), extension) == coreZ.incompatibleExtensions.cend())
+					{
+						emulator = emul.name;
+						core = coreZ.name;
+						break;
+					}
+				}
+			}
+		}
+	}*/
+	
 	std::string command = system->getLaunchCommand(emulator, core);
 
 	if (forceCore)
@@ -438,10 +474,12 @@ bool FileData::launchGame(Window* window, LaunchGameOptions options)
 	command = Utils::String::replace(command, "%ROM%", rom);
 	command = Utils::String::replace(command, "%BASENAME%", basename);
 	command = Utils::String::replace(command, "%ROM_RAW%", rom_raw);
-	command = Utils::String::replace(command, "%CONTROLLERSCONFIG%", controllersConfig); // batocera
 	command = Utils::String::replace(command, "%EMULATOR%", emulator);
 	command = Utils::String::replace(command, "%CORE%", core);
 	command = Utils::String::replace(command, "%HOME%", Utils::FileSystem::getHomePath());
+
+	if (includeControllers)
+		command = Utils::String::replace(command, "%CONTROLLERSCONFIG%", controllersConfig); // batocera
 
 	if (options.netPlayMode != DISABLED && (forceCore || gameToUpdate->isNetplaySupported()) && command.find("%NETPLAY%") == std::string::npos)
 		command = command + " %NETPLAY%"; // Add command line parameter if the netplay option is defined at <core netplay="true"> level
@@ -450,7 +488,7 @@ bool FileData::launchGame(Window* window, LaunchGameOptions options)
 	{
 		std::string mode = (options.netPlayMode == SPECTATOR ? "spectator" : "client");
 		std::string pass;
-		
+
 		if (!options.netplayClientPassword.empty())
 			pass = " -netplaypass " + options.netplayClientPassword;
 
@@ -459,7 +497,7 @@ bool FileData::launchGame(Window* window, LaunchGameOptions options)
 			command = Utils::String::replace(command, "%NETPLAY%", "--connect " + options.ip + " --port " + std::to_string(options.port) + " --nick " + SystemConf::getInstance()->get("global.netplay.nickname"));
 		else
 #endif
-		command = Utils::String::replace(command, "%NETPLAY%", "-netplaymode " + mode + " -netplayport " + std::to_string(options.port) + " -netplayip " + options.ip + pass);
+			command = Utils::String::replace(command, "%NETPLAY%", "-netplaymode " + mode + " -netplayport " + std::to_string(options.port) + " -netplayip " + options.ip + pass);
 	}
 	else if (options.netPlayMode == SERVER)
 	{
@@ -468,7 +506,7 @@ bool FileData::launchGame(Window* window, LaunchGameOptions options)
 			command = Utils::String::replace(command, "%NETPLAY%", "--host --port " + SystemConf::getInstance()->get("global.netplay.port") + " --nick " + SystemConf::getInstance()->get("global.netplay.nickname"));
 		else
 #endif
-		command = Utils::String::replace(command, "%NETPLAY%", "-netplaymode host");
+			command = Utils::String::replace(command, "%NETPLAY%", "-netplaymode host");
 	}
 	else
 		command = Utils::String::replace(command, "%NETPLAY%", "");
@@ -476,9 +514,37 @@ bool FileData::launchGame(Window* window, LaunchGameOptions options)
 	int monitorId = Settings::getInstance()->getInt("MonitorID");
 	if (monitorId >= 0 && command.find(" -system ") != std::string::npos)
 		command = command + " -monitor " + std::to_string(monitorId);
-	
+
 	if (SaveStateRepository::isEnabled(this))
 		command = options.saveStateInfo.setupSaveState(this, command);
+
+	return command;
+}
+
+bool FileData::launchGame(Window* window, LaunchGameOptions options)
+{
+	LOG(LogInfo) << "Attempting to launch game...";
+
+	FileData* gameToUpdate = getSourceFileData();
+	if (gameToUpdate == nullptr)
+		return false;
+
+	SystemData* system = gameToUpdate->getSystem();
+	if (system == nullptr)
+		return false;
+
+	std::string command = getlaunchCommand(options);
+	if (command.empty())
+		return false;
+
+	AudioManager::getInstance()->deinit(); // batocera
+	VolumeControl::getInstance()->deinit();
+
+	bool hideWindow = Settings::getInstance()->getBool("HideWindow");
+	window->deinit(hideWindow);
+	
+	const std::string rom = Utils::FileSystem::getEscapedPath(getPath());
+	const std::string basename = Utils::FileSystem::getStem(getPath());
 
 	Scripting::fireEvent("game-start", rom, basename);
 
@@ -494,7 +560,7 @@ bool FileData::launchGame(Window* window, LaunchGameOptions options)
 
 	if (SaveStateRepository::isEnabled(this))
 	{
-		options.saveStateInfo.onGameEnded();
+		options.saveStateInfo.onGameEnded(this);
 		getSourceFileData()->getSystem()->getSaveStateRepository()->refresh();
 	}
 
@@ -757,7 +823,7 @@ const std::vector<FileData*> FolderData::getChildrenListToDisplay()
 
 	std::string showFoldersMode = getSystem()->getFolderViewMode();
 	
-	bool showHiddenFiles = Settings::getInstance()->getBool("ShowHiddenFiles");
+	bool showHiddenFiles = Settings::ShowHiddenFiles();
 
 	auto shv = Settings::getInstance()->getString(getSystem()->getName() + ".ShowHiddenFiles");
 	if (shv == "1") showHiddenFiles = true;
@@ -926,7 +992,7 @@ FileData* FolderData::findUniqueGameForFolder()
 	{
 		if (game->getHidden())
 		{
-			bool showHiddenFiles = Settings::getInstance()->getBool("ShowHiddenFiles") && !UIModeController::getInstance()->isUIModeKiosk();
+			bool showHiddenFiles = Settings::ShowHiddenFiles() && !UIModeController::getInstance()->isUIModeKiosk();
 
 			auto shv = Settings::getInstance()->getString(getSystem()->getName() + ".ShowHiddenFiles");
 			if (shv == "1") showHiddenFiles = true;
@@ -971,7 +1037,7 @@ std::vector<FileData*> FolderData::getFilesRecursive(unsigned int typeMask, bool
 		return fld->isVirtualStorage();
 	};
 
-	bool showHiddenFiles = Settings::getInstance()->getBool("ShowHiddenFiles") && !UIModeController::getInstance()->isUIModeKiosk();
+	bool showHiddenFiles = Settings::ShowHiddenFiles() && !UIModeController::getInstance()->isUIModeKiosk();
 
 	auto shv = Settings::getInstance()->getString(getSystem()->getName() + ".ShowHiddenFiles");
 	if (shv == "1") showHiddenFiles = true;
@@ -1513,6 +1579,11 @@ std::string FileData::getCurrentGameSetting(const std::string& settingName)
 	return SystemConf::getInstance()->get("global." + settingName);
 }
 
-void FileData::speak() {
-  TextToSpeech::getInstance()->say(getName());
-};
+void FileData::speak()
+{
+	TextToSpeech::getInstance()->say(getName(), false);
+
+	std::string desc = getMetadata(MetaDataId::Desc);
+	if (!desc.empty())
+		TextToSpeech::getInstance()->say(desc, true);
+}
