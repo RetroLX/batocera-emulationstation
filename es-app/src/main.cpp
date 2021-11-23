@@ -149,7 +149,7 @@ bool parseArgs(int argc, char* argv[])
 			Settings::getInstance()->setBool("IgnoreGamelist", true);
 		}else if(strcmp(argv[i], "--show-hidden-files") == 0)
 		{
-			Settings::getInstance()->setBool("ShowHiddenFiles", true);
+			Settings::setShowHiddenFiles(true);
 		}else if(strcmp(argv[i], "--draw-framerate") == 0)
 		{
 			Settings::getInstance()->setBool("DrawFramerate", true);
@@ -405,6 +405,21 @@ void playVideo()
 	window.deinit(true);
 }
 
+void launchStartupGame()
+{
+	auto gamePath = SystemConf::getInstance()->get("global.bootgame.path");
+	if (gamePath.empty() || !Utils::FileSystem::exists(gamePath))
+		return;
+	
+	auto command = SystemConf::getInstance()->get("global.bootgame.cmd");
+	if (!command.empty())
+	{
+		InputManager::getInstance()->init();
+		command = Utils::String::replace(command, "%CONTROLLERSCONFIG%", InputManager::getInstance()->configureEmulators());
+		runSystemCommand(command, gamePath, nullptr);
+	}	
+}
+
 int main(int argc, char* argv[])
 {	
 	StopWatch* stopWatch = new StopWatch("main :", LogDebug);
@@ -467,7 +482,7 @@ int main(int argc, char* argv[])
 		playVideo();
 		return 0;
 	}
-	
+
 	//start the logger
 	Log::setupReportingLevel();
 	Log::init();	
@@ -478,6 +493,11 @@ int main(int argc, char* argv[])
 
 	// Set locale
 	setLocale(argv[0]);	
+
+#if !WIN32
+	// Run boot game, before Window Create for linux
+	launchStartupGame();
+#endif
 
 	// metadata init
 	Genres::init();
@@ -495,7 +515,12 @@ int main(int argc, char* argv[])
 		LOG(LogError) << "Window failed to initialize!";
 		return 1;
 	}
-	
+
+#if WIN32
+	// Run boot game, after Window Create for Windows, or wnd won't be activated when returning back
+	launchStartupGame();
+#endif
+
 	bool splashScreen = Settings::getInstance()->getBool("SplashScreen");
 	bool splashScreenProgress = Settings::getInstance()->getBool("SplashScreenProgress");
 
@@ -558,6 +583,9 @@ int main(int argc, char* argv[])
 	NetworkThread* nthread = new NetworkThread(&window);
 	HttpServerThread httpServer(&window);
 
+	// tts
+	TextToSpeech::getInstance()->enable(Settings::getInstance()->getBool("TTS"), false);
+
 	if (errorMsg == NULL)
 		ViewController::get()->goToStart(true);
 
@@ -579,10 +607,6 @@ int main(int argc, char* argv[])
 	else
 		AudioManager::getInstance()->playRandomMusic();
 
-	// tts
-	if(Settings::getInstance()->getBool("TTS")) {
-	  TextToSpeech::getInstance()->enable(true);
-	}
 
 #ifdef WIN32	
 	DWORD displayFrequency = 60;

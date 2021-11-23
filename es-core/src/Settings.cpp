@@ -16,6 +16,7 @@ bool Settings::DebugGrid = false;
 Settings* Settings::sInstance = NULL;
 static std::string mEmptyString = "";
 
+
 // these values are NOT saved to es_settings.xml
 // since they're set through command-line arguments, and not the in-program settings menu
 std::vector<const char*> settings_dont_save {
@@ -142,7 +143,7 @@ void Settings::setDefaults()
 	mIntMap["MaxVRAM"] = 128;
 #elif defined(_RPI_)
 	// Rpi 0, 1
-	mIntMap["MaxVRAM"] = 80;
+	mIntMap["MaxVRAM"] = 128;
 #else
 	// Other boards
 	mIntMap["MaxVRAM"] = 100;
@@ -246,6 +247,7 @@ void Settings::setDefaults()
 	mBoolMap["ThreadedLoading"] = true;
 	mBoolMap["AsyncImages"] = true;
 	mBoolMap["PreloadUI"] = false;
+	mBoolMap["PreloadMedias"] = false;	
 	mBoolMap["OptimizeVRAM"] = true;
 	mBoolMap["OptimizeVideo"] = true;
 
@@ -281,6 +283,9 @@ void Settings::setDefaults()
 	mIntMap["audio.display_titles_time"] = 10;
 
 	mBoolMap["NetPlayCheckIndexesAtStart"] = false;
+	mBoolMap["CheevosCheckIndexesAtStart"] = false;	
+
+	mBoolMap["AllImagesAsync"] = true;
 
 #if WIN32
 	mBoolMap["updates.enabled"] = true;

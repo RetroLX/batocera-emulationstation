@@ -12,6 +12,7 @@ option(ENABLE_FILEMANAGER "Set to ON to enable f1 shortcut for filesystem" OFF)
 option(DISABLE_KODI "Set to ON to disable kodi in menu" OFF)
 option(ENABLE_PULSE "Set to ON to enable pulse audio (versus alsa)" OFF)
 option(ENABLE_TTS "Set to ON to enable text to speech" OFF)
+option(USE_SYSTEM_PUGIXML "Set to ON to use system-wide pugixml library" OFF)
 
 project(emulationstation-all)
 
@@ -109,6 +110,13 @@ else()
   MESSAGE("pulse audio disabled")
 endif()
 
+if(USE_SYSTEM_PUGIXML)
+  MESSAGE("Use system pugixml")
+  find_package(pugixml REQUIRED)
+else()
+  MESSAGE(FATAL_ERROR "pugixml not found")
+endif()
+
 if(ENABLE_TTS)
   MESSAGE("tts enabled")
   find_library(LIBESPEAK_LIBRARIES NAMES espeak REQUIRED)
@@ -161,6 +169,10 @@ if(DEFINED CHEEVOS_DEV_LOGIN)
     add_definitions(-DCHEEVOS_DEV_LOGIN="${CHEEVOS_DEV_LOGIN}")
 endif()
 
+if(DEFINED HFS_DEV_LOGIN)
+    add_definitions(-DHFS_DEV_LOGIN="${HFS_DEV_LOGIN}")
+endif()
+
 #-------------------------------------------------------------------------------
 
 if(MSVC)
@@ -181,10 +193,10 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 
     #set up compiler flags for GCC
 if (CMAKE_BUILD_TYPE MATCHES Debug)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wno-attributes -O0") #support C++11 for std::, optimize
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wno-attributes -O0") #support C++14 for std::, optimize
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -O0")
 else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wno-attributes -O3") #support C++11 for std::, optimize
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wno-attributes -O3") #support C++14 for std::, optimize
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -O3")  #-s = strip binary
 endif()
 endif()
