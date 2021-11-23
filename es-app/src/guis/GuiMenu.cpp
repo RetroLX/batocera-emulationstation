@@ -2329,9 +2329,10 @@ void GuiMenu::openSystemEmulatorSettings(SystemData* system)
 	auto core_choice = std::make_shared<OptionListComponent<std::string>>(mWindow, _("Core"), false);
 
 	std::string currentEmul = system->getEmulator(false);
-	std::string defaultEmul = system->getDefaultEmulator();
 
-	emul_choice->add(_("AUTO"), "", false);
+	// retrolx NO auto option
+    // std::string defaultEmul = system->getDefaultEmulator();
+    // emul_choice->add(_("AUTO"), "", false);
 
 	bool found = false;
 	for (auto emul : system->getEmulators())
@@ -2357,7 +2358,9 @@ void GuiMenu::openSystemEmulatorSettings(SystemData* system)
 		std::string defaultCore = system->getDefaultCore(emulatorName);
 
 		core_choice->clear();	
-		core_choice->add(_("AUTO"), "", false);
+
+        // retrolx NO auto
+        // core_choice->add(_("AUTO"), "", false);
 
 		bool found = false;
 
@@ -3907,7 +3910,8 @@ void GuiMenu::popSpecificConfigurationGui(Window* mWindow, std::string title, st
 	if (systemData->hasEmulatorSelection())
 	{
 		auto emulChoice = std::make_shared<OptionListComponent<std::string>>(mWindow, _("Emulator"), false);
-		emulChoice->add(_("AUTO"), "", false);
+		// retrolx no AUTO
+        // emulChoice->add(_("AUTO"), "", false);
 		for (auto& emul : systemData->getEmulators())
 		{
 			if (emul.cores.size() == 0)
