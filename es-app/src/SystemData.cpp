@@ -1964,7 +1964,7 @@ std::string SystemData::getEmulator(bool resolveDefault)
 	if (resolveDefault)
 		return getDefaultEmulator();
 
-	return "NullEmulator";
+	return "";
 }
 
 std::string SystemData::getCore(bool resolveDefault)
@@ -1992,7 +1992,7 @@ std::string SystemData::getCore(bool resolveDefault)
 	if (resolveDefault)
 		return getDefaultCore(getEmulator(true));
 
-	return "NullCore";
+	return "";
 }
 
 
@@ -2008,7 +2008,7 @@ std::string SystemData::getDefaultEmulator()
 	if (emulators.size() > 0)
 		return emulators.begin()->name;
 
-	return "NullDefaultEmulator";
+	return "";
 }
 
 std::string SystemData::getDefaultCore(const std::string emulatorName)
@@ -2033,7 +2033,7 @@ std::string SystemData::getDefaultCore(const std::string emulatorName)
 		}
 	}	
 
-	return "NullDefaultCore";
+	return "";
 }
 
 std::string SystemData::getLaunchCommand(const std::string emulatorName, const std::string coreName)
@@ -2081,7 +2081,7 @@ bool SystemData::hasEmulatorSelection()
 			cc++;
 	}
 
-	return ec >= 1 || cc >= 1;
+	return ec > 1 || cc > 1;
 }
 
 SystemData* SystemData::getSystem(const std::string name)
