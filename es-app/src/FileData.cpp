@@ -413,7 +413,8 @@ std::string FileData::getlaunchCommand(LaunchGameOptions& options, bool includeC
 	std::string emulator = getEmulator();
 	std::string core = getCore();
 
-	bool forceCore = false;
+    // retrolx always force core because configgen is not aware of installed packages
+	bool forceCore = true;
 
 	if (options.netPlayMode == CLIENT && !options.core.empty() && core != options.core)
 	{
