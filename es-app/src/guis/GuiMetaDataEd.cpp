@@ -99,13 +99,13 @@ GuiMetaDataEd::GuiMetaDataEd(Window* window, MetaDataList* md, const std::vector
 			std::string defaultEmul = system->getDefaultEmulator();
 			std::string currentEmul = file->getEmulator(false);
 
-			if (defaultEmul.length() == 0)
-            {
-                // retrolx NO auto
-                // emul_choice->add(_("AUTO"), "", true);
-            }
-			else
-				emul_choice->add(_("AUTO") + " (" + defaultEmul + ")", "", currentEmul.length() == 0);
+            // retrolx NO auto
+			// if (defaultEmul.length() == 0)
+            // {
+			// emul_choice->add(_("AUTO"), "", true);
+            // }
+			// else
+			// 	emul_choice->add(_("AUTO") + " (" + defaultEmul + ")", "", currentEmul.length() == 0);
 
 			for (auto core : file->getSystem()->getEmulators())
 				emul_choice->add(core.name, core.name, core.name == currentEmul);
@@ -126,13 +126,13 @@ GuiMetaDataEd::GuiMetaDataEd(Window* window, MetaDataList* md, const std::vector
 					defaultCore = system->getDefaultCore(system->getDefaultEmulator());
 
 				core_choice->clear();
-				if (defaultCore.length() == 0)
-                {
-                    // retrolx NO auto
-                    // core_choice->add(_("AUTO"), "", false);
-                }
-				else
-					core_choice->add(_("AUTO") + " (" + defaultCore + ")", "", false);
+				// retrolx NO auto
+				// if (defaultCore.length() == 0)
+                // {
+				// core_choice->add(_("AUTO"), "", false);
+                // }
+				// else
+				// 	core_choice->add(_("AUTO") + " (" + defaultCore + ")", "", false);
 
 				std::vector<std::string> cores = system->getCoreNames(emulatorName);
 
