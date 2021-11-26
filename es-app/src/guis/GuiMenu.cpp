@@ -3825,12 +3825,12 @@ void GuiMenu::openQuitMenu_batocera_static(Window *window, bool quickAccessMenu,
 		}, "iconScraper", true);
 		
 #if WIN32	
-#define BATOCERA_MANUAL_FILE Utils::FileSystem::getEsConfigPath() + "/notice.pdf"
+#define RETROLX_MANUAL_FILE Utils::FileSystem::getEsConfigPath() + "/notice.pdf"
 #else
-#define BATOCERA_MANUAL_FILE "/usr/share/batocera/doc/notice.pdf"
+#define RETROLX_MANUAL_FILE "/usr/share/retrolx/doc/notice.pdf"
 #endif
 
-		if (ApiSystem::getInstance()->isScriptingSupported(ApiSystem::ScriptId::PDFEXTRACTION) && Utils::FileSystem::exists(BATOCERA_MANUAL_FILE))
+		if (ApiSystem::getInstance()->isScriptingSupported(ApiSystem::ScriptId::PDFEXTRACTION) && Utils::FileSystem::exists(RETROLX_MANUAL_FILE))
 		{
 #if defined(WIN32)
 			s->addEntry(_("VIEW USER'S MANUAL"), false, [s, window]
@@ -3838,7 +3838,7 @@ void GuiMenu::openQuitMenu_batocera_static(Window *window, bool quickAccessMenu,
 			s->addEntry(_("VIEW BATOCERA MANUAL"), false, [s, window]
 #endif
 			{
-				GuiImageViewer::showPdf(window, BATOCERA_MANUAL_FILE);
+				GuiImageViewer::showPdf(window, RETROLX_MANUAL_FILE);
 				delete s;
 			}, "iconManual");
 		}
@@ -4559,7 +4559,7 @@ std::vector<DecorationSetInfo> GuiMenu::getDecorationsSets(SystemData* system)
 
 #else
 	std::vector<std::string> paths = {
-		"/usr/share/batocera/datainit/decorations",
+		"/usr/share/retrolx/datainit/decorations",
 		"/userdata/decorations"
 	};
 #endif

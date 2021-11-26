@@ -186,7 +186,7 @@ void AudioManager::playRandomMusic(bool continueIfPlaying)
 
 	// check in system sound directory
 	if (musics.empty())
-		getMusicIn("/usr/share/batocera/music", musics);
+		getMusicIn("/usr/share/retrolx/music", musics);
 
 	// check in .emulationstation/music directory
 	if (musics.empty())
