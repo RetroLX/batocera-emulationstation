@@ -11,11 +11,14 @@
 #include "renderers/Renderer.h"
 
 #define STB_IMAGE_IMPLEMENTATION
-#define STB_IMAGE_RESIZE_IMPLEMENTATION
+//#define STB_IMAGE_RESIZE_IMPLEMENTATION
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stbimage/stb_image.h"
-#include "stbimage/stb_image_resize.h"
+//#include "stbimage/stb_image_resize.h"
 #include "stbimage/stb_image_write.h"
+
+#include <libyuv.h>
+
 
 //you can pass 0 for width or height to keep aspect ratio
 bool ImageIO::resizeImage(const std::string& path, int maxWidth, int maxHeight)
@@ -65,7 +68,19 @@ bool ImageIO::resizeImage(const std::string& path, int maxWidth, int maxHeight)
 	
 	// Rescale through stb_image_resize (FreeImage was using FILTER_BILINEAR)
 	unsigned char* stbiResizedBitmap = new unsigned char[maxWidth * maxHeight * imgChannels];
-	if (stbir_resize_uint8(image, imgSizeX, imgSizeY, 0, stbiResizedBitmap, maxWidth, maxHeight, 0, imgChannels) != 1)
+
+    /*int ARGBScale(const uint8_t* src_argb,
+              int src_stride_argb,
+              int src_width,
+              int src_height,
+              uint8_t* dst_argb,
+              int dst_stride_argb,
+              int dst_width,
+              int dst_height,
+              enum FilterMode filtering);*/
+
+    if (ARGBScale(image, imgSizeX * 4, imgSizeX, imgSizeY, stbiResizedBitmap, maxWidth * 4, maxWidth, maxHeight, libyuv::FilterMode::kFilterBilinear) != 1)
+	//if (stbir_resize_uint8(image, imgSizeX, imgSizeY, 0, stbiResizedBitmap, maxWidth, maxHeight, 0, imgChannels) != 1)
 	{
 		LOG(LogError) << "Error - Failed to resize image from memory!";
 		delete[] stbiResizedBitmap;
@@ -134,11 +149,23 @@ unsigned char* ImageIO::loadFromMemoryRGBA32(const unsigned char * data, const s
 			
 			if (sz.x() != width || sz.y() != height)
 			{
-				LOG(LogDebug) << "ImageIO : rescaling image from " << std::string(std::to_string(width) + "x" + std::to_string(height)).c_str() << " to " << std::string(std::to_string(sz.x()) + "x" + std::to_string(sz.y())).c_str();
+				LOG(LogError) << "ImageIO : rescaling image from " << std::string(std::to_string(width) + "x" + std::to_string(height)).c_str() << " to " << std::string(std::to_string(sz.x()) + "x" + std::to_string(sz.y())).c_str();
 
 				// Rescale through stb_image_resize (FreeImage was using FILTER_BOX)
 				stbiResizedBitmap = new unsigned char[sz.x() * sz.y() * 4];
-				if (stbir_resize_uint8(stbiBitmap, width, height, 0, stbiResizedBitmap, sz.x(), sz.y(), 0, 4) != 1)
+
+                /*int ARGBScale(const uint8_t* src_argb,
+                              int src_stride_argb,
+                              int src_width,
+                              int src_height,
+                              uint8_t* dst_argb,
+                              int dst_stride_argb,
+                              int dst_width,
+                              int dst_height,
+                              enum FilterMode filtering);*/
+
+                if (ARGBScale(stbiBitmap, width*4, width, height, stbiResizedBitmap, sz.x() * 4, sz.x(), sz.y(), libyuv::FilterMode::kFilterBilinear))
+                //if (stbir_resize_uint8(stbiBitmap, width, height, 0, stbiResizedBitmap, sz.x(), sz.y(), 0, 4) != 1)
 				{
 					LOG(LogError) << "Error - Failed to resize image from memory!";
 					delete[] stbiResizedBitmap;
