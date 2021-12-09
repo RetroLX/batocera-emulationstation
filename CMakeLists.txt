@@ -302,6 +302,7 @@ set(COMMON_LIBRARIES
     id3v2
     libcheevos
     yuv
+    jpeg
 )
 
 if(ENABLE_PULSE)
