@@ -13,6 +13,7 @@ option(DISABLE_KODI "Set to ON to disable kodi in menu" OFF)
 option(ENABLE_PULSE "Set to ON to enable pulse audio (versus alsa)" OFF)
 option(ENABLE_TTS "Set to ON to enable text to speech" OFF)
 option(USE_SYSTEM_PUGIXML "Set to ON to use system-wide pugixml library" OFF)
+option(USE_SYSTEM_LIBYUV "Set to ON to use system-wide libyuv library" OFF)
 
 project(emulationstation-all)
 
@@ -114,7 +115,6 @@ if(USE_SYSTEM_PUGIXML)
   MESSAGE("Use system pugixml")
   find_package(pugixml REQUIRED)
 else()
-  MESSAGE(FATAL_ERROR "pugixml not found")
 endif()
 
 if(ENABLE_TTS)
@@ -222,6 +222,7 @@ set(COMMON_INCLUDE_DIRS
     ${VLC_INCLUDE_DIR}
     ${RAPIDJSON_INCLUDE_DIRS}
     ${CMAKE_CURRENT_SOURCE_DIR}/external
+    ${CMAKE_CURRENT_SOURCE_DIR}/external/libyuv/include
     ${CMAKE_CURRENT_SOURCE_DIR}/es-core/src
 )
 
@@ -299,7 +300,9 @@ set(COMMON_LIBRARIES
     pugixml
     nanosvg
     id3v2
-	libcheevos	
+    libcheevos
+    yuv
+    jpeg
 )
 
 if(ENABLE_PULSE)
