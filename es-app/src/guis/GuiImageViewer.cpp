@@ -10,6 +10,8 @@
 #include <direct.h>
 #else
 #include <unistd.h>
+#include <components/VideoGstreamerComponent.h>
+
 #endif
 
 #include "utils/ZipFile.h"
@@ -654,7 +656,8 @@ GuiVideoViewer::GuiVideoViewer(Window* window, const std::string& path) : GuiCom
 	else
 #endif
 	{
-		mVideo = new VideoVlcComponent(mWindow, "");
+		//mVideo = new VideoVlcComponent(mWindow, "");
+        mVideo = new VideoGstreamerComponent(mWindow, "");
 
 		((VideoVlcComponent*)mVideo)->setLinearSmooth();
 		((VideoVlcComponent*)mVideo)->setEffect(VideoVlcFlags::NONE);

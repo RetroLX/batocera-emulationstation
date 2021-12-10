@@ -219,7 +219,10 @@ bool TextureData::updateFromExternalRGBA(unsigned char* dataRGBA, size_t width, 
 	mWidth = width;
 	mHeight = height;
 
-	if (mTextureID != 0)
+    if ((mTextureID == 0) && (mWidth != 0) && (mHeight != 0))
+        mTextureID = Renderer::createTexture(Renderer::Texture::RGBA, mLinear, mTile, mWidth, mHeight, nullptr);
+
+    if ((mTextureID != 0) && (mWidth != 0) && (mHeight != 0) && (mDataRGBA != nullptr))
 		Renderer::updateTexture(mTextureID, Renderer::Texture::RGBA, 0, 0, mWidth, mHeight, mDataRGBA);
 
 	return true;

@@ -548,6 +548,7 @@ GameScreenSaverBase::~GameScreenSaverBase()
 #include <rapidjson/document.h>
 #include <rapidjson/error/en.h>
 #include <rapidjson/filereadstream.h>
+#include <components/VideoGstreamerComponent.h>
 
 void GameScreenSaverBase::setGame(FileData* game)
 {	
@@ -840,7 +841,8 @@ void VideoScreenSaver::setVideo(const std::string path)
 			mVideo = new VideoPlayerComponent(mWindow, getTitlePath());
 		else
 #endif
-		mVideo = new VideoVlcComponent(mWindow);
+		//mVideo = new VideoVlcComponent(mWindow);
+        mVideo = new VideoGstreamerComponent(mWindow);
 
 		mVideo->setRoundCorners(0);
 		mVideo->topWindow(true);

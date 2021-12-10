@@ -1,3 +1,4 @@
+#include <components/VideoGstreamerComponent.h>
 #include "views/SystemView.h"
 
 #include "animations/LambdaAnimation.h"
@@ -1096,7 +1097,8 @@ void  SystemView::getViewElements(const std::shared_ptr<ThemeData>& theme)
 	{
 		if (Utils::String::startsWith(name, "staticBackground"))
 		{
-			VideoVlcComponent* sv = new VideoVlcComponent(mWindow);
+			//VideoVlcComponent* sv = new VideoVlcComponent(mWindow);
+            VideoGstreamerComponent* sv = new VideoGstreamerComponent(mWindow);
 			sv->applyTheme(theme, "system", name, ThemeFlags::ALL);
 			mStaticVideoBackgrounds.push_back(sv);
 		}

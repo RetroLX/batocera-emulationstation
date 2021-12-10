@@ -11,14 +11,10 @@
 #include "renderers/Renderer.h"
 
 #define STB_IMAGE_IMPLEMENTATION
-//#define STB_IMAGE_RESIZE_IMPLEMENTATION
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stbimage/stb_image.h"
-//#include "stbimage/stb_image_resize.h"
 #include "stbimage/stb_image_write.h"
-
 #include <libyuv.h>
-
 
 //you can pass 0 for width or height to keep aspect ratio
 bool ImageIO::resizeImage(const std::string& path, int maxWidth, int maxHeight)
