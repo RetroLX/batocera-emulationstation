@@ -1,3 +1,4 @@
+#if 0
 #pragma once
 #ifndef ES_CORE_COMPONENTS_VIDEO_VLC_COMPONENT_H
 #define ES_CORE_COMPONENTS_VIDEO_VLC_COMPONENT_H
@@ -128,3 +129,4 @@ private:
 };
 
 #endif // ES_CORE_COMPONENTS_VIDEO_VLC_COMPONENT_H
+#endif

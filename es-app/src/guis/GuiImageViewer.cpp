@@ -659,8 +659,8 @@ GuiVideoViewer::GuiVideoViewer(Window* window, const std::string& path) : GuiCom
 		//mVideo = new VideoVlcComponent(mWindow, "");
         mVideo = new VideoGstreamerComponent(mWindow, "");
 
-		((VideoVlcComponent*)mVideo)->setLinearSmooth();
-		((VideoVlcComponent*)mVideo)->setEffect(VideoVlcFlags::NONE);
+		((VideoGstreamerComponent*)mVideo)->setLinearSmooth();
+		((VideoGstreamerComponent*)mVideo)->setEffect(VideoGstreamerFlags::VideoGstreamerEffect::NONE);
 	}
 	
 	mVideo->setOrigin(0.5f, 0.5f);

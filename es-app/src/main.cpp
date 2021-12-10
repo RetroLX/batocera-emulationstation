@@ -32,6 +32,7 @@
 #include "ImageIO.h"
 #include "components/VideoVlcComponent.h"
 #include <csignal>
+#include <components/VideoGstreamerComponent.h>
 #include "InputConfig.h"
 #include "RetroAchievements.h"
 #include "TextToSpeech.h"
@@ -347,7 +348,7 @@ void playVideo()
 
 	bool exitLoop = false;
 
-	VideoVlcComponent vid(&window);
+	VideoGstreamerComponent vid(&window);
 	vid.setVideo(gPlayVideo);
 	vid.setOrigin(0.5f, 0.5f);
 	vid.setPosition(Renderer::getScreenWidth() / 2.0f, Renderer::getScreenHeight() / 2.0f);

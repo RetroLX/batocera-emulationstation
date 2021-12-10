@@ -3,7 +3,7 @@
 #ifdef _RPI_
 #include "components/VideoPlayerComponent.h"
 #endif
-#include "components/VideoVlcComponent.h"
+#include "components/VideoComponent.h"
 #include "utils/FileSystemUtil.h"
 #include "views/gamelist/IGameListView.h"
 #include "views/ViewController.h"
