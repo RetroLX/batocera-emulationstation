@@ -319,13 +319,10 @@ void VideoGstreamerComponent::render(const Transform4x4f& parentTrans)
 		vertices[3] = { { mSize.x(), mSize.y() }, { 1.0f, 1.0f }, color };
 	}
 
-	// flip y texcoords, round vertices
+	// round vertices
 	for(int i = 0; i < 4; ++i)
-    {
-        vertices[i].tex = (vertices[i].tex.x(), 1.0f - vertices[i].tex.y());
-        vertices[i].pos.round();
-    }
-
+		vertices[i].pos.round();
+	
 	if (mTexture->bind())
 	{
 		beginCustomClipRect();
