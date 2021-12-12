@@ -8,6 +8,7 @@
 #include <nanosvg/nanosvg.h>
 #include <nanosvg/nanosvgrast.h>
 #include <string.h>
+#include <libyuv.h>
 #include "Settings.h"
 
 #include <algorithm>
@@ -23,6 +24,7 @@ TextureData::TextureData(bool tile, bool linear) : mTile(tile), mLinear(linear),
 									  mWidth(0), mHeight(0), mSourceWidth(0.0f), mSourceHeight(0.0f),
 									  mPackedSize(Vector2i(0, 0)), mBaseSize(Vector2i(0, 0))
 {
+    mDataRGBAFormat = 8888;
 	mIsExternalDataRGBA = false;
 	mRequired = false;
 }
@@ -142,10 +144,15 @@ bool TextureData::initSVGFromMemory(const unsigned char* fileData, size_t length
 	nsvgDeleteRasterizer(rast);
 	nsvgDelete(svgImage);
 
-	ImageIO::flipPixelsVert(dataRGBA, mWidth, mHeight);
+    /* Test rasterize SVG to ARGB1555
+    unsigned char* dataRGBA1555 = new unsigned char[mWidth * mHeight * 2];
+    libyuv::ARGBToARGB1555(dataRGBA, mWidth*4, dataRGBA1555, mWidth*2, mWidth, mHeight);
+    delete[] dataRGBA;
+	mDataRGBA = dataRGBA1555;
+    mDataRGBAFormat = 1555;
+    */
 
 	mDataRGBA = dataRGBA;
-
 	return true;
 }
 
@@ -219,11 +226,21 @@ bool TextureData::updateFromExternalRGBA(unsigned char* dataRGBA, size_t width, 
 	mWidth = width;
 	mHeight = height;
 
-    if ((mTextureID == 0) && (mWidth != 0) && (mHeight != 0))
-        mTextureID = Renderer::createTexture(Renderer::Texture::RGBA, mLinear, mTile, mWidth, mHeight, nullptr);
+    //if ((mTextureID == 0) && (mWidth != 0) && (mHeight != 0))
+    //    mTextureID = Renderer::createTexture(Renderer::Texture::RGBA, mLinear, mTile, mWidth, mHeight, nullptr);
 
+    Renderer::Texture::Type type = Renderer::Texture::RGBA;
+    switch (mDataRGBAFormat)
+    {
+        case 8888:
+            type = Renderer::Texture::RGBA;
+            break;
+
+        case 1555:
+            type = Renderer::Texture::RGBA1555;
+    }
     if ((mTextureID != 0) && (mWidth != 0) && (mHeight != 0) && (mDataRGBA != nullptr))
-		Renderer::updateTexture(mTextureID, Renderer::Texture::RGBA, 0, 0, mWidth, mHeight, mDataRGBA);
+		Renderer::updateTexture(mTextureID, type, 0, 0, mWidth, mHeight, mDataRGBA);
 
 	return true;
 }
@@ -337,7 +354,7 @@ bool TextureData::uploadAndBind()
 		}
 
 		// Upload texture
-		mTextureID = Renderer::createTexture(Renderer::Texture::RGBA, mLinear, mTile, mWidth, mHeight, mDataRGBA);
+		mTextureID = Renderer::createTexture(mDataRGBAFormat == 1555 ? Renderer::Texture::RGBA1555 : Renderer::Texture::RGBA, mLinear, mTile, mWidth, mHeight, mDataRGBA);
 		if (mTextureID == 0)
 			return false;
 

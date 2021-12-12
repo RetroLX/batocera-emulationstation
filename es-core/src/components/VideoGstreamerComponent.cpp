@@ -801,41 +801,52 @@ bool VideoGstreamerComponent::play(std::string file)
         if(!playbin_)
         {
             playbin_ = gst_element_factory_make("playbin", "player");
-            videoBin_ = gst_bin_new("SinkBin");
-            videoSink_  = gst_element_factory_make("fakesink", "video_sink");
-            videoConvert_  = gst_element_factory_make("capsfilter", "video_convert");
-            videoConvertCaps_ = gst_caps_from_string("video/x-raw,format=(string)I420,pixel-aspect-ratio=(fraction)1/1");
-            height_ = 0;
-            width_ = 0;
             if(!playbin_)
             {
                 LOG(LogError) << "Video" << " Could not create playbin";
                 freeElements();
                 return false;
             }
+            videoBin_ = gst_bin_new("SinkBin");
+            if(!videoBin_)
+            {
+                LOG(LogError) << "Video" << " Could not create videobin";
+                freeElements();
+                return false;
+            }
+            videoSink_  = gst_element_factory_make("fakesink", "video_sink");
             if(!videoSink_)
             {
                 LOG(LogError) << "Video" << " Could not create video sink";
                 freeElements();
                 return false;
             }
+            videoConvert_  = gst_element_factory_make("capsfilter", "video_convert");
             if(!videoConvert_)
             {
                 LOG(LogError) << "Video" << " Could not create video converter";
                 freeElements();
                 return false;
             }
+            videoConvertCaps_ = gst_caps_from_string("video/x-raw,format=(string)I420,pixel-aspect-ratio=(fraction)1/1");
             if(!videoConvertCaps_)
             {
                 LOG(LogError) << "Video" << "Could not create video caps";
                 freeElements();
                 return false;
             }
+            height_ = 0;
+            width_ = 0;
 
             gst_bin_add_many(GST_BIN(videoBin_), videoConvert_, videoSink_, NULL);
-            gst_element_link_filtered(videoConvert_, videoSink_, videoConvertCaps_);
-            GstPad *videoConvertSinkPad = gst_element_get_static_pad(videoConvert_, "sink");
+            if (!gst_element_link_filtered(videoConvert_, videoSink_, videoConvertCaps_))
+            {
+                LOG(LogError) << "Video" << " gst_element_link_filtered failed";
+                freeElements();
+                return false;
+            }
 
+            GstPad *videoConvertSinkPad = gst_element_get_static_pad(videoConvert_, "sink");
             if(!videoConvertSinkPad)
             {
                 LOG(LogError) << "Video" << " Could not get video convert sink pad";
@@ -855,7 +866,12 @@ bool VideoGstreamerComponent::play(std::string file)
                 return false;
             }
 
-            gst_element_add_pad(videoBin_, videoSinkPad);
+            if (!gst_element_add_pad(videoBin_, videoSinkPad))
+            {
+                LOG(LogError) << "Video" << " gst_element_add_pad failed";
+                freeElements();
+                return false;
+            }
             gst_object_unref(videoConvertSinkPad);
             videoConvertSinkPad = NULL;
         }
@@ -863,11 +879,16 @@ bool VideoGstreamerComponent::play(std::string file)
 
         isPlaying_ = true;
 
-
         g_object_set(G_OBJECT(videoSink_), "signal-handoffs", TRUE, NULL);
         g_signal_connect(videoSink_, "handoff", G_CALLBACK(processNewBuffer), this);
 
         videoBus_ = gst_pipeline_get_bus(GST_PIPELINE(playbin_));
+        if (!videoBus_)
+        {
+            LOG(LogError) << "Video" << " gst_pipeline_get_bus failed";
+            freeElements();
+            return false;
+        }
 //        gst_bus_add_watch(videoBus_, &busCallback, this);
 
         /* Start playing */
@@ -978,7 +999,9 @@ void VideoGstreamerComponent::updateVideo(float /* dt */)
             gsize bufSize = gst_buffer_get_size(videoBuffer_);
             if (bufSize == vbytes)
             {
-                unsigned char* yuv = new unsigned char[vbytes];
+                GstMapInfo bufInfo;
+                gst_buffer_map(videoBuffer_, &bufInfo, GST_MAP_READ);
+                unsigned char* yuv = bufInfo.data;
                 gst_buffer_extract(videoBuffer_, 0, yuv, vbytes);
                 unsigned int y_stride, u_stride, v_stride;
                 const Uint8 *y_plane, *u_plane, *v_plane;
@@ -997,7 +1020,7 @@ void VideoGstreamerComponent::updateVideo(float /* dt */)
                                    width_ * 4,
                                    width_,
                                    height_);
-                delete[] yuv;
+                gst_buffer_unmap(videoBuffer_, &bufInfo);
                 mVideoWidth = getWidth();
                 mVideoHeight = getHeight();
                 if ((texture_) && (mVideoWidth > 0) && (mVideoHeight > 0))

@@ -175,8 +175,8 @@ namespace Renderer
 			"varying   vec4 v_col; \n"
 			"void main(void)                                     \n"
 			"{                                                   \n"
-			"    gl_Position = u_mvp * vec4(a_pos.xy, 0.0, 1.0); \n"
-			"    v_tex       = a_tex;                            \n"
+			"    gl_Position = u_mvp * vec4(a_pos.x, a_pos.y, 0.0, 1.0); \n"
+			"    v_tex       = a_tex;                             \n"
 			"    v_col       = a_col;                            \n"
 			"}                                                   \n";
 
@@ -192,7 +192,7 @@ namespace Renderer
 			"uniform   sampler2D u_tex; \n"
 			"void main(void)                                     \n"
 			"{                                                   \n"
-			"    gl_FragColor = texture2D(u_tex, v_tex) * v_col; \n"
+			"    gl_FragColor = texture2D(u_tex, vec2(v_tex.s, 1.0 - v_tex.t)) * v_col; \n"
 			"}                                                   \n";
 		
 		// Compile each shader, link them to make a full program
@@ -284,8 +284,9 @@ namespace Renderer
 	{
 		switch(_type)
 		{
-			case Texture::RGBA:  { return GL_RGBA;  } break;
-			case Texture::ALPHA: { return GL_ALPHA; } break;
+			case Texture::RGBA:     { return GL_RGBA;  } break;
+			case Texture::ALPHA:    { return GL_ALPHA; } break;
+            case Texture::RGBA1555: { return GL_RGBA;  } break;
 			default:             { return GL_ZERO;  }
 		}
 
@@ -479,7 +480,7 @@ namespace Renderer
 		GL_CHECK_ERROR(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
 		GL_CHECK_ERROR(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, _linear ? GL_LINEAR : GL_NEAREST));
 
-		glTexImage2D(GL_TEXTURE_2D, 0, type, _width, _height, 0, type, GL_UNSIGNED_BYTE, _data);
+		glTexImage2D(GL_TEXTURE_2D, 0, type, _width, _height, 0, type, (_type == Texture::RGBA1555) ? GL_UNSIGNED_SHORT_1_5_5_5_REV : GL_UNSIGNED_BYTE, _data);
 		if (glGetError() != GL_NO_ERROR)
 		{
 			LOG(LogError) << "CreateTexture error: glTexImage2D failed";
@@ -504,9 +505,9 @@ namespace Renderer
 	void updateTexture(const unsigned int _texture, const Texture::Type _type, const unsigned int _x, const unsigned _y, const unsigned int _width, const unsigned int _height, void* _data)
 	{
 		const GLenum type = convertTextureType(_type);
-
+        
 		bindTexture(_texture);
-		GL_CHECK_ERROR(glTexSubImage2D(GL_TEXTURE_2D, 0, _x, _y, _width, _height, type, GL_UNSIGNED_BYTE, _data));
+		GL_CHECK_ERROR(glTexSubImage2D(GL_TEXTURE_2D, 0, _x, _y, _width, _height, type, (_type == Texture::RGBA1555) ? GL_UNSIGNED_SHORT_1_5_5_5_REV : GL_UNSIGNED_BYTE, _data));
 		bindTexture(0);
 
 	} // updateTexture

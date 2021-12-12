@@ -36,8 +36,6 @@ namespace Renderer
 
 		if(rawData != nullptr)
 		{
-			ImageIO::flipPixelsVert(rawData, width, height);
-
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
 			unsigned int rmask = 0xFF000000;
 			unsigned int gmask = 0x00FF0000;

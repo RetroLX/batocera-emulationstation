@@ -34,7 +34,6 @@ bool ImageIO::resizeImage(const std::string& path, int maxWidth, int maxHeight)
 	}
 
 	//make sure we can read this filetype first, then load it
-	stbi_set_flip_vertically_on_load(1);
 	stbi_uc* image = stbi_load(path.c_str(), &imgSizeX, &imgSizeY, &imgChannels, imgChannels);
 	if (image == nullptr)
 	{
@@ -65,18 +64,7 @@ bool ImageIO::resizeImage(const std::string& path, int maxWidth, int maxHeight)
 	// Rescale through stb_image_resize (FreeImage was using FILTER_BILINEAR)
 	unsigned char* stbiResizedBitmap = new unsigned char[maxWidth * maxHeight * imgChannels];
 
-    /*int ARGBScale(const uint8_t* src_argb,
-              int src_stride_argb,
-              int src_width,
-              int src_height,
-              uint8_t* dst_argb,
-              int dst_stride_argb,
-              int dst_width,
-              int dst_height,
-              enum FilterMode filtering);*/
-
     if (ARGBScale(image, imgSizeX * 4, imgSizeX, imgSizeY, stbiResizedBitmap, maxWidth * 4, maxWidth, maxHeight, libyuv::FilterMode::kFilterBilinear) != 1)
-	//if (stbir_resize_uint8(image, imgSizeX, imgSizeY, 0, stbiResizedBitmap, maxWidth, maxHeight, 0, imgChannels) != 1)
 	{
 		LOG(LogError) << "Error - Failed to resize image from memory!";
 		delete[] stbiResizedBitmap;
@@ -126,7 +114,6 @@ unsigned char* ImageIO::loadFromMemoryRGBA32(const unsigned char * data, const s
 	}
 	
 	// Do the load through stb_image
-	stbi_set_flip_vertically_on_load(1);
 	stbi_uc* stbiBitmap = stbi_load_from_memory(data, size, &imgSizeX, &imgSizeY, &imgChannels, 4);
 	if (stbiBitmap != nullptr) 
 	{
@@ -150,21 +137,11 @@ unsigned char* ImageIO::loadFromMemoryRGBA32(const unsigned char * data, const s
 				// Rescale through stb_image_resize (FreeImage was using FILTER_BOX)
 				stbiResizedBitmap = new unsigned char[sz.x() * sz.y() * 4];
 
-                /*int ARGBScale(const uint8_t* src_argb,
-                              int src_stride_argb,
-                              int src_width,
-                              int src_height,
-                              uint8_t* dst_argb,
-                              int dst_stride_argb,
-                              int dst_width,
-                              int dst_height,
-                              enum FilterMode filtering);*/
-
                 if (ARGBScale(stbiBitmap, width*4, width, height, stbiResizedBitmap, sz.x() * 4, sz.x(), sz.y(), libyuv::FilterMode::kFilterBilinear))
-                //if (stbir_resize_uint8(stbiBitmap, width, height, 0, stbiResizedBitmap, sz.x(), sz.y(), 0, 4) != 1)
 				{
 					LOG(LogError) << "Error - Failed to resize image from memory!";
 					delete[] stbiResizedBitmap;
+                    stbi_image_free(stbiBitmap);
 					return nullptr;
 				}
 				stbi_image_free(stbiBitmap);
@@ -181,24 +158,6 @@ unsigned char* ImageIO::loadFromMemoryRGBA32(const unsigned char * data, const s
 
 		LOG(LogDebug) << "ImageIO : returning decoded image ";
 
-		/*unsigned char* tempData = new unsigned char[width * height * 4];
-
-		int w = (int)width;
-
-		for (int y = (int)height; --y >= 0; )
-		{
-			unsigned int* argb = (unsigned int*)FreeImage_GetScanLine(fiBitmap, y);
-			unsigned int* abgr = (unsigned int*)(tempData + (y * width * 4));
-			for (int x = w; --x >= 0;)
-			{
-				unsigned int c = argb[x];
-				abgr[x] = (c & 0xFF00FF00) | ((c & 0xFF) << 16) | ((c >> 16) & 0xFF);
-			}
-		}
-
-		FreeImage_Unload(fiBitmap);
-		FreeImage_CloseMemory(fiMemory);*/
-
 		return stbiBitmap;
 
 	}
@@ -209,21 +168,6 @@ unsigned char* ImageIO::loadFromMemoryRGBA32(const unsigned char * data, const s
 	}
 
 	return nullptr;
-}
-
-void ImageIO::flipPixelsVert(unsigned char* imagePx, const size_t& width, const size_t& height)
-{
-	unsigned int temp;
-	unsigned int* arr = (unsigned int*)imagePx;
-	for(size_t y = 0; y < height / 2; y++)
-	{
-		for(size_t x = 0; x < width; x++)
-		{
-			temp = arr[x + (y * width)];
-			arr[x + (y * width)] = arr[x + (height * width) - ((y + 1) * width)];
-			arr[x + (height * width) - ((y + 1) * width)] = temp;
-		}
-	}
 }
 
 Vector2i ImageIO::adjustPictureSize(Vector2i imageSize, Vector2i maxSize, bool externSize)

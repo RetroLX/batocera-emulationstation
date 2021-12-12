@@ -74,6 +74,7 @@ private:
 	std::string		mPath;
 	unsigned int	mTextureID;
 	unsigned char*	mDataRGBA;
+    int             mDataRGBAFormat;
 	size_t			mWidth;
 	size_t			mHeight;
 	float			mSourceWidth;
