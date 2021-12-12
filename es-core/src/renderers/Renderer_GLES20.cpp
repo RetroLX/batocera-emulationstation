@@ -10,6 +10,10 @@
 #include "GlExtensions.h"
 #include "Shader.h"
 
+#ifndef GL_UNSIGNED_SHORT_1_5_5_5_REV_EXT
+#define GL_UNSIGNED_SHORT_1_5_5_5_REV_EXT GL_UNSIGNED_SHORT_1_5_5_5_REV
+#endif
+
 namespace Renderer
 {
 //////////////////////////////////////////////////////////////////////////
@@ -480,7 +484,7 @@ namespace Renderer
 		GL_CHECK_ERROR(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
 		GL_CHECK_ERROR(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, _linear ? GL_LINEAR : GL_NEAREST));
 
-		glTexImage2D(GL_TEXTURE_2D, 0, type, _width, _height, 0, type, (_type == Texture::RGBA1555) ? GL_UNSIGNED_SHORT_1_5_5_5_REV : GL_UNSIGNED_BYTE, _data);
+		glTexImage2D(GL_TEXTURE_2D, 0, type, _width, _height, 0, type, (_type == Texture::RGBA1555) ? GL_UNSIGNED_SHORT_1_5_5_5_REV_EXT : GL_UNSIGNED_BYTE, _data);
 		if (glGetError() != GL_NO_ERROR)
 		{
 			LOG(LogError) << "CreateTexture error: glTexImage2D failed";
@@ -507,7 +511,7 @@ namespace Renderer
 		const GLenum type = convertTextureType(_type);
         
 		bindTexture(_texture);
-		GL_CHECK_ERROR(glTexSubImage2D(GL_TEXTURE_2D, 0, _x, _y, _width, _height, type, (_type == Texture::RGBA1555) ? GL_UNSIGNED_SHORT_1_5_5_5_REV : GL_UNSIGNED_BYTE, _data));
+		GL_CHECK_ERROR(glTexSubImage2D(GL_TEXTURE_2D, 0, _x, _y, _width, _height, type, (_type == Texture::RGBA1555) ? GL_UNSIGNED_SHORT_1_5_5_5_REV_EXT : GL_UNSIGNED_BYTE, _data));
 		bindTexture(0);
 
 	} // updateTexture
