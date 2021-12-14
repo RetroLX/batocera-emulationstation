@@ -35,8 +35,9 @@ namespace Renderer
 		enum Type
 		{
 			RGBA     = 0,
-			ALPHA    = 1,
-            RGBA1555 = 2
+            RGB      = 1,
+			ALPHA    = 2,
+            RGBA1555 = 3
 		}; // Type
 
 	} // Texture::

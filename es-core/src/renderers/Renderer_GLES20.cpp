@@ -26,7 +26,9 @@ namespace Renderer
 
 	static Shader  	vertexShaderTexture;
 	static Shader  	fragmentShaderColorTexture;
+    static Shader  	fragmentShaderColorTextureOpaque;
 	static ShaderProgram    shaderProgramColorTexture;
+    static ShaderProgram    shaderProgramColorTextureOpaque;
 
 	static Shader  	vertexShaderNoTexture;
 	static Shader  	fragmentShaderColorNoTexture;
@@ -50,6 +52,8 @@ namespace Renderer
 		{
 			if (currentProgram == &shaderProgramColorTexture)
 				GL_CHECK_ERROR(glUniformMatrix4fv(shaderProgramColorTexture.mvpUniform, 1, GL_FALSE, (float*)&mvpMatrix));
+            else if (currentProgram == &shaderProgramColorTextureOpaque)
+                GL_CHECK_ERROR(glUniformMatrix4fv(shaderProgramColorTextureOpaque.mvpUniform, 1, GL_FALSE, (float*)&mvpMatrix));
 			else  if (currentProgram == &shaderProgramColorNoTexture)
 				GL_CHECK_ERROR(glUniformMatrix4fv(shaderProgramColorNoTexture.mvpUniform, 1, GL_FALSE, (float*)&mvpMatrix));
 			else  if (currentProgram == &shaderProgramAlpha)
@@ -66,6 +70,13 @@ namespace Renderer
 				GL_CHECK_ERROR(glDisableVertexAttribArray(shaderProgramColorTexture.colAttrib));
 				GL_CHECK_ERROR(glDisableVertexAttribArray(shaderProgramColorTexture.texAttrib));
 			}
+
+            if (currentProgram == &shaderProgramColorTextureOpaque)
+            {
+                GL_CHECK_ERROR(glDisableVertexAttribArray(shaderProgramColorTextureOpaque.posAttrib));
+                GL_CHECK_ERROR(glDisableVertexAttribArray(shaderProgramColorTextureOpaque.colAttrib));
+                GL_CHECK_ERROR(glDisableVertexAttribArray(shaderProgramColorTextureOpaque.texAttrib));
+            }
 
 			if (currentProgram == &shaderProgramAlpha)
 			{
@@ -97,6 +108,21 @@ namespace Renderer
 			GL_CHECK_ERROR(glVertexAttribPointer(shaderProgramColorTexture.texAttrib, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, tex)));
 			GL_CHECK_ERROR(glEnableVertexAttribArray(shaderProgramColorTexture.texAttrib));
 		}
+
+        if (currentProgram == &shaderProgramColorTextureOpaque)
+        {
+            GL_CHECK_ERROR(glUseProgram(shaderProgramColorTextureOpaque.id));
+            GL_CHECK_ERROR(glUniformMatrix4fv(shaderProgramColorTextureOpaque.mvpUniform, 1, GL_FALSE, (float*)&mvpMatrix));
+
+            GL_CHECK_ERROR(glVertexAttribPointer(shaderProgramColorTextureOpaque.posAttrib, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, pos)));
+            GL_CHECK_ERROR(glEnableVertexAttribArray(shaderProgramColorTextureOpaque.posAttrib));
+
+            GL_CHECK_ERROR(glVertexAttribPointer(shaderProgramColorTextureOpaque.colAttrib, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), (const void*)offsetof(Vertex, col)));
+            GL_CHECK_ERROR(glEnableVertexAttribArray(shaderProgramColorTextureOpaque.colAttrib));
+
+            GL_CHECK_ERROR(glVertexAttribPointer(shaderProgramColorTextureOpaque.texAttrib, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, tex)));
+            GL_CHECK_ERROR(glEnableVertexAttribArray(shaderProgramColorTextureOpaque.texAttrib));
+        }
 
 		if (currentProgram == &shaderProgramAlpha)
 		{
@@ -198,15 +224,35 @@ namespace Renderer
 			"{                                                   \n"
 			"    gl_FragColor = texture2D(u_tex, vec2(v_tex.s, 1.0 - v_tex.t)) * v_col; \n"
 			"}                                                   \n";
-		
-		// Compile each shader, link them to make a full program
+
+        // fragment shader (texture)
+        const GLchar* fragmentSourceTextureOpaque =
+            SHADER_VERSION_STRING
+            "precision mediump float;       \n"
+            #if defined(USE_OPENGLES_20)
+            "precision mediump sampler2D; \n"
+            #endif
+            "varying   vec4      v_col; \n"
+            "varying   vec2      v_tex; \n"
+            "uniform   sampler2D u_tex; \n"
+            "void main(void)                                     \n"
+            "{                                                   \n"
+            "    gl_FragColor = vec4(texture2D(u_tex, vec2(v_tex.s, 1.0 - v_tex.t)).rgb, 1.0) * v_col; \n"
+            "}                                                   \n";
+
+        // Compile each shader, link them to make a full program
 		const GLuint vertexShaderColorNoTextureId = glCreateShader(GL_VERTEX_SHADER);
 		result = vertexShaderTexture.compile(vertexShaderColorNoTextureId, vertexSourceTexture);
 
 		const GLuint fragmentShaderTextureId = glCreateShader(GL_FRAGMENT_SHADER);
 		result = fragmentShaderColorTexture.compile(fragmentShaderTextureId, fragmentSourceTexture);
+
+        const GLuint fragmentShaderTextureOpaqueId = glCreateShader(GL_FRAGMENT_SHADER);
+        result = fragmentShaderColorTextureOpaque.compile(fragmentShaderTextureOpaqueId, fragmentSourceTextureOpaque);
+
 		result = shaderProgramColorTexture.linkShaderProgram(vertexShaderTexture, fragmentShaderColorTexture);
-		
+        result = shaderProgramColorTextureOpaque.linkShaderProgram(vertexShaderTexture, fragmentShaderColorTextureOpaque);
+
 		// Set shader active, retrieve attributes and uniforms locations
 		GL_CHECK_ERROR(glUseProgram(shaderProgramColorTexture.id));
 		shaderProgramColorTexture.posAttrib = glGetAttribLocation(shaderProgramColorTexture.id, "a_pos");
@@ -216,7 +262,15 @@ namespace Renderer
 		GLint texUniform = glGetUniformLocation(shaderProgramColorTexture.id, "u_tex");
 		GL_CHECK_ERROR(glUniform1i(texUniform, 0));
 
-		// fragment shader (alpha texture)
+        GL_CHECK_ERROR(glUseProgram(shaderProgramColorTextureOpaque.id));
+        shaderProgramColorTextureOpaque.posAttrib = glGetAttribLocation(shaderProgramColorTextureOpaque.id, "a_pos");
+        shaderProgramColorTextureOpaque.colAttrib = glGetAttribLocation(shaderProgramColorTextureOpaque.id, "a_col");
+        shaderProgramColorTextureOpaque.texAttrib = glGetAttribLocation(shaderProgramColorTextureOpaque.id, "a_tex");
+        shaderProgramColorTextureOpaque.mvpUniform = glGetUniformLocation(shaderProgramColorTextureOpaque.id, "u_mvp");
+        GLint texUniformOpaque = glGetUniformLocation(shaderProgramColorTextureOpaque.id, "u_tex");
+        GL_CHECK_ERROR(glUniform1i(texUniformOpaque, 0));
+
+        // fragment shader (alpha texture)
 		const GLchar* fragmentSourceAlpha =
 			SHADER_VERSION_STRING
 			"precision mediump float;       \n"
@@ -289,6 +343,7 @@ namespace Renderer
 		switch(_type)
 		{
 			case Texture::RGBA:     { return GL_RGBA;  } break;
+            case Texture::RGB:      { return GL_RGB;   } break;
 			case Texture::ALPHA:    { return GL_ALPHA; } break;
             case Texture::RGBA1555: { return GL_RGBA;  } break;
 			default:             { return GL_ZERO;  }
@@ -458,8 +513,17 @@ namespace Renderer
 
 //////////////////////////////////////////////////////////////////////////
 
+static bool* texOpaque = nullptr;
+
 	unsigned int createTexture(const Texture::Type _type, const bool _linear, const bool _repeat, const unsigned int _width, const unsigned int _height, void* _data)
 	{
+        if (texOpaque==nullptr)
+        {
+            texOpaque = new bool[65536];
+            for (int i = 0 ; i < 65536 ; i++)
+                texOpaque[i] = false;
+        }
+
 		const GLenum type = convertTextureType(_type);
 		unsigned int texture;
 
@@ -484,7 +548,23 @@ namespace Renderer
 		GL_CHECK_ERROR(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
 		GL_CHECK_ERROR(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, _linear ? GL_LINEAR : GL_NEAREST));
 
-		glTexImage2D(GL_TEXTURE_2D, 0, type, _width, _height, 0, type, (_type == Texture::RGBA1555) ? GL_UNSIGNED_SHORT_1_5_5_5_REV_EXT : GL_UNSIGNED_BYTE, _data);
+        GLenum texFormat;
+        switch (_type)
+        {
+            case Texture::RGB:
+                LOG(LogError) << "RGB glTexImage2D";
+                texOpaque[texture] = true;
+            case Texture::RGBA:
+            case Texture::ALPHA:
+                texFormat = GL_UNSIGNED_BYTE;
+                break;
+
+            case Texture::RGBA1555:
+                texFormat = GL_UNSIGNED_SHORT_1_5_5_5_REV_EXT;
+                break;
+        }
+
+        glTexImage2D(GL_TEXTURE_2D, 0, type, _width, _height, 0, type, texFormat, _data);
 		if (glGetError() != GL_NO_ERROR)
 		{
 			LOG(LogError) << "CreateTexture error: glTexImage2D failed";
@@ -501,6 +581,7 @@ namespace Renderer
 	void destroyTexture(const unsigned int _texture)
 	{
 		GL_CHECK_ERROR(glDeleteTextures(1, &_texture));
+        texOpaque[_texture] = false;
 
 	} // destroyTexture
 
@@ -509,9 +590,22 @@ namespace Renderer
 	void updateTexture(const unsigned int _texture, const Texture::Type _type, const unsigned int _x, const unsigned _y, const unsigned int _width, const unsigned int _height, void* _data)
 	{
 		const GLenum type = convertTextureType(_type);
-        
+        GLenum texFormat;
+        switch (_type)
+        {
+            case Texture::RGB:
+                LOG(LogError) << "RGB glTexSubImage2D";
+            case Texture::RGBA:
+            case Texture::ALPHA:
+                texFormat = GL_UNSIGNED_BYTE;
+                break;
+
+            case Texture::RGBA1555:
+                texFormat = GL_UNSIGNED_SHORT_1_5_5_5_REV_EXT;
+                break;
+        }
 		bindTexture(_texture);
-		GL_CHECK_ERROR(glTexSubImage2D(GL_TEXTURE_2D, 0, _x, _y, _width, _height, type, (_type == Texture::RGBA1555) ? GL_UNSIGNED_SHORT_1_5_5_5_REV_EXT : GL_UNSIGNED_BYTE, _data));
+		GL_CHECK_ERROR(glTexSubImage2D(GL_TEXTURE_2D, 0, _x, _y, _width, _height, type, texFormat, _data));
 		bindTexture(0);
 
 	} // updateTexture
@@ -576,7 +670,14 @@ namespace Renderer
 
 		// Setup shader
 		if (boundTexture != 0)
-			useProgram(&shaderProgramColorTexture);
+        {
+            if (texOpaque[boundTexture])
+            {
+                useProgram(&shaderProgramColorTextureOpaque);
+            }
+            else
+                useProgram(&shaderProgramColorTexture);
+        }
 		else
 			useProgram(&shaderProgramColorNoTexture);
 
@@ -585,7 +686,7 @@ namespace Renderer
 		if (blend)
 		{
 			GL_CHECK_ERROR(glEnable(GL_BLEND));
-			GL_CHECK_ERROR(glBlendFunc(convertBlendFactor(_srcBlendFactor), convertBlendFactor(_dstBlendFactor)));
+            GL_CHECK_ERROR(glBlendFunc(convertBlendFactor(_srcBlendFactor), convertBlendFactor(_dstBlendFactor)));
 		}
 		else
 		{
@@ -707,7 +808,12 @@ namespace Renderer
 
 		// Setup shader
 		if (boundTexture != 0)
-			useProgram(&shaderProgramColorTexture);
+        {
+            if (texOpaque[boundTexture])
+                useProgram(&shaderProgramColorTextureOpaque);
+            else
+                useProgram(&shaderProgramColorTexture);
+        }
 		else
 			useProgram(&shaderProgramColorNoTexture);
 

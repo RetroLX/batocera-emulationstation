@@ -44,6 +44,8 @@ class ImageIO
 {
 public:
 	static unsigned char*  loadFromMemoryRGBA32(const unsigned char * data, const size_t size, size_t & width, size_t & height, MaxSizeInfo* maxSize = nullptr, Vector2i* baseSize = nullptr, Vector2i* packedSize = nullptr);
+    static unsigned char*  loadFromMemoryRGB24(const unsigned char * data, const size_t size, size_t & width, size_t & height, MaxSizeInfo* maxSize = nullptr, Vector2i* baseSize = nullptr, Vector2i* packedSize = nullptr);
+    static int getChannelsFromImageMemory(const unsigned char * data, const size_t size);
 
 	// batocera
 	static Vector2f getPictureMinSize(Vector2f imageSize, Vector2f maxSize);

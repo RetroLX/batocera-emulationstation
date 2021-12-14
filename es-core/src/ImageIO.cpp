@@ -62,15 +62,15 @@ bool ImageIO::resizeImage(const std::string& path, int maxWidth, int maxHeight)
 	}
 	
 	// Rescale through stb_image_resize (FreeImage was using FILTER_BILINEAR)
-	unsigned char* stbiResizedBitmap = new unsigned char[maxWidth * maxHeight * imgChannels];
+	unsigned char* stbiResizedBitmap = static_cast<unsigned char*>(aligned_alloc(32, maxWidth * maxHeight * imgChannels));
 
     if (ARGBScale(image, imgSizeX * 4, imgSizeX, imgSizeY, stbiResizedBitmap, maxWidth * 4, maxWidth, maxHeight, libyuv::FilterMode::kFilterBilinear) != 1)
 	{
 		LOG(LogError) << "Error - Failed to resize image from memory!";
-		delete[] stbiResizedBitmap;
+		free(stbiResizedBitmap);
 		return false;
 	}
-	stbi_image_free(image);
+    free(image);
 		
 	bool saved = false;
 	
@@ -83,12 +83,24 @@ bool ImageIO::resizeImage(const std::string& path, int maxWidth, int maxHeight)
 	}
 	catch(...) { }
 
-	delete[] stbiResizedBitmap;
+    free(stbiResizedBitmap);
 
 	if(!saved)
 		LOG(LogError) << "Failed to save resized image!";
 
 	return saved;
+}
+
+int ImageIO::getChannelsFromImageMemory(const unsigned char * data, const size_t size)
+{
+    // Check image is supported by stb_image
+    int imgSizeX, imgSizeY, imgChannels;
+    if (stbi_info_from_memory(data, size, &imgSizeX, &imgSizeY, &imgChannels) != 1)
+    {
+        LOG(LogError) << "Error - Failed to decode image from memory!";
+        return 0;
+    }
+    return imgChannels;
 }
 
 unsigned char* ImageIO::loadFromMemoryRGBA32(const unsigned char * data, const size_t size, size_t & width, size_t & height, MaxSizeInfo* maxSize, Vector2i* baseSize, Vector2i* packedSize)
@@ -101,7 +113,6 @@ unsigned char* ImageIO::loadFromMemoryRGBA32(const unsigned char * data, const s
 	if (baseSize != nullptr)
 		*packedSize = Vector2i(0, 0);
 
-	unsigned char* stbiResizedBitmap = nullptr;
 	width = 0;
 	height = 0;
 
@@ -112,7 +123,7 @@ unsigned char* ImageIO::loadFromMemoryRGBA32(const unsigned char * data, const s
 			LOG(LogError) << "Error - Failed to decode image from memory!";
 			return nullptr;
 	}
-	
+
 	// Do the load through stb_image
 	stbi_uc* stbiBitmap = stbi_load_from_memory(data, size, &imgSizeX, &imgSizeY, &imgChannels, 4);
 	if (stbiBitmap != nullptr) 
@@ -135,7 +146,7 @@ unsigned char* ImageIO::loadFromMemoryRGBA32(const unsigned char * data, const s
 				LOG(LogError) << "ImageIO : rescaling image from " << std::string(std::to_string(width) + "x" + std::to_string(height)).c_str() << " to " << std::string(std::to_string(sz.x()) + "x" + std::to_string(sz.y())).c_str();
 
 				// Rescale through stb_image_resize (FreeImage was using FILTER_BOX)
-				stbiResizedBitmap = new unsigned char[sz.x() * sz.y() * 4];
+                unsigned char* stbiResizedBitmap = static_cast<unsigned char*>(aligned_alloc(32, sz.x() * sz.y() * 4));
 
                 if (ARGBScale(stbiBitmap, width*4, width, height, stbiResizedBitmap, sz.x() * 4, sz.x(), sz.y(), libyuv::FilterMode::kFilterBilinear))
 				{
@@ -168,6 +179,107 @@ unsigned char* ImageIO::loadFromMemoryRGBA32(const unsigned char * data, const s
 	}
 
 	return nullptr;
+}
+
+unsigned char* ImageIO::loadFromMemoryRGB24(const unsigned char * data, const size_t size, size_t & width, size_t & height, MaxSizeInfo* maxSize, Vector2i* baseSize, Vector2i* packedSize)
+{
+    LOG(LogDebug) << "ImageIO::loadFromMemoryRG24";
+
+    if (baseSize != nullptr)
+        *baseSize = Vector2i(0, 0);
+
+    if (baseSize != nullptr)
+        *packedSize = Vector2i(0, 0);
+
+    width = 0;
+    height = 0;
+
+    // Check image is supported by stb_image
+    int imgSizeX, imgSizeY, imgChannels;
+    if (stbi_info_from_memory(data, size, &imgSizeX, &imgSizeY, &imgChannels) != 1)
+    {
+        LOG(LogError) << "Error - Failed to decode image from memory!";
+        return nullptr;
+    }
+
+    // Do the load through stb_image
+    stbi_uc* stbiBitmap = stbi_load_from_memory(data, size, &imgSizeX, &imgSizeY, &imgChannels, 4);
+    if (stbiBitmap != nullptr)
+    {
+        width = imgSizeX;
+        height = imgSizeY;
+
+        if (baseSize != nullptr)
+            *baseSize = Vector2i(width, height);
+
+        if (maxSize != nullptr && maxSize->x() > 0 && maxSize->y() > 0 && (width > maxSize->x() || height > maxSize->y()))
+        {
+            Vector2i sz = adjustPictureSize(Vector2i(width, height), Vector2i(maxSize->x(), maxSize->y()), maxSize->externalZoom());
+
+            if (sz.x() > Renderer::getScreenWidth() || sz.y() > Renderer::getScreenHeight())
+                sz = adjustPictureSize(sz, Vector2i(Renderer::getScreenWidth(), Renderer::getScreenHeight()), false);
+
+            if (sz.x() != width || sz.y() != height)
+            {
+                LOG(LogError) << "ImageIO : rescaling image from " << std::string(std::to_string(width) + "x" + std::to_string(height)).c_str() << " to " << std::string(std::to_string(sz.x()) + "x" + std::to_string(sz.y())).c_str();
+
+                // Rescale through stb_image_resize (FreeImage was using FILTER_BOX)
+                unsigned char* stbiResizedBitmap = static_cast<unsigned char*>(aligned_alloc(32, sz.x() * sz.y() * 4));
+
+                if (ARGBScale(stbiBitmap, width*4, width, height, stbiResizedBitmap, sz.x() * 4, sz.x(), sz.y(), libyuv::FilterMode::kFilterBilinear))
+                {
+                    LOG(LogError) << "Error - Failed to resize image from memory!";
+                    free(stbiResizedBitmap);
+                    stbi_image_free(stbiBitmap);
+                    return nullptr;
+                }
+
+                stbi_image_free(stbiBitmap);
+                unsigned char* stbiResizedBitmap24 = static_cast<unsigned char*>(aligned_alloc(32, sz.x() * sz.y() * 3));
+                if (libyuv::ARGBToRGB24(stbiResizedBitmap, sz.x() * 4, stbiResizedBitmap24, sz.x() * 3, sz.x(), sz.y()))
+                {
+                    LOG(LogError) << "Error - Failed to resample image from RGBA32 to RGB24!";
+                    free(stbiResizedBitmap);
+                    free(stbiResizedBitmap24);
+                    return nullptr;
+                }
+
+                free(stbiResizedBitmap);
+                width = sz.x();
+                height = sz.y();
+
+                if (packedSize != nullptr)
+                    *packedSize = Vector2i(width, height);
+
+                stbiBitmap = stbiResizedBitmap24;
+            }
+        }
+        else
+        {
+            unsigned char* stbiBitmap24 = static_cast<unsigned char*>(aligned_alloc(32, width * height * 3));
+            if (libyuv::ARGBToRGB24(stbiBitmap, width * 4, stbiBitmap24, width * 3, width, height))
+            {
+                LOG(LogError) << "Error - Failed to resample image from RGBA32 to RGB24!";
+                free(stbiBitmap);
+                free(stbiBitmap24);
+                return nullptr;
+            }
+            free(stbiBitmap);
+            stbiBitmap = stbiBitmap24;
+        }
+
+        LOG(LogDebug) << "ImageIO : returning decoded image ";
+
+        return stbiBitmap;
+
+    }
+    else
+    {
+        LOG(LogError) << "Error - Failed to load image from memory!";
+        return nullptr;
+    }
+
+    return nullptr;
 }
 
 Vector2i ImageIO::adjustPictureSize(Vector2i imageSize, Vector2i maxSize, bool externSize)
