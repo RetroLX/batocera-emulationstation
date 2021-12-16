@@ -214,9 +214,9 @@ void VideoGstreamerComponent::render(const Transform4x4f& parentTrans)
 
 	if (t == 0.0)
 		return;
-		
+
 	Transform4x4f trans = parentTrans * getTransform();
-	
+
 	if (mRotation == 0 && !mTargetIsMin && !Renderer::isVisibleOnScreen(trans.translation().x(), trans.translation().y(), mSize.x() * trans.r0().x(), mSize.y() * trans.r1().y()))
 		return;
 
@@ -224,7 +224,7 @@ void VideoGstreamerComponent::render(const Transform4x4f& parentTrans)
 
 	// Build a texture for the video frame
 	if (initFromPixels)
-	{		
+	{
 		//int frame = mContext.surfaceId;
 		//if (mContext.hasFrame[frame])
 		{
@@ -250,7 +250,7 @@ void VideoGstreamerComponent::render(const Transform4x4f& parentTrans)
 
 	if (mTexture == nullptr)
 		return;
-		
+
 	float opacity = (mOpacity / 255.0f) * t;
 
 	if (hasStoryBoard())
@@ -259,7 +259,7 @@ void VideoGstreamerComponent::render(const Transform4x4f& parentTrans)
 	unsigned int color = Renderer::convertColor(mColorShift & 0xFFFFFF00 | (unsigned char)((mColorShift & 0xFF) * opacity));
 
 	Renderer::Vertex   vertices[4];
-	
+
 	if (mEffect == VideoGstreamerFlags::VideoGstreamerEffect::SLIDERIGHT && mFadeIn > 0.0 && mFadeIn < 1.0 && mConfig.startDelay > 0 && !hasStoryBoard())
 	{
 		float t = 1.0 - mFadeIn;
@@ -267,19 +267,19 @@ void VideoGstreamerComponent::render(const Transform4x4f& parentTrans)
 		t = Math::lerp(0, 1, t*t*t + 1);
 		//t = 1.0 - t;
 
-		vertices[0] = { { 0.0f     , 0.0f      }, { t, 0.0f }, color };
-		vertices[1] = { { 0.0f     , mSize.y() }, { t, 1.0f }, color };
-		vertices[2] = { { mSize.x(), 0.0f      }, { t + 1.0f, 0.0f }, color };
-		vertices[3] = { { mSize.x(), mSize.y() }, { t + 1.0f, 1.0f }, color };
+		vertices[0] = { { 0.0f     , 0.0f      }, { t, 1.0f }, color };
+		vertices[1] = { { 0.0f     , mSize.y() }, { t, 0.0f }, color };
+		vertices[2] = { { mSize.x(), 0.0f      }, { t + 1.0f, 1.0f }, color };
+		vertices[3] = { { mSize.x(), mSize.y() }, { t + 1.0f, 0.0f }, color };
 	}
 	else
 	if (mEffect == VideoGstreamerFlags::VideoGstreamerEffect::SIZE && mFadeIn > 0.0 && mFadeIn < 1.0 && mConfig.startDelay > 0 && !hasStoryBoard())
-	{		
+	{
 		float t = 1.0 - mFadeIn;
 		t -= 1; // cubic ease in
 		t = Math::lerp(0, 1, t*t*t + 1);
 		t = 1.0 - t;
-	
+
 		float w = mSize.x() * t;
 		float h = mSize.y() * t;
 		float centerX = mSize.x() / 2.0f;
@@ -288,10 +288,10 @@ void VideoGstreamerComponent::render(const Transform4x4f& parentTrans)
 		Vector2f topLeft(Math::round(centerX - w / 2.0f), Math::round(centerY - h / 2.0f));
 		Vector2f bottomRight(Math::round(centerX + w / 2.0f), Math::round(centerY + h / 2.0f));
 
-		vertices[0] = { { topLeft.x()		, topLeft.y()	  }, { 0.0f, 0.0f }, color };
-		vertices[1] = { { topLeft.x()		, bottomRight.y() }, { 0.0f, 1.0f }, color };
-		vertices[2] = { { bottomRight.x()	, topLeft.y()     }, { 1.0f, 0.0f }, color };
-		vertices[3] = { { bottomRight.x()	, bottomRight.y() }, { 1.0f, 1.0f }, color };
+		vertices[0] = { { topLeft.x()		, topLeft.y()	  }, { 0.0f, 1.0f }, color };
+		vertices[1] = { { topLeft.x()		, bottomRight.y() }, { 0.0f, 0.0f }, color };
+		vertices[2] = { { bottomRight.x()	, topLeft.y()     }, { 1.0f, 1.0f }, color };
+		vertices[3] = { { bottomRight.x()	, bottomRight.y() }, { 1.0f, 0.0f }, color };
 	}
 	else if (mEffect == VideoGstreamerFlags::VideoGstreamerEffect::BUMP && mFadeIn > 0.0 && mFadeIn < 1.0 && mConfig.startDelay > 0 && !hasStoryBoard())
 	{
@@ -306,17 +306,17 @@ void VideoGstreamerComponent::render(const Transform4x4f& parentTrans)
 		Vector2f topLeft(Math::round(centerX - w / 2.0f), Math::round(centerY - h / 2.0f));
 		Vector2f bottomRight(Math::round(centerX + w / 2.0f), Math::round(centerY + h / 2.0f));
 
-		vertices[0] = { { topLeft.x()		, topLeft.y()	  }, { 0.0f, 0.0f }, color };
-		vertices[1] = { { topLeft.x()		, bottomRight.y() }, { 0.0f, 1.0f }, color };
-		vertices[2] = { { bottomRight.x()	, topLeft.y()     }, { 1.0f, 0.0f }, color };
-		vertices[3] = { { bottomRight.x()	, bottomRight.y() }, { 1.0f, 1.0f }, color };
+		vertices[0] = { { topLeft.x()		, topLeft.y()	  }, { 0.0f, 1.0f }, color };
+		vertices[1] = { { topLeft.x()		, bottomRight.y() }, { 0.0f, 0.0f }, color };
+		vertices[2] = { { bottomRight.x()	, topLeft.y()     }, { 1.0f, 1.0f }, color };
+		vertices[3] = { { bottomRight.x()	, bottomRight.y() }, { 1.0f, 0.0f }, color };
 	}
 	else
 	{
-		vertices[0] = { { 0.0f     , 0.0f      }, { 0.0f, 0.0f }, color };
-		vertices[1] = { { 0.0f     , mSize.y() }, { 0.0f, 1.0f }, color };
-		vertices[2] = { { mSize.x(), 0.0f      }, { 1.0f, 0.0f }, color };
-		vertices[3] = { { mSize.x(), mSize.y() }, { 1.0f, 1.0f }, color };
+		vertices[0] = { { 0.0f     , 0.0f      }, { 0.0f, 1.0f }, color };
+		vertices[1] = { { 0.0f     , mSize.y() }, { 0.0f, 0.0f }, color };
+		vertices[2] = { { mSize.x(), 0.0f      }, { 1.0f, 1.0f }, color };
+		vertices[3] = { { mSize.x(), mSize.y() }, { 1.0f, 0.0f }, color };
 	}
 
 	// round vertices
