@@ -1059,7 +1059,7 @@ bool SystemData::loadConfig(Window* window)
 	if (systemCount == 0)
 	{
 		LOG(LogError) << "no system found in es_systems.cfg";
-		return true;
+		return false;
 	}
 
 	Utils::FileSystem::FileSystemCacheActivator fsc;
@@ -1116,6 +1116,8 @@ bool SystemData::loadConfig(Window* window)
 
 	if (pThreadPool != NULL)
 	{
+        pThreadPool->start();
+
 		if (window != NULL)
 		{
 			pThreadPool->wait([window, &processedSystem, systemCount, &systemsNames]
@@ -1391,12 +1393,12 @@ SystemData* SystemData::loadSystem(pugi::xml_node system, bool fullMode)
 	if (!fullMode)
 		return newSys;
 	
-	/*if (newSys->getRootFolder()->getChildren().size() == 0)
+	if (newSys->getRootFolder()->getChildren().size() == 0)
 	{
 		LOG(LogWarning) << "System \"" << md.name << "\" has no games! Ignoring it.";
 		delete newSys;
 		return nullptr;
-	}*/	
+	}	
 
 	return newSys;
 }
