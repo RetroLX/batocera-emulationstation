@@ -113,6 +113,13 @@ int runSystemCommand(const std::string& cmd_utf8, const std::string& name, Windo
 			}
 		}
 
+		DWORD dwExitCode;
+		if (GetExitCodeProcess(lpExecInfo.hProcess, &dwExitCode))
+		{
+			CloseHandle(lpExecInfo.hProcess);
+			return dwExitCode;
+		}
+
 		CloseHandle(lpExecInfo.hProcess);
 		return 0;
 	}
@@ -407,6 +414,10 @@ std::string getArchString()
 
 #if GAMEFORCE
 	return "gameforce";
+#endif
+
+#if RK3326
+	return "rk3326";
 #endif
 
 #if ODROIDXU4

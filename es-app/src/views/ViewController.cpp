@@ -14,6 +14,7 @@
 #include "views/UIModeController.h"
 #include "FileFilterIndex.h"
 #include "Log.h"
+#include "Scripting.h"
 #include "Settings.h"
 #include "SystemData.h"
 #include "Window.h"
@@ -190,6 +191,8 @@ void ViewController::goToSystemView(SystemData* system, bool forceImmediate)
 
 	mState.viewing = SYSTEM_SELECT;
 	mState.system = dest;
+
+	Scripting::fireEvent("system-selected", dest->getName());
 
 	systemList->goToSystem(dest, false);
 
@@ -425,6 +428,18 @@ void ViewController::onFileChanged(FileData* file, FileChangeType change)
 	auto it = mGameListViews.find(sourceSystem);
 	if (it != mGameListViews.cend())
 		it->second->onFileChanged(file, change);
+	else
+	{
+		// System is in a group ?
+		for (auto gameListView : mGameListViews)
+		{
+			if (gameListView.first->isGroupSystem() && gameListView.first->getRootFolder()->FindByPath(key))
+			{
+				gameListView.second->onFileChanged(file, change);
+				break;
+			}
+		}
+	}
 
 	for (auto collection : CollectionSystemManager::get()->getAutoCollectionSystems())
 	{		

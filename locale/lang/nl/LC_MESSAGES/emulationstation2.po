@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: emulationstation\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-16 07:49+0100\n"
+"POT-Creation-Date: 2021-12-15 23:48+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -93,6 +93,12 @@ msgstr "Map"
 
 msgid "enter path to map"
 msgstr "voer locatie naar map in"
+
+msgid "Bezel (16:9)"
+msgstr ""
+
+msgid "enter path to bezel (16:9)"
+msgstr ""
 
 msgid "Cartridge"
 msgstr "Cardtridge"
@@ -932,7 +938,7 @@ msgstr ""
 msgid "OPEN"
 msgstr "OPEN"
 
-msgid "NETPLAY HOSTING/OPTIONS"
+msgid "START A NETPLAY GAME"
 msgstr ""
 
 msgid "NETPLAY"
@@ -941,7 +947,7 @@ msgstr "NETPLAY"
 msgid "START GAME"
 msgstr "START SPEL"
 
-msgid "BEGIN HOSTING A NETPLAY SESSION"
+msgid "HOST A NETPLAY GAME"
 msgstr ""
 
 msgid "YOU ARE NOT CONNECTED TO A NETWORK"
@@ -950,11 +956,11 @@ msgstr "JE BENT NIET VERBONDEN MET EEN NETWERK"
 msgid "PUBLICLY ANNOUNCE GAME"
 msgstr "OPENBAAR AANKONDIGEN SPEL"
 
-msgid "SET PLAYER PASSWORD"
-msgstr "STEL WACHTWOORD SPELER IN"
+msgid "PLAYER PASSWORD"
+msgstr ""
 
-msgid "SET VIEWER PASSWORD"
-msgstr "STEL WACHTWOORD BEKIJKER IN"
+msgid "VIEWER PASSWORD"
+msgstr ""
 
 msgid "FIND SIMILAR GAMES..."
 msgstr "VIND GELIJKSOORTIGE SPELLEN"
@@ -1036,8 +1042,8 @@ msgstr ""
 msgid "START NEW GAME"
 msgstr "START NIEUW SPEL"
 
-msgid "START AUTO SAVE"
-msgstr "AUTOMATISCH OPSLAAN STARTEN"
+msgid "START NEW AUTO SAVE"
+msgstr ""
 
 msgid "AUTO SAVE"
 msgstr "AUTOMATISCH OPSLAAN"
@@ -1264,6 +1270,9 @@ msgstr "SCRAAP VIDEO'S"
 msgid "SCRAPE FANART"
 msgstr "SCHRAAP FANART"
 
+msgid "SCRAPE BEZEL (16:9)"
+msgstr ""
+
 msgid "SCRAPE BOX BACKSIDE"
 msgstr "SCHRAAP ACHTERZIJDE DOOS"
 
@@ -1453,16 +1462,19 @@ msgstr "TOON NETWERKINDICATOR"
 msgid "OPTIMIZATIONS"
 msgstr "OPTIMALISATIES"
 
-msgid "PRELOAD UI ELEMENTS"
+msgid "PRELOAD UI ELEMENTS ON BOOT"
 msgstr ""
 
-msgid "Reduce overall menu lag at the cost of storage space"
+msgid ""
+"Reduces lag when entering gamelists from the system menu, increases boot time"
 msgstr ""
 
-msgid "PRELOAD METADATA MEDIA"
+msgid "PRELOAD METADATA MEDIA ON BOOT"
 msgstr ""
 
-msgid "Reduce gamelist lag at the cost of storage space"
+msgid ""
+"Reduces lag when scrolling through a fully scraped gamelist, increases boot "
+"time"
 msgstr ""
 
 msgid "THREADED LOADING"
@@ -1687,6 +1699,17 @@ msgstr "GEBRUIK FRAMES VOORUIT BEREKENEN"
 msgid "RUN-AHEAD USE SECOND INSTANCE"
 msgstr "GEBRUIK SECUNDAIR PROCES"
 
+msgid "AUTOMATIC FRAME DELAY"
+msgstr ""
+
+msgid "AUTO FRAME DELAY"
+msgstr ""
+
+msgid ""
+"Automatically decrease frame delay temporarily to prevent frame drops. Turn "
+"off if this worsens audio/video stuttering."
+msgstr ""
+
 msgid "HARDCORE MODE"
 msgstr "HARDCORE MODUS"
 
@@ -1698,6 +1721,14 @@ msgstr "VERBOSE MODUS"
 
 msgid "AUTOMATIC SCREENSHOT"
 msgstr "AUTOMATISCHE SCHERMAFDRUK"
+
+msgid "CHALLENGE INDICATORS"
+msgstr ""
+
+msgid ""
+"Shows icons in the bottom right corner when eligible achievements can be "
+"earned."
+msgstr ""
 
 msgid "RETROACHIEVEMENT UNLOCK SOUND"
 msgstr ""
@@ -1732,6 +1763,9 @@ msgstr "POORT"
 msgid "USE RELAY SERVER"
 msgstr "GEBRUIK RELAY SERVER"
 
+msgid "SHOW UNAVAILABLE GAMES"
+msgstr ""
+
 msgid "DECORATION SET"
 msgstr ""
 
@@ -1753,18 +1787,6 @@ msgstr "TERUGSPOELEN"
 msgid "INTEGER SCALING (PIXEL PERFECT)"
 msgstr "INTEGER SCHAAL (PIXEL PERFECT)"
 
-msgid "AUTO SAVE/LOAD ON GAME LAUNCH"
-msgstr "AUTOMATISCH OPSLAAN/LADEN"
-
-msgid "SHOW SAVE STATES"
-msgstr ""
-
-msgid "SHOW SAVE STATES IF NOT EMPTY"
-msgstr ""
-
-msgid "INCREMENTAL SAVESTATES"
-msgstr ""
-
 msgid "SHADER SET"
 msgstr "SHADER SET"
 
@@ -1774,16 +1796,19 @@ msgstr "DECORATIES"
 msgid "STRETCH BEZELS (4K & ULTRAWIDE)"
 msgstr "OMLIJSTINGEN UITREKKEN (4K & ULTRAWIJD)"
 
-msgid "SHOW CONTROLLER OVERLAYS"
+msgid "SHOW TATTOO OVER BEZEL"
 msgstr ""
 
 msgid "SYSTEM CONTROLLERS"
 msgstr ""
 
-msgid "CUSTOM .PNG IMAGE"
+msgid "CUSTOM IMAGE"
 msgstr ""
 
-msgid "OVERLAY CORNER"
+msgid "Show an image overlaid on top of the bezel."
+msgstr ""
+
+msgid "TATTOO CORNER"
 msgstr ""
 
 msgid "NORTH WEST"
@@ -1801,6 +1826,12 @@ msgstr ""
 msgid "CUSTOM .PNG IMAGE PATH"
 msgstr ""
 
+msgid "RESIZE TATTOO"
+msgstr ""
+
+msgid "Shrink/expand tattoo to fit within the bezel's border."
+msgstr ""
+
 msgid "AI GAME TRANSLATION"
 msgstr "AI SPELVERTALING"
 
@@ -1815,6 +1846,36 @@ msgstr ""
 
 msgid "PAUSE ON TRANSLATED SCREEN"
 msgstr "PAUZEER BIJ VERTAALD SCHERM"
+
+msgid "SAVESTATES"
+msgstr ""
+
+msgid "AUTO SAVE/LOAD"
+msgstr ""
+
+msgid "INCREMENTAL SAVESTATES"
+msgstr ""
+
+msgid "NEW GAME CREATES NEW SLOT"
+msgstr ""
+
+msgid "NEW GAME OVERWRITES CURRENT SLOT"
+msgstr ""
+
+msgid "DISPLAY SAVE STATE MANAGER"
+msgstr ""
+
+msgid "ALWAYS"
+msgstr ""
+
+msgid "IF NOT EMPTY"
+msgstr ""
+
+msgid "SHOW SAVE STATE MANAGER"
+msgstr ""
+
+msgid "DISPLAY SAVE STATE MANAGER BEFORE LAUNCHING A GAME"
+msgstr ""
 
 msgid "PER SYSTEM ADVANCED CONFIGURATION"
 msgstr "GEAVANCEERDE CONFIGURATIE PER SYSTEEM"
@@ -2035,11 +2096,11 @@ msgstr "WIFI CONFIGURATIE FOUT"
 msgid "QUICK ACCESS"
 msgstr "SNELLE TOEGANG"
 
-msgid "SKIP TO NEXT SONG"
-msgstr "VOLGENDE NUMMER"
+msgid "SKIP TO THE NEXT SONG"
+msgstr ""
 
-msgid "LISTENING NOW"
-msgstr "WORDT NU AFGESPEELD"
+msgid "NOW PLAYING"
+msgstr ""
 
 msgid "LAUNCH SCREENSAVER"
 msgstr "START SCREENSAVER"
@@ -2065,6 +2126,9 @@ msgstr "SYSTEEM UITSCHAKELEN?"
 msgid "FAST SHUTDOWN SYSTEM"
 msgstr "SYSTEEM SNEL UITSCHAKELEN"
 
+msgid "Shutdown without saving metadata."
+msgstr ""
+
 msgid "REALLY SHUTDOWN WITHOUT SAVING METADATA?"
 msgstr "UITSCHAKELEN ZONDER METADATA OP TE SLAAN?"
 
@@ -2073,6 +2137,18 @@ msgstr "STOP EMULATIONSTATION"
 
 msgid "REALLY QUIT?"
 msgstr "ECHT STOPPEN?"
+
+msgid "AUTO SAVE/LOAD ON GAME LAUNCH"
+msgstr "AUTOMATISCH OPSLAAN/LADEN"
+
+msgid "SHOW CONTROLLER OVERLAYS"
+msgstr ""
+
+msgid "CUSTOM .PNG IMAGE"
+msgstr ""
+
+msgid "OVERLAY CORNER"
+msgstr ""
 
 msgid "COLORIZATION"
 msgstr "INKLEURING"
@@ -2277,6 +2353,9 @@ msgstr "OVERSLAAN"
 msgid "Downloading"
 msgstr "Bezig met downloaden"
 
+msgid "SEARCH FOR"
+msgstr "ZOEKEN NAAR"
+
 msgid "ACCEPT RESULT"
 msgstr "ACCEPTEER RESULTAAT"
 
@@ -2391,6 +2470,27 @@ msgstr "INDEXERING VOLTOOID"
 msgid "UPDATE GAMELISTS TO APPLY CHANGES."
 msgstr ""
 
+msgid "THE EMULATOR EXITED UNEXPECTEDLY"
+msgstr ""
+
+msgid "BAD COMMAND LINE ARGUMENTS"
+msgstr ""
+
+msgid "INVALID CONFIGURATION"
+msgstr ""
+
+msgid "UNKNOWN EMULATOR"
+msgstr ""
+
+msgid "EMULATOR IS MISSING"
+msgstr ""
+
+msgid "CORE IS MISSING"
+msgstr ""
+
+msgid "UKNOWN ERROR"
+msgstr ""
+
 msgid "GENRE"
 msgstr "GENRE"
 
@@ -2453,44 +2553,65 @@ msgstr "SHIFT"
 msgid "SPACE"
 msgstr "SPATIE"
 
+msgctxt "joystick"
 msgid "UP"
-msgstr "OMHOOG"
+msgstr ""
 
+msgctxt "joystick"
 msgid "DOWN"
-msgstr "OMLAAG"
+msgstr ""
 
+msgctxt "joystick"
 msgid "LEFT"
-msgstr "LINKS"
+msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT"
-msgstr "RECHTS"
+msgstr ""
 
+msgctxt "joystick"
+msgid "START"
+msgstr ""
+
+msgctxt "joystick"
+msgid "SELECT"
+msgstr ""
+
+msgctxt "joystick"
 msgid "LEFT ANALOG UP"
-msgstr "LINKER ANALOGE STICK OMHOOG"
+msgstr ""
 
+msgctxt "joystick"
 msgid "LEFT ANALOG DOWN"
-msgstr "LINKER ANALOGE STICK OMLAAG"
+msgstr ""
 
+msgctxt "joystick"
 msgid "LEFT ANALOG LEFT"
-msgstr "LINKER ANALOGE STICK LINKS"
+msgstr ""
 
+msgctxt "joystick"
 msgid "LEFT ANALOG RIGHT"
-msgstr "LINKER ANALOGE STICK RECHTS"
+msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG UP"
-msgstr "RECHTER ANALOGE STICK OMHOOG"
+msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG DOWN"
-msgstr "RECHTER ANALOGE STICK OMLAAG"
+msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG LEFT"
-msgstr "RECHTER ANALOGE STICK LINKS"
+msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG RIGHT"
-msgstr "RECHTER ANALOGE STICK RECHTS"
+msgstr ""
 
+msgctxt "joystick"
 msgid "HOTKEY"
-msgstr "HOTKEY"
+msgstr ""
 
 msgid "CONFIGURING"
 msgstr "CONFIGUREREN"
@@ -2632,6 +2753,60 @@ msgstr ""
 
 msgid "SCREEN READER DISABLED"
 msgstr ""
+
+#~ msgid "SET PLAYER PASSWORD"
+#~ msgstr "STEL WACHTWOORD SPELER IN"
+
+#~ msgid "SET VIEWER PASSWORD"
+#~ msgstr "STEL WACHTWOORD BEKIJKER IN"
+
+#~ msgid "START AUTO SAVE"
+#~ msgstr "AUTOMATISCH OPSLAAN STARTEN"
+
+#~ msgid "UP"
+#~ msgstr "OMHOOG"
+
+#~ msgid "DOWN"
+#~ msgstr "OMLAAG"
+
+#~ msgid "LEFT"
+#~ msgstr "LINKS"
+
+#~ msgid "RIGHT"
+#~ msgstr "RECHTS"
+
+#~ msgid "LEFT ANALOG UP"
+#~ msgstr "LINKER ANALOGE STICK OMHOOG"
+
+#~ msgid "LEFT ANALOG DOWN"
+#~ msgstr "LINKER ANALOGE STICK OMLAAG"
+
+#~ msgid "LEFT ANALOG LEFT"
+#~ msgstr "LINKER ANALOGE STICK LINKS"
+
+#~ msgid "LEFT ANALOG RIGHT"
+#~ msgstr "LINKER ANALOGE STICK RECHTS"
+
+#~ msgid "RIGHT ANALOG UP"
+#~ msgstr "RECHTER ANALOGE STICK OMHOOG"
+
+#~ msgid "RIGHT ANALOG DOWN"
+#~ msgstr "RECHTER ANALOGE STICK OMLAAG"
+
+#~ msgid "RIGHT ANALOG LEFT"
+#~ msgstr "RECHTER ANALOGE STICK LINKS"
+
+#~ msgid "RIGHT ANALOG RIGHT"
+#~ msgstr "RECHTER ANALOGE STICK RECHTS"
+
+#~ msgid "HOTKEY"
+#~ msgstr "HOTKEY"
+
+#~ msgid "SKIP TO NEXT SONG"
+#~ msgstr "VOLGENDE NUMMER"
+
+#~ msgid "LISTENING NOW"
+#~ msgstr "WORDT NU AFGESPEELD"
 
 #~ msgid "PRELOAD UI"
 #~ msgstr "PRELOAD UI"
@@ -3257,9 +3432,6 @@ msgstr ""
 
 #~ msgid "SCROLL"
 #~ msgstr "SCROLL"
-
-#~ msgid "SEARCH FOR"
-#~ msgstr "ZOEKEN NAAR"
 
 #~ msgid "JOYSTICK 1 UP"
 #~ msgstr "JOYSTICK 1 OMHOOG"

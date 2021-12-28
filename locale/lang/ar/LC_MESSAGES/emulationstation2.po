@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BATOCERA.LINUX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-16 07:49+0100\n"
+"POT-Creation-Date: 2021-12-15 23:48+0100\n"
 "PO-Revision-Date: 2020-05-21 03:34+0300\n"
 "Last-Translator: sultan AlShaheen\n"
 "Language-Team: Arabic (Saudi Arabia)\n"
@@ -97,6 +97,12 @@ msgstr "خريطة"
 
 msgid "enter path to map"
 msgstr "ادخل المسار للخريطة"
+
+msgid "Bezel (16:9)"
+msgstr ""
+
+msgid "enter path to bezel (16:9)"
+msgstr ""
 
 msgid "Cartridge"
 msgstr "كاتردج"
@@ -940,7 +946,7 @@ msgstr ""
 msgid "OPEN"
 msgstr ""
 
-msgid "NETPLAY HOSTING/OPTIONS"
+msgid "START A NETPLAY GAME"
 msgstr ""
 
 msgid "NETPLAY"
@@ -949,7 +955,7 @@ msgstr "NETPLAY"
 msgid "START GAME"
 msgstr ""
 
-msgid "BEGIN HOSTING A NETPLAY SESSION"
+msgid "HOST A NETPLAY GAME"
 msgstr ""
 
 msgid "YOU ARE NOT CONNECTED TO A NETWORK"
@@ -958,10 +964,10 @@ msgstr ""
 msgid "PUBLICLY ANNOUNCE GAME"
 msgstr ""
 
-msgid "SET PLAYER PASSWORD"
+msgid "PLAYER PASSWORD"
 msgstr ""
 
-msgid "SET VIEWER PASSWORD"
+msgid "VIEWER PASSWORD"
 msgstr ""
 
 msgid "FIND SIMILAR GAMES..."
@@ -1044,7 +1050,7 @@ msgstr ""
 msgid "START NEW GAME"
 msgstr ""
 
-msgid "START AUTO SAVE"
+msgid "START NEW AUTO SAVE"
 msgstr ""
 
 msgid "AUTO SAVE"
@@ -1272,6 +1278,9 @@ msgstr "كشط عن فيديو"
 msgid "SCRAPE FANART"
 msgstr "كشط غلاف الجماهير"
 
+msgid "SCRAPE BEZEL (16:9)"
+msgstr ""
+
 msgid "SCRAPE BOX BACKSIDE"
 msgstr ""
 
@@ -1458,16 +1467,19 @@ msgstr ""
 msgid "OPTIMIZATIONS"
 msgstr ""
 
-msgid "PRELOAD UI ELEMENTS"
+msgid "PRELOAD UI ELEMENTS ON BOOT"
 msgstr ""
 
-msgid "Reduce overall menu lag at the cost of storage space"
+msgid ""
+"Reduces lag when entering gamelists from the system menu, increases boot time"
 msgstr ""
 
-msgid "PRELOAD METADATA MEDIA"
+msgid "PRELOAD METADATA MEDIA ON BOOT"
 msgstr ""
 
-msgid "Reduce gamelist lag at the cost of storage space"
+msgid ""
+"Reduces lag when scrolling through a fully scraped gamelist, increases boot "
+"time"
 msgstr ""
 
 msgid "THREADED LOADING"
@@ -1692,6 +1704,17 @@ msgstr "استخدم ميزة RUN-AHEAD لمعالجة الإطارات"
 msgid "RUN-AHEAD USE SECOND INSTANCE"
 msgstr "استخدم RUN-AHEAD بديلاً ثانوي"
 
+msgid "AUTOMATIC FRAME DELAY"
+msgstr ""
+
+msgid "AUTO FRAME DELAY"
+msgstr ""
+
+msgid ""
+"Automatically decrease frame delay temporarily to prevent frame drops. Turn "
+"off if this worsens audio/video stuttering."
+msgstr ""
+
 msgid "HARDCORE MODE"
 msgstr "وضع HARDCORE"
 
@@ -1703,6 +1726,14 @@ msgstr "وضع مفصل"
 
 msgid "AUTOMATIC SCREENSHOT"
 msgstr "لقطة شاشة تلقائية"
+
+msgid "CHALLENGE INDICATORS"
+msgstr ""
+
+msgid ""
+"Shows icons in the bottom right corner when eligible achievements can be "
+"earned."
+msgstr ""
 
 msgid "RETROACHIEVEMENT UNLOCK SOUND"
 msgstr ""
@@ -1737,6 +1768,9 @@ msgstr "المنفذ"
 msgid "USE RELAY SERVER"
 msgstr "استخدم خادم حقيقي"
 
+msgid "SHOW UNAVAILABLE GAMES"
+msgstr ""
+
 msgid "DECORATION SET"
 msgstr ""
 
@@ -1758,18 +1792,6 @@ msgstr "الترجيع"
 msgid "INTEGER SCALING (PIXEL PERFECT)"
 msgstr ""
 
-msgid "AUTO SAVE/LOAD ON GAME LAUNCH"
-msgstr "حفظ/تحميل تلقائي"
-
-msgid "SHOW SAVE STATES"
-msgstr ""
-
-msgid "SHOW SAVE STATES IF NOT EMPTY"
-msgstr ""
-
-msgid "INCREMENTAL SAVESTATES"
-msgstr ""
-
 msgid "SHADER SET"
 msgstr ""
 
@@ -1779,16 +1801,19 @@ msgstr "الديكور"
 msgid "STRETCH BEZELS (4K & ULTRAWIDE)"
 msgstr ""
 
-msgid "SHOW CONTROLLER OVERLAYS"
+msgid "SHOW TATTOO OVER BEZEL"
 msgstr ""
 
 msgid "SYSTEM CONTROLLERS"
 msgstr ""
 
-msgid "CUSTOM .PNG IMAGE"
+msgid "CUSTOM IMAGE"
 msgstr ""
 
-msgid "OVERLAY CORNER"
+msgid "Show an image overlaid on top of the bezel."
+msgstr ""
+
+msgid "TATTOO CORNER"
 msgstr ""
 
 msgid "NORTH WEST"
@@ -1806,6 +1831,12 @@ msgstr ""
 msgid "CUSTOM .PNG IMAGE PATH"
 msgstr ""
 
+msgid "RESIZE TATTOO"
+msgstr ""
+
+msgid "Shrink/expand tattoo to fit within the bezel's border."
+msgstr ""
+
 msgid "AI GAME TRANSLATION"
 msgstr "مترجم اللعبة بالذكاء الصناعي"
 
@@ -1820,6 +1851,36 @@ msgstr ""
 
 msgid "PAUSE ON TRANSLATED SCREEN"
 msgstr "إيقاف مؤقت للشاشة المترجمة"
+
+msgid "SAVESTATES"
+msgstr ""
+
+msgid "AUTO SAVE/LOAD"
+msgstr ""
+
+msgid "INCREMENTAL SAVESTATES"
+msgstr ""
+
+msgid "NEW GAME CREATES NEW SLOT"
+msgstr ""
+
+msgid "NEW GAME OVERWRITES CURRENT SLOT"
+msgstr ""
+
+msgid "DISPLAY SAVE STATE MANAGER"
+msgstr ""
+
+msgid "ALWAYS"
+msgstr ""
+
+msgid "IF NOT EMPTY"
+msgstr ""
+
+msgid "SHOW SAVE STATE MANAGER"
+msgstr ""
+
+msgid "DISPLAY SAVE STATE MANAGER BEFORE LAUNCHING A GAME"
+msgstr ""
 
 msgid "PER SYSTEM ADVANCED CONFIGURATION"
 msgstr "تكوين متقدم لكل نظام"
@@ -2040,10 +2101,10 @@ msgstr "تكوين الـ WIFI خاطىء"
 msgid "QUICK ACCESS"
 msgstr "الوصول السريع"
 
-msgid "SKIP TO NEXT SONG"
-msgstr "انتقل إلى الأغنية التالية"
+msgid "SKIP TO THE NEXT SONG"
+msgstr ""
 
-msgid "LISTENING NOW"
+msgid "NOW PLAYING"
 msgstr ""
 
 msgid "LAUNCH SCREENSAVER"
@@ -2070,6 +2131,9 @@ msgstr "هل فعلا تريد إيقاف التشغيل؟ "
 msgid "FAST SHUTDOWN SYSTEM"
 msgstr "إيقاف تشغيل سريع"
 
+msgid "Shutdown without saving metadata."
+msgstr ""
+
 msgid "REALLY SHUTDOWN WITHOUT SAVING METADATA?"
 msgstr "هل فعلا تريد إيقاف التشغيل بدون حفظ البيانات؟"
 
@@ -2078,6 +2142,18 @@ msgstr "خروج من المحاكي"
 
 msgid "REALLY QUIT?"
 msgstr "هل فعلا تريد الخروج؟"
+
+msgid "AUTO SAVE/LOAD ON GAME LAUNCH"
+msgstr "حفظ/تحميل تلقائي"
+
+msgid "SHOW CONTROLLER OVERLAYS"
+msgstr ""
+
+msgid "CUSTOM .PNG IMAGE"
+msgstr ""
+
+msgid "OVERLAY CORNER"
+msgstr ""
 
 msgid "COLORIZATION"
 msgstr "تلوين"
@@ -2294,6 +2370,9 @@ msgstr "تخطي"
 msgid "Downloading"
 msgstr "جارِ التنزيل"
 
+msgid "SEARCH FOR"
+msgstr ""
+
 msgid "ACCEPT RESULT"
 msgstr "قبول النتيجة"
 
@@ -2408,6 +2487,27 @@ msgstr ""
 msgid "UPDATE GAMELISTS TO APPLY CHANGES."
 msgstr ""
 
+msgid "THE EMULATOR EXITED UNEXPECTEDLY"
+msgstr ""
+
+msgid "BAD COMMAND LINE ARGUMENTS"
+msgstr ""
+
+msgid "INVALID CONFIGURATION"
+msgstr ""
+
+msgid "UNKNOWN EMULATOR"
+msgstr ""
+
+msgid "EMULATOR IS MISSING"
+msgstr ""
+
+msgid "CORE IS MISSING"
+msgstr ""
+
+msgid "UKNOWN ERROR"
+msgstr ""
+
 msgid "GENRE"
 msgstr "النوع"
 
@@ -2470,44 +2570,65 @@ msgstr "تبديل"
 msgid "SPACE"
 msgstr "مسافة"
 
+msgctxt "joystick"
 msgid "UP"
-msgstr "أعلى"
+msgstr ""
 
+msgctxt "joystick"
 msgid "DOWN"
-msgstr "أسفل"
+msgstr ""
 
+msgctxt "joystick"
 msgid "LEFT"
-msgstr "يسار"
+msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT"
-msgstr "يمين"
+msgstr ""
 
+msgctxt "joystick"
+msgid "START"
+msgstr ""
+
+msgctxt "joystick"
+msgid "SELECT"
+msgstr ""
+
+msgctxt "joystick"
 msgid "LEFT ANALOG UP"
-msgstr "العجلة اليسرى للأعلى"
+msgstr ""
 
+msgctxt "joystick"
 msgid "LEFT ANALOG DOWN"
 msgstr ""
 
+msgctxt "joystick"
 msgid "LEFT ANALOG LEFT"
-msgstr "العجلة اليسرى لليسار"
+msgstr ""
 
+msgctxt "joystick"
 msgid "LEFT ANALOG RIGHT"
 msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG UP"
-msgstr "العجلة اليمنى للأعلى"
+msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG DOWN"
 msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG LEFT"
-msgstr "العجلة اليمنى لليسار"
+msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG RIGHT"
 msgstr ""
 
+msgctxt "joystick"
 msgid "HOTKEY"
-msgstr "المفتاح الأساسي"
+msgstr ""
 
 msgid "CONFIGURING"
 msgstr "تكوين"
@@ -2677,6 +2798,36 @@ msgstr ""
 
 msgid "SCREEN READER DISABLED"
 msgstr ""
+
+#~ msgid "UP"
+#~ msgstr "أعلى"
+
+#~ msgid "DOWN"
+#~ msgstr "أسفل"
+
+#~ msgid "LEFT"
+#~ msgstr "يسار"
+
+#~ msgid "RIGHT"
+#~ msgstr "يمين"
+
+#~ msgid "LEFT ANALOG UP"
+#~ msgstr "العجلة اليسرى للأعلى"
+
+#~ msgid "LEFT ANALOG LEFT"
+#~ msgstr "العجلة اليسرى لليسار"
+
+#~ msgid "RIGHT ANALOG UP"
+#~ msgstr "العجلة اليمنى للأعلى"
+
+#~ msgid "RIGHT ANALOG LEFT"
+#~ msgstr "العجلة اليمنى لليسار"
+
+#~ msgid "HOTKEY"
+#~ msgstr "المفتاح الأساسي"
+
+#~ msgid "SKIP TO NEXT SONG"
+#~ msgstr "انتقل إلى الأغنية التالية"
 
 #~ msgid "PRELOAD UI"
 #~ msgstr "تحميل واجهة المستخدم"

@@ -45,6 +45,7 @@
 
 static std::string gPlayVideo;
 static int gPlayVideoDuration = 0;
+static bool enable_startup_game = true;
 
 bool parseArgs(int argc, char* argv[])
 {
@@ -160,9 +161,21 @@ bool parseArgs(int argc, char* argv[])
 		}else if(strcmp(argv[i], "--exit-on-reboot-required") == 0)
 		{
 			Settings::getInstance()->setBool("ExitOnRebootRequired", true);
+		}else if(strcmp(argv[i], "--no-startup-game") == 0)
+		{
+		        enable_startup_game = false;
 		}else if(strcmp(argv[i], "--no-splash") == 0)
 		{
 			Settings::getInstance()->setBool("SplashScreen", false);
+		}else if(strcmp(argv[i], "--splash-image") == 0)
+		{
+		        if (i >= argc - 1)
+			{
+				std::cerr << "Invalid splash image supplied.";
+				return false;
+			}
+			Settings::getInstance()->setString("AlternateSplashScreen", argv[i+1]);
+			++i; // skip the argument value
 		}else if(strcmp(argv[i], "--debug") == 0)
 		{
 			Settings::getInstance()->setBool("Debug", true);
@@ -496,8 +509,10 @@ int main(int argc, char* argv[])
 	setLocale(argv[0]);	
 
 #if !WIN32
-	// Run boot game, before Window Create for linux
-	launchStartupGame();
+	if(enable_startup_game) {
+	  // Run boot game, before Window Create for linux
+	  launchStartupGame();
+	}
 #endif
 
 	// metadata init

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: emulationstation\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-16 07:49+0100\n"
+"POT-Creation-Date: 2021-12-15 23:48+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -93,6 +93,12 @@ msgstr "Térkép"
 
 msgid "enter path to map"
 msgstr "térkép elérési útja"
+
+msgid "Bezel (16:9)"
+msgstr ""
+
+msgid "enter path to bezel (16:9)"
+msgstr ""
 
 msgid "Cartridge"
 msgstr "Cartridge"
@@ -932,7 +938,7 @@ msgstr ""
 msgid "OPEN"
 msgstr "MEGNYITÁS"
 
-msgid "NETPLAY HOSTING/OPTIONS"
+msgid "START A NETPLAY GAME"
 msgstr ""
 
 msgid "NETPLAY"
@@ -941,7 +947,7 @@ msgstr "NETPLAY"
 msgid "START GAME"
 msgstr "JÁTÉK INDÍTÁS"
 
-msgid "BEGIN HOSTING A NETPLAY SESSION"
+msgid "HOST A NETPLAY GAME"
 msgstr ""
 
 msgid "YOU ARE NOT CONNECTED TO A NETWORK"
@@ -950,11 +956,11 @@ msgstr "NEM VAGY CSATLAKOZVA HÁLÓZATHOZ"
 msgid "PUBLICLY ANNOUNCE GAME"
 msgstr "JÁTÉK PUBLIKUS INDÍTÁSA"
 
-msgid "SET PLAYER PASSWORD"
-msgstr "JÁTÉKOS JELSZÓ BEÁLLÍTÁSA"
+msgid "PLAYER PASSWORD"
+msgstr ""
 
-msgid "SET VIEWER PASSWORD"
-msgstr "NÉZŐ JELSZÓ BEÁLLÍTÁSA"
+msgid "VIEWER PASSWORD"
+msgstr ""
 
 msgid "FIND SIMILAR GAMES..."
 msgstr "HASONLÓ JÁTÉKOK KERESÉSE..."
@@ -1036,8 +1042,8 @@ msgstr ""
 msgid "START NEW GAME"
 msgstr "ÚJ JÁTÉK INDÍTÁSA"
 
-msgid "START AUTO SAVE"
-msgstr "AUTOMATIKUS MENTÉS INDÍTÁSA"
+msgid "START NEW AUTO SAVE"
+msgstr ""
 
 msgid "AUTO SAVE"
 msgstr "AUTOMATIKUS MENTÉS"
@@ -1264,6 +1270,9 @@ msgstr "VIDEÓK LEKÉRÉSE"
 msgid "SCRAPE FANART"
 msgstr "RAJONGÓI KÉP LEKÉRÉSE"
 
+msgid "SCRAPE BEZEL (16:9)"
+msgstr ""
+
 msgid "SCRAPE BOX BACKSIDE"
 msgstr "BOBOZ HÁTOLDAL LEKÉRÉSE"
 
@@ -1452,16 +1461,19 @@ msgstr "HÁLÓZATI JELZŐ MEGJELENÍTÉSE"
 msgid "OPTIMIZATIONS"
 msgstr "OPTIMALIZÁLÁSOK"
 
-msgid "PRELOAD UI ELEMENTS"
+msgid "PRELOAD UI ELEMENTS ON BOOT"
 msgstr ""
 
-msgid "Reduce overall menu lag at the cost of storage space"
+msgid ""
+"Reduces lag when entering gamelists from the system menu, increases boot time"
 msgstr ""
 
-msgid "PRELOAD METADATA MEDIA"
+msgid "PRELOAD METADATA MEDIA ON BOOT"
 msgstr ""
 
-msgid "Reduce gamelist lag at the cost of storage space"
+msgid ""
+"Reduces lag when scrolling through a fully scraped gamelist, increases boot "
+"time"
 msgstr ""
 
 msgid "THREADED LOADING"
@@ -1686,6 +1698,17 @@ msgstr "RUN-AHEAD FRAME-EK HASZNÁLATA"
 msgid "RUN-AHEAD USE SECOND INSTANCE"
 msgstr "RUN-AHEAD HASZNÁLATA MÁSODIK LEHETŐSÉGNEK"
 
+msgid "AUTOMATIC FRAME DELAY"
+msgstr ""
+
+msgid "AUTO FRAME DELAY"
+msgstr ""
+
+msgid ""
+"Automatically decrease frame delay temporarily to prevent frame drops. Turn "
+"off if this worsens audio/video stuttering."
+msgstr ""
+
 msgid "HARDCORE MODE"
 msgstr "HALADÓ MÓD"
 
@@ -1697,6 +1720,14 @@ msgstr "KÖVETŐ (VERBOSE) MÓD"
 
 msgid "AUTOMATIC SCREENSHOT"
 msgstr "AUTOMATIKUS KÉPERNYŐKÉP"
+
+msgid "CHALLENGE INDICATORS"
+msgstr ""
+
+msgid ""
+"Shows icons in the bottom right corner when eligible achievements can be "
+"earned."
+msgstr ""
 
 msgid "RETROACHIEVEMENT UNLOCK SOUND"
 msgstr ""
@@ -1731,6 +1762,9 @@ msgstr "PORT"
 msgid "USE RELAY SERVER"
 msgstr "RELAY SZERVER HASZNÁLATA"
 
+msgid "SHOW UNAVAILABLE GAMES"
+msgstr ""
+
 msgid "DECORATION SET"
 msgstr ""
 
@@ -1752,18 +1786,6 @@ msgstr "VISSZATEKER"
 msgid "INTEGER SCALING (PIXEL PERFECT)"
 msgstr "INTEGER SCALE (PIXEL PONTOS)"
 
-msgid "AUTO SAVE/LOAD ON GAME LAUNCH"
-msgstr "AUTO MENTÉS/TÖLTÉS"
-
-msgid "SHOW SAVE STATES"
-msgstr ""
-
-msgid "SHOW SAVE STATES IF NOT EMPTY"
-msgstr ""
-
-msgid "INCREMENTAL SAVESTATES"
-msgstr ""
-
 msgid "SHADER SET"
 msgstr "SHADER VÁLASZTÁS"
 
@@ -1773,16 +1795,19 @@ msgstr "DEKORÁCIÓ"
 msgid "STRETCH BEZELS (4K & ULTRAWIDE)"
 msgstr "KERET NYÚJTÁS (4K és ULTRASZÉLES)"
 
-msgid "SHOW CONTROLLER OVERLAYS"
+msgid "SHOW TATTOO OVER BEZEL"
 msgstr ""
 
 msgid "SYSTEM CONTROLLERS"
 msgstr ""
 
-msgid "CUSTOM .PNG IMAGE"
+msgid "CUSTOM IMAGE"
 msgstr ""
 
-msgid "OVERLAY CORNER"
+msgid "Show an image overlaid on top of the bezel."
+msgstr ""
+
+msgid "TATTOO CORNER"
 msgstr ""
 
 msgid "NORTH WEST"
@@ -1800,6 +1825,12 @@ msgstr ""
 msgid "CUSTOM .PNG IMAGE PATH"
 msgstr ""
 
+msgid "RESIZE TATTOO"
+msgstr ""
+
+msgid "Shrink/expand tattoo to fit within the bezel's border."
+msgstr ""
+
 msgid "AI GAME TRANSLATION"
 msgstr "MI JÁTÉK FORDÍTÁS"
 
@@ -1814,6 +1845,36 @@ msgstr ""
 
 msgid "PAUSE ON TRANSLATED SCREEN"
 msgstr "PILLANAT ÁLJ A LEFORDÍTOTT KÉPERNYŐN "
+
+msgid "SAVESTATES"
+msgstr ""
+
+msgid "AUTO SAVE/LOAD"
+msgstr ""
+
+msgid "INCREMENTAL SAVESTATES"
+msgstr ""
+
+msgid "NEW GAME CREATES NEW SLOT"
+msgstr ""
+
+msgid "NEW GAME OVERWRITES CURRENT SLOT"
+msgstr ""
+
+msgid "DISPLAY SAVE STATE MANAGER"
+msgstr ""
+
+msgid "ALWAYS"
+msgstr ""
+
+msgid "IF NOT EMPTY"
+msgstr ""
+
+msgid "SHOW SAVE STATE MANAGER"
+msgstr ""
+
+msgid "DISPLAY SAVE STATE MANAGER BEFORE LAUNCHING A GAME"
+msgstr ""
 
 msgid "PER SYSTEM ADVANCED CONFIGURATION"
 msgstr "RENDSZERENKÉNTI HALADÓ KONFIGURÁCIÓ"
@@ -2034,11 +2095,11 @@ msgstr "WIFI BEÁLLÍTÁSI HIBA"
 msgid "QUICK ACCESS"
 msgstr "GYORS ELÉRÉS"
 
-msgid "SKIP TO NEXT SONG"
-msgstr "KÖVETKEZŐ DAL"
+msgid "SKIP TO THE NEXT SONG"
+msgstr ""
 
-msgid "LISTENING NOW"
-msgstr "MOST MEGY"
+msgid "NOW PLAYING"
+msgstr ""
 
 msgid "LAUNCH SCREENSAVER"
 msgstr "KÉPERNYŐVÉDŐ INDÍTÁSA"
@@ -2064,6 +2125,9 @@ msgstr "BIZTOS, HOGY LEÁLLÍTOD?"
 msgid "FAST SHUTDOWN SYSTEM"
 msgstr "GYORS LEÁLLÍTÁS"
 
+msgid "Shutdown without saving metadata."
+msgstr ""
+
 msgid "REALLY SHUTDOWN WITHOUT SAVING METADATA?"
 msgstr "BIZTOS LEÁLLÍTOD A METAADATOK MENTÉSE NÉLKÜL?"
 
@@ -2072,6 +2136,18 @@ msgstr "KILÉPÉS AZ EMULATIONSTATION-BÓL"
 
 msgid "REALLY QUIT?"
 msgstr "BIZTOS KILÉPSZ?"
+
+msgid "AUTO SAVE/LOAD ON GAME LAUNCH"
+msgstr "AUTO MENTÉS/TÖLTÉS"
+
+msgid "SHOW CONTROLLER OVERLAYS"
+msgstr ""
+
+msgid "CUSTOM .PNG IMAGE"
+msgstr ""
+
+msgid "OVERLAY CORNER"
+msgstr ""
 
 msgid "COLORIZATION"
 msgstr "SZÍNEZET"
@@ -2276,6 +2352,9 @@ msgstr "KIHAGY"
 msgid "Downloading"
 msgstr "Letöltés"
 
+msgid "SEARCH FOR"
+msgstr "KERESÉS"
+
 msgid "ACCEPT RESULT"
 msgstr "EREDMÉNYEK MENTÉSE"
 
@@ -2390,6 +2469,27 @@ msgstr "INDEXELÉS BEFEJEZVE"
 msgid "UPDATE GAMELISTS TO APPLY CHANGES."
 msgstr ""
 
+msgid "THE EMULATOR EXITED UNEXPECTEDLY"
+msgstr ""
+
+msgid "BAD COMMAND LINE ARGUMENTS"
+msgstr ""
+
+msgid "INVALID CONFIGURATION"
+msgstr ""
+
+msgid "UNKNOWN EMULATOR"
+msgstr ""
+
+msgid "EMULATOR IS MISSING"
+msgstr ""
+
+msgid "CORE IS MISSING"
+msgstr ""
+
+msgid "UKNOWN ERROR"
+msgstr ""
+
 msgid "GENRE"
 msgstr "MŰFAJ"
 
@@ -2452,44 +2552,65 @@ msgstr "SHIFT"
 msgid "SPACE"
 msgstr "SZÓKÖZ"
 
+msgctxt "joystick"
 msgid "UP"
-msgstr "FEL"
+msgstr ""
 
+msgctxt "joystick"
 msgid "DOWN"
-msgstr "LE"
+msgstr ""
 
+msgctxt "joystick"
 msgid "LEFT"
-msgstr "BAL"
+msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT"
-msgstr "JOBB"
+msgstr ""
 
+msgctxt "joystick"
+msgid "START"
+msgstr ""
+
+msgctxt "joystick"
+msgid "SELECT"
+msgstr ""
+
+msgctxt "joystick"
 msgid "LEFT ANALOG UP"
-msgstr "BAL OLDALI ANALÓG FEL"
+msgstr ""
 
+msgctxt "joystick"
 msgid "LEFT ANALOG DOWN"
-msgstr "BAL OLDALI ANALÓG LE"
+msgstr ""
 
+msgctxt "joystick"
 msgid "LEFT ANALOG LEFT"
-msgstr "BAL OLDALI ANALÓG BAL"
+msgstr ""
 
+msgctxt "joystick"
 msgid "LEFT ANALOG RIGHT"
-msgstr "BAL OLDALI ANALÓG JOBB"
+msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG UP"
-msgstr "JOBB OLDALI ANALÓG FEL"
+msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG DOWN"
-msgstr "JOBB OLDALI ANALÓG LE"
+msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG LEFT"
-msgstr "JOBB OLDALI ANALÓG BAL"
+msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG RIGHT"
-msgstr "JOBB OLDALI ANALÓG JOBB"
+msgstr ""
 
+msgctxt "joystick"
 msgid "HOTKEY"
-msgstr "GYORSBILLENTYŰ"
+msgstr ""
 
 msgid "CONFIGURING"
 msgstr "BEÁLLÍTÁS"
@@ -2631,6 +2752,60 @@ msgstr ""
 
 msgid "SCREEN READER DISABLED"
 msgstr ""
+
+#~ msgid "SET PLAYER PASSWORD"
+#~ msgstr "JÁTÉKOS JELSZÓ BEÁLLÍTÁSA"
+
+#~ msgid "SET VIEWER PASSWORD"
+#~ msgstr "NÉZŐ JELSZÓ BEÁLLÍTÁSA"
+
+#~ msgid "START AUTO SAVE"
+#~ msgstr "AUTOMATIKUS MENTÉS INDÍTÁSA"
+
+#~ msgid "UP"
+#~ msgstr "FEL"
+
+#~ msgid "DOWN"
+#~ msgstr "LE"
+
+#~ msgid "LEFT"
+#~ msgstr "BAL"
+
+#~ msgid "RIGHT"
+#~ msgstr "JOBB"
+
+#~ msgid "LEFT ANALOG UP"
+#~ msgstr "BAL OLDALI ANALÓG FEL"
+
+#~ msgid "LEFT ANALOG DOWN"
+#~ msgstr "BAL OLDALI ANALÓG LE"
+
+#~ msgid "LEFT ANALOG LEFT"
+#~ msgstr "BAL OLDALI ANALÓG BAL"
+
+#~ msgid "LEFT ANALOG RIGHT"
+#~ msgstr "BAL OLDALI ANALÓG JOBB"
+
+#~ msgid "RIGHT ANALOG UP"
+#~ msgstr "JOBB OLDALI ANALÓG FEL"
+
+#~ msgid "RIGHT ANALOG DOWN"
+#~ msgstr "JOBB OLDALI ANALÓG LE"
+
+#~ msgid "RIGHT ANALOG LEFT"
+#~ msgstr "JOBB OLDALI ANALÓG BAL"
+
+#~ msgid "RIGHT ANALOG RIGHT"
+#~ msgstr "JOBB OLDALI ANALÓG JOBB"
+
+#~ msgid "HOTKEY"
+#~ msgstr "GYORSBILLENTYŰ"
+
+#~ msgid "SKIP TO NEXT SONG"
+#~ msgstr "KÖVETKEZŐ DAL"
+
+#~ msgid "LISTENING NOW"
+#~ msgstr "MOST MEGY"
 
 #~ msgid "PRELOAD UI"
 #~ msgstr "UI ELŐTÖLTÉSE"
@@ -3113,9 +3288,6 @@ msgstr ""
 
 #~ msgid "NUMBER OF PLAYERS"
 #~ msgstr "JÁTÉKOSOK SZÁMA"
-
-#~ msgid "SEARCH FOR"
-#~ msgstr "KERESÉS"
 
 #~ msgid "JOYSTICK 1 UP"
 #~ msgstr "JOYSTICK 1 FEL"

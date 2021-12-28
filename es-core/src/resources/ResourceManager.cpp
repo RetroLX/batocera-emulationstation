@@ -29,12 +29,16 @@ std::vector<std::string> ResourceManager::getResourcePaths() const
 	std::vector<std::string> paths;
 
 	// check if theme overrides default resources
+#ifdef WIN32
 	std::string themePath = Utils::FileSystem::getEsConfigPath() + "/themes/" + Settings::getInstance()->getString("ThemeSet") + "/resources";
 	if (Utils::FileSystem::isDirectory(themePath))
 		paths.push_back(themePath);
 
-	// check if default readonly theme overrides default resources
-#ifndef WIN32
+#else
+	std::string themePath = "/userdata/themes/" + Settings::getInstance()->getString("ThemeSet") + "/resources";
+	if (Utils::FileSystem::isDirectory(themePath))
+		paths.push_back(themePath);
+
 	std::string roThemePath = Utils::FileSystem::getSharedConfigPath() + "/themes/" + Settings::getInstance()->getString("ThemeSet") + "/resources";
 	if (Utils::FileSystem::isDirectory(roThemePath))
 		paths.push_back(roThemePath);
@@ -71,9 +75,13 @@ std::string ResourceManager::getResourcePath(const std::string& path) const
 	}
 
 #if WIN32
-	if (Utils::String::startsWith(path, ":/locale/"))
+	if (Utils::String::startsWith(path, ":/locale/") || Utils::String::startsWith(path, ":/es_features.locale/"))
 	{
 		std::string test = Utils::FileSystem::getCanonicalPath(Utils::FileSystem::getExePath() + "/" + &path[2]);
+		if (Utils::FileSystem::exists(test))
+			return test;
+
+		test = Utils::FileSystem::getCanonicalPath(Utils::FileSystem::getEsConfigPath() + "/" + &path[2]);
 		if (Utils::FileSystem::exists(test))
 			return test;
 	}

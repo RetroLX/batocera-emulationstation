@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: emulationstation\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-16 07:49+0100\n"
+"POT-Creation-Date: 2021-12-15 23:48+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -93,6 +93,12 @@ msgstr "Karte"
 
 msgid "enter path to map"
 msgstr "Pfad zur Karte eingeben"
+
+msgid "Bezel (16:9)"
+msgstr "Bezel (16:9)"
+
+msgid "enter path to bezel (16:9)"
+msgstr "Pfad zum Bezel (16:9) eingeben"
 
 msgid "Cartridge"
 msgstr "Cartridge"
@@ -934,8 +940,8 @@ msgstr "SPEICHERSTÄNDE"
 msgid "OPEN"
 msgstr "OFFEN"
 
-msgid "NETPLAY HOSTING/OPTIONS"
-msgstr "NETPLAY HOSTING/OPTIONEN"
+msgid "START A NETPLAY GAME"
+msgstr ""
 
 msgid "NETPLAY"
 msgstr "NETPLAY"
@@ -943,8 +949,8 @@ msgstr "NETPLAY"
 msgid "START GAME"
 msgstr "STARTE SPIEL"
 
-msgid "BEGIN HOSTING A NETPLAY SESSION"
-msgstr "HOSTING EINER NETPLAY-SESSION BEGINNEN"
+msgid "HOST A NETPLAY GAME"
+msgstr ""
 
 msgid "YOU ARE NOT CONNECTED TO A NETWORK"
 msgstr "KEINE VERBINDUNG ZU EINEM NETZWERK"
@@ -952,11 +958,11 @@ msgstr "KEINE VERBINDUNG ZU EINEM NETZWERK"
 msgid "PUBLICLY ANNOUNCE GAME"
 msgstr "SPIEL ÖFFENTLICH ANKÜNDIGEN"
 
-msgid "SET PLAYER PASSWORD"
-msgstr "SPIELER PASSWORT EINSTELLEN"
+msgid "PLAYER PASSWORD"
+msgstr ""
 
-msgid "SET VIEWER PASSWORD"
-msgstr "ZUSCHAUER PASSWORT EINSTELLEN"
+msgid "VIEWER PASSWORD"
+msgstr ""
 
 msgid "FIND SIMILAR GAMES..."
 msgstr "FINDE ÄHNLICHE SPIELE..."
@@ -1038,8 +1044,8 @@ msgstr "SPEICHERSTAND-VERWALTUNG"
 msgid "START NEW GAME"
 msgstr "STARTE NEUES SPIEL"
 
-msgid "START AUTO SAVE"
-msgstr "STARTE AUTOMATISCHE SPEICHERUNG"
+msgid "START NEW AUTO SAVE"
+msgstr ""
 
 msgid "AUTO SAVE"
 msgstr "AUTOMATISCHE SPEICHERUNG"
@@ -1269,6 +1275,9 @@ msgstr "VIDEOS SCRAPEN"
 msgid "SCRAPE FANART"
 msgstr "FANART SCRAPEN"
 
+msgid "SCRAPE BEZEL (16:9)"
+msgstr "BEZEL (16:9) SCRAPEN"
+
 msgid "SCRAPE BOX BACKSIDE"
 msgstr "BOX-RÜCKSEITE SCRAPEN"
 
@@ -1457,17 +1466,24 @@ msgstr "NETZWERK-INDIKATOR ANZEIGEN"
 msgid "OPTIMIZATIONS"
 msgstr "OPTIMIERUNGEN"
 
-msgid "PRELOAD UI ELEMENTS"
-msgstr "UI-ELEMENTE VORLADEN"
+msgid "PRELOAD UI ELEMENTS ON BOOT"
+msgstr "BEIM BOOTEN UI-ELEMENTE VORLADEN"
 
-msgid "Reduce overall menu lag at the cost of storage space"
-msgstr "Gesamte Menüverzögerung auf Kosten des Speicherplatzes reduzieren"
+msgid ""
+"Reduces lag when entering gamelists from the system menu, increases boot time"
+msgstr ""
+"Reduziert Verzögerungerungen bei der Eingabe von Spielelisten aus dem System-"
+"Menü, verlängert Boot-Zeit"
 
-msgid "PRELOAD METADATA MEDIA"
-msgstr "METADATEN-MEDIEN VORLADEN"
+msgid "PRELOAD METADATA MEDIA ON BOOT"
+msgstr "MEDIEN-METADATEN BEIM BOOTEN VORLADEN"
 
-msgid "Reduce gamelist lag at the cost of storage space"
-msgstr "Verzögerung der Spieleliste auf Kosten des Speicherplatzes reduzieren"
+msgid ""
+"Reduces lag when scrolling through a fully scraped gamelist, increases boot "
+"time"
+msgstr ""
+"Reduziert Verzögerungen beim Scrollen durch eine vollständig gescrapte "
+"Spieleliste, verlängert Boot-Zeit"
 
 msgid "THREADED LOADING"
 msgstr "THREADED LOADING"
@@ -1695,6 +1711,19 @@ msgstr "USE RUN-AHEAD FRAMES"
 msgid "RUN-AHEAD USE SECOND INSTANCE"
 msgstr "RUN-AHEAD USE SECOND INSTANCE"
 
+msgid "AUTOMATIC FRAME DELAY"
+msgstr "AUTOMATISCHE FRAME-VERZÖGERUNG"
+
+msgid "AUTO FRAME DELAY"
+msgstr "AUTO FRAME-VERZÖGERUNG"
+
+msgid ""
+"Automatically decrease frame delay temporarily to prevent frame drops. Turn "
+"off if this worsens audio/video stuttering."
+msgstr ""
+"Frame-Verzögerung vorrübergehend automatisch verringern, um Frame-Drops zu "
+"vermeiden. Ausschalten, falls dies Audio-/Video-Stottern verschlimmert."
+
 msgid "HARDCORE MODE"
 msgstr "HARDCORE MODUS"
 
@@ -1706,6 +1735,16 @@ msgstr "AUSFÜHRLICHER MODUS"
 
 msgid "AUTOMATIC SCREENSHOT"
 msgstr "AUTOMATISCHER SCREENSHOT"
+
+msgid "CHALLENGE INDICATORS"
+msgstr "HERAUSFORDERUNGSINDIKATOREN"
+
+msgid ""
+"Shows icons in the bottom right corner when eligible achievements can be "
+"earned."
+msgstr ""
+"Zeigt Symbole in der unteren rechten Ecke an, wenn berechtigte Erfolge "
+"verdient werden können"
 
 msgid "RETROACHIEVEMENT UNLOCK SOUND"
 msgstr "RETROACHIEVMENT FREISCHALT-TON"
@@ -1740,6 +1779,9 @@ msgstr "PORT"
 msgid "USE RELAY SERVER"
 msgstr "NUTZE RELAY-SERVER"
 
+msgid "SHOW UNAVAILABLE GAMES"
+msgstr ""
+
 msgid "DECORATION SET"
 msgstr "DEKORATIONS-SET"
 
@@ -1761,18 +1803,6 @@ msgstr "ZURÜCKSPULEN"
 msgid "INTEGER SCALING (PIXEL PERFECT)"
 msgstr "INTEGER SCALING (PIXEL PERFECT)"
 
-msgid "AUTO SAVE/LOAD ON GAME LAUNCH"
-msgstr "AUTOM. SPEICHERN/LADEN BEIM SPIELSTART"
-
-msgid "SHOW SAVE STATES"
-msgstr "SPEICHERSTÄNDE ANZEIGEN"
-
-msgid "SHOW SAVE STATES IF NOT EMPTY"
-msgstr "SPEICHERSTÄNDE ANZEIGEN, WENN NICHT LEER"
-
-msgid "INCREMENTAL SAVESTATES"
-msgstr "INKREMENTELLE SPEICHERSTÄNDE"
-
 msgid "SHADER SET"
 msgstr "SHADER"
 
@@ -1782,17 +1812,20 @@ msgstr "DEKORATIONEN"
 msgid "STRETCH BEZELS (4K & ULTRAWIDE)"
 msgstr "STRECKE BEZELS (4K & ULTRAWIDE)"
 
-msgid "SHOW CONTROLLER OVERLAYS"
-msgstr "CONTROLLER-OVERLAYS ANZEIGEN"
+msgid "SHOW TATTOO OVER BEZEL"
+msgstr "TATTOO ÜBER BEZEL ANZEIGEN"
 
 msgid "SYSTEM CONTROLLERS"
 msgstr "SYSTEM CONTROLLER"
 
-msgid "CUSTOM .PNG IMAGE"
-msgstr "BENUTZERDEF. .PNG-BILD"
+msgid "CUSTOM IMAGE"
+msgstr "BENUTZERDEF. BILD"
 
-msgid "OVERLAY CORNER"
-msgstr "OVERLAY ECKE"
+msgid "Show an image overlaid on top of the bezel."
+msgstr "Ein Bild überlagernd oben auf dem Bezel anzeigen"
+
+msgid "TATTOO CORNER"
+msgstr "TATTOO ECKE"
 
 msgid "NORTH WEST"
 msgstr "NORD WEST"
@@ -1809,6 +1842,12 @@ msgstr "SÜD WEST"
 msgid "CUSTOM .PNG IMAGE PATH"
 msgstr "PFAD ZUM BENUTZERDEF. .PNG-BILD"
 
+msgid "RESIZE TATTOO"
+msgstr ""
+
+msgid "Shrink/expand tattoo to fit within the bezel's border."
+msgstr ""
+
 msgid "AI GAME TRANSLATION"
 msgstr "AI-SPIELEÜBERSETZUNG"
 
@@ -1823,6 +1862,36 @@ msgstr "AI-ÜBERSETZUNGS-SERVICE URL"
 
 msgid "PAUSE ON TRANSLATED SCREEN"
 msgstr "PAUSE BEI ÜBERSETZTEM BILDSCHIRM"
+
+msgid "SAVESTATES"
+msgstr ""
+
+msgid "AUTO SAVE/LOAD"
+msgstr ""
+
+msgid "INCREMENTAL SAVESTATES"
+msgstr "INKREMENTELLE SPEICHERSTÄNDE"
+
+msgid "NEW GAME CREATES NEW SLOT"
+msgstr ""
+
+msgid "NEW GAME OVERWRITES CURRENT SLOT"
+msgstr ""
+
+msgid "DISPLAY SAVE STATE MANAGER"
+msgstr ""
+
+msgid "ALWAYS"
+msgstr ""
+
+msgid "IF NOT EMPTY"
+msgstr ""
+
+msgid "SHOW SAVE STATE MANAGER"
+msgstr ""
+
+msgid "DISPLAY SAVE STATE MANAGER BEFORE LAUNCHING A GAME"
+msgstr ""
 
 msgid "PER SYSTEM ADVANCED CONFIGURATION"
 msgstr "PER SYSTEM ERWEITERTE KONFIGURATION"
@@ -1861,7 +1930,7 @@ msgid "default"
 msgstr "standard"
 
 msgid "SHOW CONTROLLER ACTIVITY"
-msgstr "ZEIGE CONTROLLER-AKTIVITÄT"
+msgstr "CONTROLLER-AKTIVITÄT ANZEIGEN"
 
 msgid "SHOW CONTROLLER BATTERY LEVEL"
 msgstr "CONTROLLER AKKU-LEVEL ANZEIGEN"
@@ -1909,7 +1978,7 @@ msgid "having multiple games"
 msgstr "es gibt mehrere Spiele"
 
 msgid "SHOW '..' PARENT FOLDER"
-msgstr "ZEIGE  '..' ÜBERGEORDNETEN ORDNER"
+msgstr "ZEIGE '..' ÜBERGEORDNETEN ORDNER AN"
 
 msgid "BEFORE NAME"
 msgstr "VOR NAME"
@@ -2049,11 +2118,11 @@ msgstr "WLAN-EINSTELLUNGSFEHLER"
 msgid "QUICK ACCESS"
 msgstr "SCHNELLZUGRIFF"
 
-msgid "SKIP TO NEXT SONG"
+msgid "SKIP TO THE NEXT SONG"
 msgstr "ZUM NÄCHSTEN SONG SPRINGEN"
 
-msgid "LISTENING NOW"
-msgstr "JETZT HÖRST DU"
+msgid "NOW PLAYING"
+msgstr "JETZT LÄUFT"
 
 msgid "LAUNCH SCREENSAVER"
 msgstr "BILDSCHIRMSCHONER STARTEN"
@@ -2079,6 +2148,9 @@ msgstr "WIRKLICH ABSCHALTEN?"
 msgid "FAST SHUTDOWN SYSTEM"
 msgstr "SYSTEM SCHNELL ABSCHALTEN"
 
+msgid "Shutdown without saving metadata."
+msgstr "Abschalten ohne Metadaten zu speichern."
+
 msgid "REALLY SHUTDOWN WITHOUT SAVING METADATA?"
 msgstr "WIRKLICH ABSCHALTEN OHNE METADATEN ZU SPEICHERN?"
 
@@ -2087,6 +2159,18 @@ msgstr "EMULATIONSTATION BEENDEN"
 
 msgid "REALLY QUIT?"
 msgstr "WIRKLICH BEENDEN?"
+
+msgid "AUTO SAVE/LOAD ON GAME LAUNCH"
+msgstr "AUTOM. SPEICHERN/LADEN BEIM SPIELSTART"
+
+msgid "SHOW CONTROLLER OVERLAYS"
+msgstr "CONTROLLER-OVERLAYS ANZEIGEN"
+
+msgid "CUSTOM .PNG IMAGE"
+msgstr "BENUTZERDEF. .PNG-BILD"
+
+msgid "OVERLAY CORNER"
+msgstr "OVERLAY ECKE"
 
 msgid "COLORIZATION"
 msgstr "FARBEN"
@@ -2298,6 +2382,9 @@ msgstr "ÜBERSPRINGEN"
 msgid "Downloading"
 msgstr "Downloading"
 
+msgid "SEARCH FOR"
+msgstr ""
+
 msgid "ACCEPT RESULT"
 msgstr "ERGEBNIS AKZEPTIEREN"
 
@@ -2412,6 +2499,27 @@ msgstr "INDIZIERUNG ABGESCHLOSSEN"
 msgid "UPDATE GAMELISTS TO APPLY CHANGES."
 msgstr "SPIELELISTEN UPDATEN, UM ÄNDERUNGEN ZU ÜBERNEHMEN."
 
+msgid "THE EMULATOR EXITED UNEXPECTEDLY"
+msgstr ""
+
+msgid "BAD COMMAND LINE ARGUMENTS"
+msgstr ""
+
+msgid "INVALID CONFIGURATION"
+msgstr ""
+
+msgid "UNKNOWN EMULATOR"
+msgstr ""
+
+msgid "EMULATOR IS MISSING"
+msgstr ""
+
+msgid "CORE IS MISSING"
+msgstr ""
+
+msgid "UKNOWN ERROR"
+msgstr ""
+
 msgid "GENRE"
 msgstr "GENRE"
 
@@ -2474,44 +2582,65 @@ msgstr "SHIFT"
 msgid "SPACE"
 msgstr "LEERTASTE"
 
+msgctxt "joystick"
 msgid "UP"
-msgstr "HOCH"
+msgstr ""
 
+msgctxt "joystick"
 msgid "DOWN"
-msgstr "RUNTER"
+msgstr ""
 
+msgctxt "joystick"
 msgid "LEFT"
-msgstr "LINKS"
+msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT"
-msgstr "RECHTS"
+msgstr ""
 
+msgctxt "joystick"
+msgid "START"
+msgstr ""
+
+msgctxt "joystick"
+msgid "SELECT"
+msgstr ""
+
+msgctxt "joystick"
 msgid "LEFT ANALOG UP"
-msgstr "LINKER ANALOG HOCH"
+msgstr ""
 
+msgctxt "joystick"
 msgid "LEFT ANALOG DOWN"
-msgstr "LINKER ANALOG RUNTER"
+msgstr ""
 
+msgctxt "joystick"
 msgid "LEFT ANALOG LEFT"
-msgstr "LINKER ANALOG LINKS"
+msgstr ""
 
+msgctxt "joystick"
 msgid "LEFT ANALOG RIGHT"
-msgstr "LINKER ANALOG RECHTS"
+msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG UP"
-msgstr "RECHTER ANALOG HOCH"
+msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG DOWN"
-msgstr "RECHTER ANALOG RUNTER"
+msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG LEFT"
-msgstr "RECHTER ANALOG LINKS"
+msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG RIGHT"
-msgstr "RECHTER ANALOG RECHTS"
+msgstr ""
 
+msgctxt "joystick"
 msgid "HOTKEY"
-msgstr "HOTKEY"
+msgstr ""
 
 msgid "CONFIGURING"
 msgstr "KONFIGURIEREN"
@@ -2657,6 +2786,103 @@ msgstr "BILDSCHIRM-LESER AKTIVIERT"
 
 msgid "SCREEN READER DISABLED"
 msgstr "BILDSCHIRM-LESER DEAKTIVIERT"
+
+#~ msgid "NETPLAY HOSTING/OPTIONS"
+#~ msgstr "NETPLAY HOSTING/OPTIONEN"
+
+#~ msgid "BEGIN HOSTING A NETPLAY SESSION"
+#~ msgstr "HOSTING EINER NETPLAY-SESSION BEGINNEN"
+
+#~ msgid "SET PLAYER PASSWORD"
+#~ msgstr "SPIELER PASSWORT EINSTELLEN"
+
+#~ msgid "SET VIEWER PASSWORD"
+#~ msgstr "ZUSCHAUER PASSWORT EINSTELLEN"
+
+#~ msgid "START AUTO SAVE"
+#~ msgstr "STARTE AUTOMATISCHE SPEICHERUNG"
+
+#~ msgid "SHOW SAVE STATES"
+#~ msgstr "SPEICHERSTÄNDE ANZEIGEN"
+
+#~ msgid "SHOW SAVE STATES IF NOT EMPTY"
+#~ msgstr "SPEICHERSTÄNDE ANZEIGEN, WENN NICHT LEER"
+
+#~ msgid "UP"
+#~ msgstr "HOCH"
+
+#~ msgid "DOWN"
+#~ msgstr "RUNTER"
+
+#~ msgid "LEFT"
+#~ msgstr "LINKS"
+
+#~ msgid "RIGHT"
+#~ msgstr "RECHTS"
+
+#~ msgid "LEFT ANALOG UP"
+#~ msgstr "LINKER ANALOG HOCH"
+
+#~ msgid "LEFT ANALOG DOWN"
+#~ msgstr "LINKER ANALOG RUNTER"
+
+#~ msgid "LEFT ANALOG LEFT"
+#~ msgstr "LINKER ANALOG LINKS"
+
+#~ msgid "LEFT ANALOG RIGHT"
+#~ msgstr "LINKER ANALOG RECHTS"
+
+#~ msgid "RIGHT ANALOG UP"
+#~ msgstr "RECHTER ANALOG HOCH"
+
+#~ msgid "RIGHT ANALOG DOWN"
+#~ msgstr "RECHTER ANALOG RUNTER"
+
+#~ msgid "RIGHT ANALOG LEFT"
+#~ msgstr "RECHTER ANALOG LINKS"
+
+#~ msgid "RIGHT ANALOG RIGHT"
+#~ msgstr "RECHTER ANALOG RECHTS"
+
+#~ msgid "HOTKEY"
+#~ msgstr "HOTKEY"
+
+#~ msgid "RESIZE TATTOO WIDTH"
+#~ msgstr "TATTOO-BREITE GRÖSSE ÄNDERN"
+
+#~ msgid "225/1920"
+#~ msgstr "225/1920"
+
+#~ msgid "240/1920"
+#~ msgstr "240/1920"
+
+#~ msgid "ORIGINAL"
+#~ msgstr "ORIGINAL"
+
+#~ msgid "RESIZE OVERLAY WIDTH"
+#~ msgstr "OVERLAY-BREITE GRÖSSE ÄNDERN"
+
+#~ msgid "Relative to a 1920 px bezel."
+#~ msgstr "Relativ zu einem 1920 px bezel."
+
+#~ msgid "SKIP TO NEXT SONG"
+#~ msgstr "ZUM NÄCHSTEN SONG SPRINGEN"
+
+#~ msgid "LISTENING NOW"
+#~ msgstr "JETZT HÖRST DU"
+
+#~ msgid "PRELOAD UI ELEMENTS"
+#~ msgstr "UI-ELEMENTE VORLADEN"
+
+#~ msgid "Reduce overall menu lag at the cost of storage space"
+#~ msgstr "Gesamte Menüverzögerung auf Kosten des Speicherplatzes reduzieren"
+
+#~ msgid "PRELOAD METADATA MEDIA"
+#~ msgstr "METADATEN-MEDIEN VORLADEN"
+
+#~ msgid "Reduce gamelist lag at the cost of storage space"
+#~ msgstr ""
+#~ "Verzögerung der Spieleliste auf Kosten des Speicherplatzes reduzieren"
 
 #~ msgid "PRELOAD UI"
 #~ msgstr "UI VORLADEN"
@@ -2905,7 +3131,7 @@ msgstr "BILDSCHIRM-LESER DEAKTIVIERT"
 #~ msgstr "RETROACHIEVMENTS FREISCHALTE-TON"
 
 #~ msgid "SHOW IN MAIN MENU"
-#~ msgstr "IM HAUPTMENÜ ZEIGEN"
+#~ msgstr "IM HAUPTMENÜ ANZEIGEN"
 
 #~ msgid "UNABLE TO ACTIVATE RETROACHIEVEMENTS :"
 #~ msgstr "RETROACHIEVEMENTS KÖNNEN NICHT AKTIVIERT WERDEN :"

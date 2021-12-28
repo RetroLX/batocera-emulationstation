@@ -12,6 +12,7 @@ set(CORE_HEADERS
 	${CMAKE_CURRENT_SOURCE_DIR}/src/InputManager.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/Log.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/MameNames.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/gettext.h # batocera
 	${CMAKE_CURRENT_SOURCE_DIR}/src/LocaleES.h # batocera
     ${CMAKE_CURRENT_SOURCE_DIR}/src/SystemConf.h # batocera
 	${CMAKE_CURRENT_SOURCE_DIR}/src/platform.h
@@ -87,6 +88,9 @@ set(CORE_HEADERS
 
 	# Renderers
 	${CMAKE_CURRENT_SOURCE_DIR}/src/renderers/Renderer.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/renderers/Renderer_GL21.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/renderers/Renderer_GLES10.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/renderers/Renderer_GLES20.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/renderers/GlExtensions.h	
 
 	# Resources
@@ -106,6 +110,7 @@ set(CORE_HEADERS
 	${CMAKE_CURRENT_SOURCE_DIR}/src/utils/md5.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/utils/Delegate.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/utils/Randomizer.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/utils/VectorEx.h
 )
 
 set(CORE_SOURCES

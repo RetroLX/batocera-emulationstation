@@ -26,6 +26,7 @@ set(ES_HEADERS
 	${CMAKE_CURRENT_SOURCE_DIR}/src/RetroAchievements.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/SaveState.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/SaveStateRepository.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/CustomFeatures.h
 
     # GuiComponents
     ${CMAKE_CURRENT_SOURCE_DIR}/src/components/AsyncReqComponent.h
@@ -98,7 +99,7 @@ set(ES_HEADERS
 
     ${CMAKE_CURRENT_SOURCE_DIR}/src/ApiSystem.h # batocera
     ${CMAKE_CURRENT_SOURCE_DIR}/src/LibretroRatio.h # batocera
-	${CMAKE_CURRENT_SOURCE_DIR}/src/Win32ApiSystem.h # batocera
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Win32ApiSystem.h # batocera
 )
 
 set(ES_SOURCES
@@ -126,6 +127,7 @@ set(ES_SOURCES
 	${CMAKE_CURRENT_SOURCE_DIR}/src/RetroAchievements.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/SaveState.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/SaveStateRepository.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/src/CustomFeatures.cpp	
 
     # GuiComponents
     ${CMAKE_CURRENT_SOURCE_DIR}/src/components/AsyncReqComponent.cpp

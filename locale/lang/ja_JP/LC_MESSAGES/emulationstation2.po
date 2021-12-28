@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: batocera-es v33beta(2021/11/13)\n"
+"Project-Id-Version: batocera-es v33beta(2021/12/16)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-16 07:49+0100\n"
-"PO-Revision-Date: 2021-11-14 13:17+0900\n"
+"POT-Creation-Date: 2021-10-23 13:22+0200\n"
+"PO-Revision-Date: 2021-12-17 21:23+0900\n"
 "Last-Translator: mikakunin\n"
 "Language-Team: mikakunin\n"
 "Language: ja\n"
@@ -93,6 +93,12 @@ msgstr "マップ"
 
 msgid "enter path to map"
 msgstr "マップのパスを入力"
+
+msgid "Bezel (16:9)"
+msgstr "ベゼル(16:9)"
+
+msgid "enter path to bezel (16:9)"
+msgstr "ベゼル(16:9)のパスを入力"
 
 msgid "Cartridge"
 msgstr "カートリッジ画"
@@ -648,7 +654,7 @@ msgid "SCREENSHOTS FOLDER"
 msgstr "スクリーンショットフォルダ"
 
 msgid "SELECT"
-msgstr "セレクト(決定)"
+msgstr "決定"
 
 msgid "ADD COMBINATION KEY"
 msgstr "同時押しキーを追加"
@@ -704,7 +710,7 @@ msgid "black"
 msgstr "暗転"
 
 msgid "random video"
-msgstr "ランダム再生(ゲーム動画)"
+msgstr "動画再生(ゲーム動画)"
 
 msgid "slideshow"
 msgstr "スライドショー(ゲーム画像)"
@@ -743,7 +749,7 @@ msgid "STOP MUSIC ON SCREENSAVER"
 msgstr "スクリーンセーバー実行時音楽を停止"
 
 msgid "RANDOM VIDEO SCREENSAVER SETTINGS"
-msgstr "ランダム動画スクリーンセーバー設定"
+msgstr "映像スクリーンセーバー設定"
 
 msgid "VIDEO DURATION (SECS)"
 msgstr "動画変更時間(秒)"
@@ -758,7 +764,7 @@ msgid "USE MARQUEE AS GAME INFO"
 msgstr "ゲーム情報としてマーキーを使用"
 
 msgid "DECORATION SET USED"
-msgstr "使用する装飾"
+msgstr "使用するベゼル"
 
 msgid "STRETCH VIDEOS"
 msgstr "動画を拡大"
@@ -923,7 +929,7 @@ msgid "COMPATIBLE CORE(S)"
 msgstr "互換性のあるコア"
 
 msgid "VIEW THIS GAME'S ACHIEVEMENTS"
-msgstr "このゲームの実績を表示"
+msgstr "このゲームのACHIEVEMENTSを表示"
 
 msgid "GAME"
 msgstr "ゲーム"
@@ -934,8 +940,8 @@ msgstr "セーブマネージャ"
 msgid "OPEN"
 msgstr "開く"
 
-msgid "NETPLAY HOSTING/OPTIONS"
-msgstr "ネットプレイ(ホスト/設定)"
+msgid "START A NETPLAY GAME"
+msgstr ""
 
 msgid "NETPLAY"
 msgstr "ネットプレイ"
@@ -943,8 +949,8 @@ msgstr "ネットプレイ"
 msgid "START GAME"
 msgstr "ゲームを開始"
 
-msgid "BEGIN HOSTING A NETPLAY SESSION"
-msgstr "ネットプレイ(ホスト)を開始"
+msgid "HOST A NETPLAY GAME"
+msgstr ""
 
 msgid "YOU ARE NOT CONNECTED TO A NETWORK"
 msgstr "ネットワークに接続されていません"
@@ -952,11 +958,11 @@ msgstr "ネットワークに接続されていません"
 msgid "PUBLICLY ANNOUNCE GAME"
 msgstr "プレイ状況を公開する"
 
-msgid "SET PLAYER PASSWORD"
-msgstr "プレーヤーパスワードの設定"
+msgid "PLAYER PASSWORD"
+msgstr ""
 
-msgid "SET VIEWER PASSWORD"
-msgstr "ビューアパスワードの設定"
+msgid "VIEWER PASSWORD"
+msgstr ""
 
 msgid "FIND SIMILAR GAMES..."
 msgstr "類似のゲームを探す..."
@@ -1023,10 +1029,10 @@ msgid "Unlocked on"
 msgstr "ロック解除"
 
 msgid "THIS GAME HAS NO ACHIEVEMENTS YET"
-msgstr "このゲームにはまだ実績がありません"
+msgstr "このゲームにはまだACHIEVEMENTSがありません"
 
 msgid "Achievements won"
-msgstr "達成実績"
+msgstr "ACHIEVEMENTS達成"
 
 #, c-format
 msgid "%d%% complete"
@@ -1038,8 +1044,8 @@ msgstr "ステートセーブマネージャ"
 msgid "START NEW GAME"
 msgstr "最初から開始"
 
-msgid "START AUTO SAVE"
-msgstr "オートセーブで開始"
+msgid "START NEW AUTO SAVE"
+msgstr "新しくオートセーブで開始"
 
 msgid "AUTO SAVE"
 msgstr "セーブ場所から開始"
@@ -1269,6 +1275,9 @@ msgstr "動画をスクレイプ"
 msgid "SCRAPE FANART"
 msgstr "ファンアートをスクレイプ"
 
+msgid "SCRAPE BEZEL (16:9)"
+msgstr "ベゼル(16:9)をスクレイプ"
+
 msgid "SCRAPE BOX BACKSIDE"
 msgstr "ボックス背景をスクレイプ"
 
@@ -1390,7 +1399,7 @@ msgid "REDETECT ALL GAMES' LANG/REGION"
 msgstr "すべてのゲームの言語/地域を再検出"
 
 msgid "FIND ALL GAMES WITH NETPLAY/ACHIEVEMENTS"
-msgstr "ネットプレイ/実績 ですべてのゲームを検索"
+msgstr "ネットプレイ/ACHIEVEMENTS ですべてのゲームを検索"
 
 msgid "DATA MANAGEMENT"
 msgstr "データ管理"
@@ -1457,17 +1466,21 @@ msgstr "ネットワークインジケータを表示"
 msgid "OPTIMIZATIONS"
 msgstr "最適化"
 
-msgid "PRELOAD UI ELEMENTS"
-msgstr ""
+msgid "PRELOAD UI ELEMENTS ON BOOT"
+msgstr "起動時にUI部を先読みする"
 
-msgid "Reduce overall menu lag at the cost of storage space"
-msgstr ""
+msgid ""
+"Reduces lag when entering gamelists from the system menu, increases boot time"
+msgstr "メニューからゲームリストに入るラグを減少(起動時間が長くなります)"
 
-msgid "PRELOAD METADATA MEDIA"
-msgstr ""
+msgid "PRELOAD METADATA MEDIA ON BOOT"
+msgstr "起動時にメタ情報メディアを先読みする"
 
-msgid "Reduce gamelist lag at the cost of storage space"
+msgid ""
+"Reduces lag when scrolling through a fully scraped gamelist, increases boot "
+"time"
 msgstr ""
+"スクレイプ済みゲームリストのスクロール時のラグを減少(起動時間が長くなります)"
 
 msgid "THREADED LOADING"
 msgstr "スレッド読み込み"
@@ -1694,6 +1707,19 @@ msgstr "先行フレームの使用"
 msgid "RUN-AHEAD USE SECOND INSTANCE"
 msgstr "先行実行の2番目のインスタンス"
 
+msgid "AUTOMATIC FRAME DELAY"
+msgstr "自動フレーム遅延"
+
+msgid "AUTO FRAME DELAY"
+msgstr "自動フレーム遅延"
+
+msgid ""
+"Automatically decrease frame delay temporarily to prevent frame drops. Turn "
+"off if this worsens audio/video stuttering."
+msgstr ""
+"フレーム遅延を自動的に減らしフレームドロップを防ぎます。オーディオ/ビデオで不"
+"具合がでた場合は、オフにします。"
+
 msgid "HARDCORE MODE"
 msgstr "ハードコアモード"
 
@@ -1705,6 +1731,14 @@ msgstr "詳細な処理モード"
 
 msgid "AUTOMATIC SCREENSHOT"
 msgstr "自動スクリーンショット"
+
+msgid "CHALLENGE INDICATORS"
+msgstr "チャレンジインジケーター"
+
+msgid ""
+"Shows icons in the bottom right corner when eligible achievements can be "
+"earned."
+msgstr "対象となるACHIEVEMENTSを獲得できる場合、右下隅にアイコンを表示します。"
 
 msgid "RETROACHIEVEMENT UNLOCK SOUND"
 msgstr "RETROACHIEVEMENTサウンドのロック解除"
@@ -1739,8 +1773,11 @@ msgstr "ポート"
 msgid "USE RELAY SERVER"
 msgstr "リレーサーバーを使用"
 
+msgid "SHOW UNAVAILABLE GAMES"
+msgstr ""
+
 msgid "DECORATION SET"
-msgstr "ベゼル選択"
+msgstr "ベゼルを選択"
 
 msgid "DEFAULT GLOBAL SETTINGS"
 msgstr "既定のグローバル設定"
@@ -1760,38 +1797,29 @@ msgstr "巻き戻し"
 msgid "INTEGER SCALING (PIXEL PERFECT)"
 msgstr "整数スケール (ピクセルを正方形表示)"
 
-msgid "AUTO SAVE/LOAD ON GAME LAUNCH"
-msgstr "ステートセーブ読込(起動時)"
-
-msgid "SHOW SAVE STATES"
-msgstr "ステートセーブ表示"
-
-msgid "SHOW SAVE STATES IF NOT EMPTY"
-msgstr "セーブがあれば表示"
-
-msgid "INCREMENTAL SAVESTATES"
-msgstr ""
-
 msgid "SHADER SET"
 msgstr "シェーダー設定"
 
 msgid "DECORATIONS"
-msgstr "ベゼル装飾(ゲーム画面外表示)"
+msgstr "ベゼル(ゲーム画面外装飾表示)"
 
 msgid "STRETCH BEZELS (4K & ULTRAWIDE)"
 msgstr "画面に合わせる(4K＆ウルトラワイド)"
 
-msgid "SHOW CONTROLLER OVERLAYS"
-msgstr "コントローラーオーバーレイを表示"
+msgid "SHOW TATTOO OVER BEZEL"
+msgstr "ベゼル上にイメージを表示"
 
 msgid "SYSTEM CONTROLLERS"
 msgstr "機種コントローラー"
 
-msgid "CUSTOM .PNG IMAGE"
-msgstr "カスタムPNG画像"
+msgid "CUSTOM IMAGE"
+msgstr "カスタム画像"
 
-msgid "OVERLAY CORNER"
-msgstr "オーバーレイの表示位置"
+msgid "Show an image overlaid on top of the bezel."
+msgstr "ベゼル上にイメージ画像を表示します。"
+
+msgid "TATTOO CORNER"
+msgstr "イメージ表示位置"
 
 msgid "NORTH WEST"
 msgstr "左上"
@@ -1806,7 +1834,13 @@ msgid "SOUTH WEST"
 msgstr "左下"
 
 msgid "CUSTOM .PNG IMAGE PATH"
-msgstr "カスタムPNG画像のパス"
+msgstr "カスタムイメージ(png)のパス"
+
+msgid "RESIZE TATTOO"
+msgstr "イメージサイズを変更"
+
+msgid "Shrink/expand tattoo to fit within the bezel's border."
+msgstr "ベゼル内に収まるようにイメージを縮小/拡大します。"
 
 msgid "AI GAME TRANSLATION"
 msgstr "AIゲーム翻訳"
@@ -1822,6 +1856,36 @@ msgstr "AIゲーム翻訳サービス URL"
 
 msgid "PAUSE ON TRANSLATED SCREEN"
 msgstr "翻訳画面で一時停止"
+
+msgid "SAVESTATES"
+msgstr "ステートセーブ"
+
+msgid "AUTO SAVE/LOAD"
+msgstr "自動ステートセーブ読込"
+
+msgid "INCREMENTAL SAVESTATES"
+msgstr "新たにステートセーブ保存"
+
+msgid "NEW GAME CREATES NEW SLOT"
+msgstr "新ゲームは新しいスロットを作成"
+
+msgid "NEW GAME OVERWRITES CURRENT SLOT"
+msgstr "新ゲームは現スロットを上書き"
+
+msgid "DISPLAY SAVE STATE MANAGER"
+msgstr "ステートセーブマネージャの表示"
+
+msgid "ALWAYS"
+msgstr "常に"
+
+msgid "IF NOT EMPTY"
+msgstr "セーブがある場合"
+
+msgid "SHOW SAVE STATE MANAGER"
+msgstr "ステートセーブマネージャを表示"
+
+msgid "DISPLAY SAVE STATE MANAGER BEFORE LAUNCHING A GAME"
+msgstr "ゲーム起動時にステートセーブマネージャを表示"
 
 msgid "PER SYSTEM ADVANCED CONFIGURATION"
 msgstr "システム別詳細設定"
@@ -2048,10 +2112,10 @@ msgstr "WIFI 設定エラー"
 msgid "QUICK ACCESS"
 msgstr "クイック アクセス"
 
-msgid "SKIP TO NEXT SONG"
+msgid "SKIP TO THE NEXT SONG"
 msgstr "次の曲にスキップ"
 
-msgid "LISTENING NOW"
+msgid "NOW PLAYING"
 msgstr "現在再生中の曲名"
 
 msgid "LAUNCH SCREENSAVER"
@@ -2078,6 +2142,9 @@ msgstr "シャットダウンしますか？"
 msgid "FAST SHUTDOWN SYSTEM"
 msgstr "システムを高速にシャットダウン"
 
+msgid "Shutdown without saving metadata."
+msgstr "メタデータを保存せずにシャットダウンします"
+
 msgid "REALLY SHUTDOWN WITHOUT SAVING METADATA?"
 msgstr "メタ情報を保存せずに シャットダウンしますか？"
 
@@ -2086,6 +2153,18 @@ msgstr "EMULATIONSTATION を終了"
 
 msgid "REALLY QUIT?"
 msgstr "本当に終了しますか？"
+
+msgid "AUTO SAVE/LOAD ON GAME LAUNCH"
+msgstr "自動ステートセーブ読込"
+
+msgid "SHOW CONTROLLER OVERLAYS"
+msgstr "コントローラーイメージを表示"
+
+msgid "CUSTOM .PNG IMAGE"
+msgstr "カスタム.PNG 画像"
+
+msgid "OVERLAY CORNER"
+msgstr "イメージの表示位置"
 
 msgid "COLORIZATION"
 msgstr "表示色"
@@ -2291,6 +2370,9 @@ msgstr "スキップ"
 msgid "Downloading"
 msgstr "ダウンロード中"
 
+msgid "SEARCH FOR"
+msgstr "検索"
+
 msgid "ACCEPT RESULT"
 msgstr "了解"
 
@@ -2405,6 +2487,27 @@ msgstr "インデックス作成が完了しました"
 msgid "UPDATE GAMELISTS TO APPLY CHANGES."
 msgstr "「ゲームリストを更新」で変更を適用します。"
 
+msgid "THE EMULATOR EXITED UNEXPECTEDLY"
+msgstr "エミュレータが予期せず興奮しました"
+
+msgid "BAD COMMAND LINE ARGUMENTS"
+msgstr "コマンドライン引数が違います"
+
+msgid "INVALID CONFIGURATION"
+msgstr "無効な構成です"
+
+msgid "UNKNOWN EMULATOR"
+msgstr "不明なエミュレーター"
+
+msgid "EMULATOR IS MISSING"
+msgstr "エミュレーターがありません"
+
+msgid "CORE IS MISSING"
+msgstr "コアがありません"
+
+msgid "UKNOWN ERROR"
+msgstr "不明なエラー"
+
 msgid "GENRE"
 msgstr "ジャンル"
 
@@ -2433,7 +2536,7 @@ msgid "ALREADY PLAYED"
 msgstr "プレイ済み"
 
 msgid "HAS ACHIEVEMENTS"
-msgstr "ゲームの実績がある"
+msgstr "ACHIEVEMENTSがある"
 
 msgid "VERTICAL"
 msgstr "縦表示"
@@ -2467,42 +2570,63 @@ msgstr "SHIFT(文字種変更)"
 msgid "SPACE"
 msgstr "空白"
 
+msgctxt "joystick"
 msgid "UP"
 msgstr "上"
 
+msgctxt "joystick"
 msgid "DOWN"
 msgstr "下"
 
+msgctxt "joystick"
 msgid "LEFT"
 msgstr "左"
 
+msgctxt "joystick"
 msgid "RIGHT"
 msgstr "右"
 
+msgctxt "joystick"
+msgid "START"
+msgstr "スタート"
+
+msgctxt "joystick"
+msgid "SELECT"
+msgstr "セレクト"
+
+msgctxt "joystick"
 msgid "LEFT ANALOG UP"
 msgstr "左アナログST 上"
 
+msgctxt "joystick"
 msgid "LEFT ANALOG DOWN"
 msgstr "左アナログST 下"
 
+msgctxt "joystick"
 msgid "LEFT ANALOG LEFT"
 msgstr "左アナログST 左"
 
+msgctxt "joystick"
 msgid "LEFT ANALOG RIGHT"
 msgstr "左アナログST 右"
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG UP"
 msgstr "右アナログST 上"
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG DOWN"
 msgstr "右アナログST 下"
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG LEFT"
 msgstr "右アナログST 左"
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG RIGHT"
 msgstr "右アナログST 右"
 
+msgctxt "joystick"
 msgid "HOTKEY"
 msgstr "ホットキー"
 
@@ -2643,14 +2767,17 @@ msgstr "スクリーンリーダー有効"
 msgid "SCREEN READER DISABLED"
 msgstr "スクリーンリーダー無効"
 
-#~ msgid "PRELOAD UI"
-#~ msgstr "プリロード(先行読込) UI"
+#~ msgid "NETPLAY HOSTING/OPTIONS"
+#~ msgstr "ネットプレイ(ホスト/設定)"
 
-#~ msgid "PRELOAD MEDIAS FILESYSTEM"
-#~ msgstr "メディアファイルシステムの先行読込"
+#~ msgid "BEGIN HOSTING A NETPLAY SESSION"
+#~ msgstr "ネットプレイ(ホスト)を開始"
 
-#~ msgid "REDUCE UI LAGS OVER STARTUP TIME"
-#~ msgstr "起動時のUIラグを減らす"
+#~ msgid "SET PLAYER PASSWORD"
+#~ msgstr "プレーヤーパスワードの設定"
+
+#~ msgid "SET VIEWER PASSWORD"
+#~ msgstr "ビューアパスワードの設定"
 
 #~ msgid "GRAPHICS API"
 #~ msgstr "グラフィック API"

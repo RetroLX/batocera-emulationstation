@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: emulationstation\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-16 07:49+0100\n"
+"POT-Creation-Date: 2021-12-15 23:48+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -93,6 +93,12 @@ msgstr "맵"
 
 msgid "enter path to map"
 msgstr "맵 경로 입력"
+
+msgid "Bezel (16:9)"
+msgstr ""
+
+msgid "enter path to bezel (16:9)"
+msgstr ""
 
 msgid "Cartridge"
 msgstr "카트리지"
@@ -931,7 +937,7 @@ msgstr ""
 msgid "OPEN"
 msgstr "열기"
 
-msgid "NETPLAY HOSTING/OPTIONS"
+msgid "START A NETPLAY GAME"
 msgstr ""
 
 msgid "NETPLAY"
@@ -940,7 +946,7 @@ msgstr "넷플레이"
 msgid "START GAME"
 msgstr "게임 실행"
 
-msgid "BEGIN HOSTING A NETPLAY SESSION"
+msgid "HOST A NETPLAY GAME"
 msgstr ""
 
 msgid "YOU ARE NOT CONNECTED TO A NETWORK"
@@ -949,11 +955,11 @@ msgstr "네트워크에 접속중이 아닙니다"
 msgid "PUBLICLY ANNOUNCE GAME"
 msgstr "공개 게임"
 
-msgid "SET PLAYER PASSWORD"
-msgstr "플레이어 비밀번호 설정"
+msgid "PLAYER PASSWORD"
+msgstr ""
 
-msgid "SET VIEWER PASSWORD"
-msgstr "관전자 비밀번호 설정"
+msgid "VIEWER PASSWORD"
+msgstr ""
 
 msgid "FIND SIMILAR GAMES..."
 msgstr "비슷한 게임 검색..."
@@ -1035,8 +1041,8 @@ msgstr ""
 msgid "START NEW GAME"
 msgstr "새 게임 시작"
 
-msgid "START AUTO SAVE"
-msgstr "자동 저장 시작"
+msgid "START NEW AUTO SAVE"
+msgstr ""
 
 msgid "AUTO SAVE"
 msgstr "자동 저장"
@@ -1263,6 +1269,9 @@ msgstr "비디오 스크랩"
 msgid "SCRAPE FANART"
 msgstr "팬아트 스크랩"
 
+msgid "SCRAPE BEZEL (16:9)"
+msgstr ""
+
 msgid "SCRAPE BOX BACKSIDE"
 msgstr "박스 후면 스크랩"
 
@@ -1449,16 +1458,19 @@ msgstr "네트워크 아이콘 표시"
 msgid "OPTIMIZATIONS"
 msgstr "최적화"
 
-msgid "PRELOAD UI ELEMENTS"
+msgid "PRELOAD UI ELEMENTS ON BOOT"
 msgstr ""
 
-msgid "Reduce overall menu lag at the cost of storage space"
+msgid ""
+"Reduces lag when entering gamelists from the system menu, increases boot time"
 msgstr ""
 
-msgid "PRELOAD METADATA MEDIA"
+msgid "PRELOAD METADATA MEDIA ON BOOT"
 msgstr ""
 
-msgid "Reduce gamelist lag at the cost of storage space"
+msgid ""
+"Reduces lag when scrolling through a fully scraped gamelist, increases boot "
+"time"
 msgstr ""
 
 msgid "THREADED LOADING"
@@ -1683,6 +1695,17 @@ msgstr "프레임 미리 실행 사용"
 msgid "RUN-AHEAD USE SECOND INSTANCE"
 msgstr "미리 실행 초 단위 사용"
 
+msgid "AUTOMATIC FRAME DELAY"
+msgstr ""
+
+msgid "AUTO FRAME DELAY"
+msgstr ""
+
+msgid ""
+"Automatically decrease frame delay temporarily to prevent frame drops. Turn "
+"off if this worsens audio/video stuttering."
+msgstr ""
+
 msgid "HARDCORE MODE"
 msgstr "하드코어 모드"
 
@@ -1694,6 +1717,14 @@ msgstr "상세 모드"
 
 msgid "AUTOMATIC SCREENSHOT"
 msgstr "자동 스크린샷"
+
+msgid "CHALLENGE INDICATORS"
+msgstr ""
+
+msgid ""
+"Shows icons in the bottom right corner when eligible achievements can be "
+"earned."
+msgstr ""
 
 msgid "RETROACHIEVEMENT UNLOCK SOUND"
 msgstr ""
@@ -1728,6 +1759,9 @@ msgstr "포트"
 msgid "USE RELAY SERVER"
 msgstr "릴레이 서버 사용"
 
+msgid "SHOW UNAVAILABLE GAMES"
+msgstr ""
+
 msgid "DECORATION SET"
 msgstr ""
 
@@ -1749,18 +1783,6 @@ msgstr "되감기"
 msgid "INTEGER SCALING (PIXEL PERFECT)"
 msgstr "원본 게임 해상도(픽셀 일치)"
 
-msgid "AUTO SAVE/LOAD ON GAME LAUNCH"
-msgstr "자동 저장/불러오기"
-
-msgid "SHOW SAVE STATES"
-msgstr ""
-
-msgid "SHOW SAVE STATES IF NOT EMPTY"
-msgstr ""
-
-msgid "INCREMENTAL SAVESTATES"
-msgstr ""
-
 msgid "SHADER SET"
 msgstr "셰이더 설정"
 
@@ -1770,16 +1792,19 @@ msgstr "꾸미기"
 msgid "STRETCH BEZELS (4K & ULTRAWIDE)"
 msgstr "베젤 늘리기 (4K & 울트라 와이드)"
 
-msgid "SHOW CONTROLLER OVERLAYS"
+msgid "SHOW TATTOO OVER BEZEL"
 msgstr ""
 
 msgid "SYSTEM CONTROLLERS"
 msgstr ""
 
-msgid "CUSTOM .PNG IMAGE"
+msgid "CUSTOM IMAGE"
 msgstr ""
 
-msgid "OVERLAY CORNER"
+msgid "Show an image overlaid on top of the bezel."
+msgstr ""
+
+msgid "TATTOO CORNER"
 msgstr ""
 
 msgid "NORTH WEST"
@@ -1797,6 +1822,12 @@ msgstr ""
 msgid "CUSTOM .PNG IMAGE PATH"
 msgstr ""
 
+msgid "RESIZE TATTOO"
+msgstr ""
+
+msgid "Shrink/expand tattoo to fit within the bezel's border."
+msgstr ""
+
 msgid "AI GAME TRANSLATION"
 msgstr "AI 게임 번역"
 
@@ -1811,6 +1842,36 @@ msgstr ""
 
 msgid "PAUSE ON TRANSLATED SCREEN"
 msgstr "번역화면 일시정지"
+
+msgid "SAVESTATES"
+msgstr ""
+
+msgid "AUTO SAVE/LOAD"
+msgstr ""
+
+msgid "INCREMENTAL SAVESTATES"
+msgstr ""
+
+msgid "NEW GAME CREATES NEW SLOT"
+msgstr ""
+
+msgid "NEW GAME OVERWRITES CURRENT SLOT"
+msgstr ""
+
+msgid "DISPLAY SAVE STATE MANAGER"
+msgstr ""
+
+msgid "ALWAYS"
+msgstr ""
+
+msgid "IF NOT EMPTY"
+msgstr ""
+
+msgid "SHOW SAVE STATE MANAGER"
+msgstr ""
+
+msgid "DISPLAY SAVE STATE MANAGER BEFORE LAUNCHING A GAME"
+msgstr ""
 
 msgid "PER SYSTEM ADVANCED CONFIGURATION"
 msgstr "시스템 고급 환경설정"
@@ -2031,11 +2092,11 @@ msgstr "WIFI 구성 오류"
 msgid "QUICK ACCESS"
 msgstr "빠른 연결"
 
-msgid "SKIP TO NEXT SONG"
-msgstr "다음 노래로 건너뜀"
+msgid "SKIP TO THE NEXT SONG"
+msgstr ""
 
-msgid "LISTENING NOW"
-msgstr "지금 재생 중"
+msgid "NOW PLAYING"
+msgstr ""
 
 msgid "LAUNCH SCREENSAVER"
 msgstr "화면보호기 실행"
@@ -2061,6 +2122,9 @@ msgstr "정말로 시스템을 종료하시겠습니까?"
 msgid "FAST SHUTDOWN SYSTEM"
 msgstr "빠른 시스템 종료"
 
+msgid "Shutdown without saving metadata."
+msgstr ""
+
 msgid "REALLY SHUTDOWN WITHOUT SAVING METADATA?"
 msgstr "게임 정보를 저장하지 않고 시스템을 종료하시겠습니까?"
 
@@ -2069,6 +2133,18 @@ msgstr "에뮬레이션스테이션 나가기"
 
 msgid "REALLY QUIT?"
 msgstr "정말로 나가시겠습니까?"
+
+msgid "AUTO SAVE/LOAD ON GAME LAUNCH"
+msgstr "자동 저장/불러오기"
+
+msgid "SHOW CONTROLLER OVERLAYS"
+msgstr ""
+
+msgid "CUSTOM .PNG IMAGE"
+msgstr ""
+
+msgid "OVERLAY CORNER"
+msgstr ""
 
 msgid "COLORIZATION"
 msgstr "색상변경"
@@ -2268,6 +2344,9 @@ msgstr "건너뛰기"
 msgid "Downloading"
 msgstr "다운로드 중"
 
+msgid "SEARCH FOR"
+msgstr ""
+
 msgid "ACCEPT RESULT"
 msgstr "결과 동의"
 
@@ -2382,6 +2461,27 @@ msgstr "인덱싱 완료"
 msgid "UPDATE GAMELISTS TO APPLY CHANGES."
 msgstr ""
 
+msgid "THE EMULATOR EXITED UNEXPECTEDLY"
+msgstr ""
+
+msgid "BAD COMMAND LINE ARGUMENTS"
+msgstr ""
+
+msgid "INVALID CONFIGURATION"
+msgstr ""
+
+msgid "UNKNOWN EMULATOR"
+msgstr ""
+
+msgid "EMULATOR IS MISSING"
+msgstr ""
+
+msgid "CORE IS MISSING"
+msgstr ""
+
+msgid "UKNOWN ERROR"
+msgstr ""
+
 msgid "GENRE"
 msgstr "장르"
 
@@ -2444,44 +2544,65 @@ msgstr "시프트"
 msgid "SPACE"
 msgstr "스페이스"
 
+msgctxt "joystick"
 msgid "UP"
-msgstr "위"
+msgstr ""
 
+msgctxt "joystick"
 msgid "DOWN"
-msgstr "아래"
+msgstr ""
 
+msgctxt "joystick"
 msgid "LEFT"
-msgstr "좌"
+msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT"
-msgstr "우"
+msgstr ""
 
+msgctxt "joystick"
+msgid "START"
+msgstr ""
+
+msgctxt "joystick"
+msgid "SELECT"
+msgstr ""
+
+msgctxt "joystick"
 msgid "LEFT ANALOG UP"
-msgstr "왼쪽 아날로그 위"
+msgstr ""
 
+msgctxt "joystick"
 msgid "LEFT ANALOG DOWN"
-msgstr "왼쪽 아날로그 아래"
+msgstr ""
 
+msgctxt "joystick"
 msgid "LEFT ANALOG LEFT"
-msgstr "왼쪽 아날로그 좌"
+msgstr ""
 
+msgctxt "joystick"
 msgid "LEFT ANALOG RIGHT"
-msgstr "왼쪽 아날로그 우"
+msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG UP"
-msgstr "오른쪽 아날로그 위"
+msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG DOWN"
-msgstr "오른쪽 아날로그 아래"
+msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG LEFT"
-msgstr "오른쪽 아날로그 좌"
+msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG RIGHT"
-msgstr "오른쪽 아날로그 우"
+msgstr ""
 
+msgctxt "joystick"
 msgid "HOTKEY"
-msgstr "핫키"
+msgstr ""
 
 msgid "CONFIGURING"
 msgstr "설정 중"
@@ -2616,6 +2737,60 @@ msgstr ""
 
 msgid "SCREEN READER DISABLED"
 msgstr ""
+
+#~ msgid "SET PLAYER PASSWORD"
+#~ msgstr "플레이어 비밀번호 설정"
+
+#~ msgid "SET VIEWER PASSWORD"
+#~ msgstr "관전자 비밀번호 설정"
+
+#~ msgid "START AUTO SAVE"
+#~ msgstr "자동 저장 시작"
+
+#~ msgid "UP"
+#~ msgstr "위"
+
+#~ msgid "DOWN"
+#~ msgstr "아래"
+
+#~ msgid "LEFT"
+#~ msgstr "좌"
+
+#~ msgid "RIGHT"
+#~ msgstr "우"
+
+#~ msgid "LEFT ANALOG UP"
+#~ msgstr "왼쪽 아날로그 위"
+
+#~ msgid "LEFT ANALOG DOWN"
+#~ msgstr "왼쪽 아날로그 아래"
+
+#~ msgid "LEFT ANALOG LEFT"
+#~ msgstr "왼쪽 아날로그 좌"
+
+#~ msgid "LEFT ANALOG RIGHT"
+#~ msgstr "왼쪽 아날로그 우"
+
+#~ msgid "RIGHT ANALOG UP"
+#~ msgstr "오른쪽 아날로그 위"
+
+#~ msgid "RIGHT ANALOG DOWN"
+#~ msgstr "오른쪽 아날로그 아래"
+
+#~ msgid "RIGHT ANALOG LEFT"
+#~ msgstr "오른쪽 아날로그 좌"
+
+#~ msgid "RIGHT ANALOG RIGHT"
+#~ msgstr "오른쪽 아날로그 우"
+
+#~ msgid "HOTKEY"
+#~ msgstr "핫키"
+
+#~ msgid "SKIP TO NEXT SONG"
+#~ msgstr "다음 노래로 건너뜀"
+
+#~ msgid "LISTENING NOW"
+#~ msgstr "지금 재생 중"
 
 #~ msgid "PRELOAD UI"
 #~ msgstr "UI 사전 불러오기"

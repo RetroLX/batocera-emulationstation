@@ -27,6 +27,7 @@ std::vector<const char*> settings_dont_save {
 	{ "HideConsole" },
 	{ "ShowExit" },
 	{ "ExitOnRebootRequired" },
+	{ "AlternateSplashScreen" },
 	{ "SplashScreen" },
 	{ "SplashScreenProgress" },
 	// { "VSync" },
@@ -72,6 +73,7 @@ void Settings::setDefaults()
 	mBoolMap["ExitOnRebootRequired"] = false;
 	mBoolMap["Windowed"] = false;
 	mBoolMap["SplashScreen"] = true;
+	mStringMap["AlternateSplashScreen"] = "";
 	mBoolMap["SplashScreenProgress"] = true;
 	mBoolMap["StartupOnGameList"] = false;
 	mStringMap["StartupSystem"] = "lastsystem";
@@ -138,7 +140,7 @@ void Settings::setDefaults()
 #if defined(_WIN32) || defined(TINKERBOARD) || defined(X86) || defined(X86_64) || defined(ODROIDN2) || defined(ODROIDC2) || defined(ODROIDXU4) || defined(RPI4)
 	// Boards > 1Gb RAM
 	mIntMap["MaxVRAM"] = 256;
-#elif defined(ODROIDGOA) || defined(GAMEFORCE) || defined(RPI2) || defined(RPI3) || defined(ROCKPRO64)
+#elif defined(ODROIDGOA) || defined(GAMEFORCE) || defined(RK3326) || defined(RPI2) || defined(RPI3) || defined(ROCKPRO64)
 	// Boards with 1Gb RAM
 	mIntMap["MaxVRAM"] = 128;
 #elif defined(_RPI_)
@@ -283,6 +285,8 @@ void Settings::setDefaults()
 	mIntMap["audio.display_titles_time"] = 10;
 
 	mBoolMap["NetPlayCheckIndexesAtStart"] = false;
+	mBoolMap["NetPlayShowMissingGames"] = false;
+	
 	mBoolMap["CheevosCheckIndexesAtStart"] = false;	
 
 	mBoolMap["AllImagesAsync"] = true;
@@ -311,7 +315,7 @@ void Settings::setDefaults()
 
 // batocera
 template <typename K, typename V>
-void saveMap(pugi::xml_node &node, std::map<K, V>& map, const char* type, std::map<K, V>& defaultMap)
+void saveMap(pugi::xml_node &node, std::map<K, V>& map, const char* type, std::map<K, V>& defaultMap, V defaultValue)
 {
 	for(auto iter = map.cbegin(); iter != map.cend(); iter++)
 	{
@@ -321,6 +325,9 @@ void saveMap(pugi::xml_node &node, std::map<K, V>& map, const char* type, std::m
 
 		auto def = defaultMap.find(iter->first);
 		if (def != defaultMap.cend() && def->second == iter->second)
+			continue;
+
+		if (def == defaultMap.cend() && iter->second == defaultValue)
 			continue;
 
 		pugi::xml_node parent_node= node.append_child(type);
@@ -345,9 +352,9 @@ bool Settings::saveFile()
 
 	pugi::xml_node config = doc.append_child("config"); // batocera, root element
 
-	saveMap<std::string, bool>(config, mBoolMap, "bool", mDefaultBoolMap);
-	saveMap<std::string, int>(config, mIntMap, "int", mDefaultIntMap);
-	saveMap<std::string, float>(config, mFloatMap, "float", mDefaultFloatMap);
+	saveMap<std::string, bool>(config, mBoolMap, "bool", mDefaultBoolMap, false);
+	saveMap<std::string, int>(config, mIntMap, "int", mDefaultIntMap, 0);
+	saveMap<std::string, float>(config, mFloatMap, "float", mDefaultFloatMap, 0);
 
 	//saveMap<std::string, std::string>(config, mStringMap, "string");
 	for(auto iter = mStringMap.cbegin(); iter != mStringMap.cend(); iter++)
