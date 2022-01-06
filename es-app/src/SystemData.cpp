@@ -801,8 +801,6 @@ bool SystemData::loadConfig(Window* window)
 
 	if (pThreadPool != NULL)
 	{
-        pThreadPool->start();
-
 		if (window != NULL)
 		{
 			pThreadPool->wait([window, &processedSystem, systemCount, &systemsNames]

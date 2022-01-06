@@ -45,18 +45,15 @@ std::vector<std::string> ResourceManager::getResourcePaths() const
 #endif
 
 	// check in homepath
-	paths.push_back(Utils::FileSystem::getEsConfigPath() + "/resources");
-
-	// check in shared path
-	paths.push_back(Utils::FileSystem::getSharedConfigPath() + "/resources");
-
-	// check in cwd
-	auto cwd = Utils::FileSystem::getCWDPath() + "/resources";
-	if (std::find(paths.cbegin(), paths.cend(), cwd) == paths.cend())
-		paths.push_back(cwd);
-
+	paths.push_back(Utils::FileSystem::getEsConfigPath() + "/resources"); 
+	
 	// check in exepath
-	paths.push_back(Utils::FileSystem::getExePath() + "/resources");
+	paths.push_back(Utils::FileSystem::getSharedConfigPath() + "/resources"); 
+		
+	// check in cwd
+	auto cwd = Utils::FileSystem::getCWDPath() + "/resources";	
+	if (std::find(paths.cbegin(), paths.cend(), cwd) == paths.cend())
+		paths.push_back(cwd); 
 
 	return paths;
 }

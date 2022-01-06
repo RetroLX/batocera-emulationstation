@@ -506,8 +506,6 @@ bool SystemView::input(InputConfig* config, Input input)
 
 		if(config->isMappedTo(BUTTON_OK, input))
 		{
-            if (size() == 0)
-                return true;
 			stopScrolling();
 			ViewController::get()->goToGameList(getSelected());
 			return true;
@@ -734,9 +732,6 @@ void SystemView::updateExtraTextBinding()
 
 void SystemView::onCursorChanged(const CursorState& state)
 {
-    if (size() == 0)
-        return;
-
 	if (AudioManager::isInitialized())
 		AudioManager::getInstance()->changePlaylist(getSelected()->getTheme());
 

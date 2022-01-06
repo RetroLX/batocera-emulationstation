@@ -1074,9 +1074,6 @@ SystemData* ViewController::getSelectedSystem()
 {
 	if (mState.viewing == SYSTEM_SELECT)
 	{
-        if (mSystemListView->size() == 0)
-            return nullptr;
-
 		int idx = mSystemListView->getCursorIndex();
 		if (idx >= 0 && idx < mSystemListView->getObjects().size())
 			return mSystemListView->getObjects()[mSystemListView->getCursorIndex()];
@@ -1292,10 +1289,7 @@ void ViewController::reloadAllGames(Window* window, bool deleteCurrentGui, bool 
 	Utils::FileSystem::FileSystemCacheActivator fsc;
 
 	auto viewMode = ViewController::get()->getViewMode();
-    auto system = ViewController::get()->getSelectedSystem();
-    if (system == nullptr)
-        return;
-    auto systemName = system->getName();
+	auto systemName = ViewController::get()->getSelectedSystem()->getName();
 
 	window->closeSplashScreen();
 	window->renderSplashScreen(_("Loading..."));
