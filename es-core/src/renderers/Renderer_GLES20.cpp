@@ -247,7 +247,7 @@ namespace Renderer
 
         // fragment shader (texture)
         std::string fragmentSourceTextureOpaque =
-            SHADER_VERSION_STRING
+            SHADER_VERSION_STRING +
             "precision mediump float;       \n"
             #if defined(USE_OPENGLES_20)
             "precision mediump sampler2D; \n"
@@ -291,8 +291,8 @@ namespace Renderer
         GL_CHECK_ERROR(glUniform1i(texUniformOpaque, 0));
 
         // fragment shader (alpha texture)
-		const GLchar* fragmentSourceAlpha =
-			SHADER_VERSION_STRING
+        std::string fragmentSourceAlpha =
+			SHADER_VERSION_STRING +
 			"precision mediump float;       \n"
 #if defined(USE_OPENGLES_20)
 			"precision mediump sampler2D; \n"
@@ -311,7 +311,7 @@ namespace Renderer
 		//result = vertexShaderTexture.compile(vertexShaderColorNoTextureId, vertexSourceTexture);
 
 		const GLuint fragmentShaderAlphaId = glCreateShader(GL_FRAGMENT_SHADER);
-		result = fragmentShaderAlpha.compile(fragmentShaderAlphaId, fragmentSourceAlpha);
+		result = fragmentShaderAlpha.compile(fragmentShaderAlphaId, fragmentSourceAlpha.c_str());
 		result = shaderProgramAlpha.linkShaderProgram(vertexShaderTexture, fragmentShaderAlpha);
 		
 		// Set shader active, retrieve attributes and uniforms locations
