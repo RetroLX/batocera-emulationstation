@@ -12,6 +12,7 @@ set(CORE_HEADERS
 	${CMAKE_CURRENT_SOURCE_DIR}/src/InputManager.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/Log.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/MameNames.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/gettext.h # batocera
 	${CMAKE_CURRENT_SOURCE_DIR}/src/LocaleES.h # batocera
     ${CMAKE_CURRENT_SOURCE_DIR}/src/SystemConf.h # batocera
 	${CMAKE_CURRENT_SOURCE_DIR}/src/platform.h
@@ -61,6 +62,7 @@ set(CORE_HEADERS
 	${CMAKE_CURRENT_SOURCE_DIR}/src/components/TextEditComponent.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/components/VideoComponent.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/components/VideoPlayerComponent.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/components/VideoGstreamerComponent.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/components/VideoVlcComponent.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/components/VolumeInfoComponent.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/components/MultiLineMenuEntry.h
@@ -86,6 +88,9 @@ set(CORE_HEADERS
 
 	# Renderers
 	${CMAKE_CURRENT_SOURCE_DIR}/src/renderers/Renderer.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/renderers/Renderer_GL21.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/renderers/Renderer_GLES10.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/renderers/Renderer_GLES20.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/renderers/GlExtensions.h	
 
 	# Resources
@@ -105,6 +110,7 @@ set(CORE_HEADERS
 	${CMAKE_CURRENT_SOURCE_DIR}/src/utils/md5.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/utils/Delegate.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/utils/Randomizer.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/utils/VectorEx.h
 )
 
 set(CORE_SOURCES
@@ -161,6 +167,7 @@ set(CORE_SOURCES
 	${CMAKE_CURRENT_SOURCE_DIR}/src/components/TextEditComponent.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/components/VideoComponent.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/components/VideoPlayerComponent.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/src/components/VideoGstreamerComponent.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/components/VideoVlcComponent.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/components/VolumeInfoComponent.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/components/ScrollbarComponent.cpp

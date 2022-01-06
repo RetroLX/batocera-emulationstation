@@ -8,6 +8,7 @@
 #include <nanosvg/nanosvg.h>
 #include <nanosvg/nanosvgrast.h>
 #include <string.h>
+#include <libyuv.h>
 #include "Settings.h"
 
 #include <algorithm>
@@ -19,7 +20,7 @@
 
 #define OPTIMIZEVRAM Settings::getInstance()->getBool("OptimizeVRAM")
 
-TextureData::TextureData(bool tile, bool linear) : mTile(tile), mLinear(linear), mTextureID(0), mDataRGBA(nullptr), mScalable(false),
+TextureData::TextureData(bool tile, bool linear) : mTile(tile), mLinear(linear), mTextureID(0), mTextureData(nullptr), mTextureFormat(RGBA32), mScalable(false),
 									  mWidth(0), mHeight(0), mSourceWidth(0.0f), mSourceHeight(0.0f),
 									  mPackedSize(Vector2i(0, 0)), mBaseSize(Vector2i(0, 0))
 {
@@ -45,7 +46,7 @@ bool TextureData::initSVGFromMemory(const unsigned char* fileData, size_t length
 {
 	// If already initialised then don't read again
 	std::unique_lock<std::mutex> lock(mMutex);
-	if (mDataRGBA || (mTextureID != 0))
+	if (mTextureData || (mTextureID != 0))
 		return true;
 
 	// nsvgParse excepts a modifiable, null-terminated string
@@ -130,7 +131,7 @@ bool TextureData::initSVGFromMemory(const unsigned char* fileData, size_t length
 		return false;
 	}
 
-	unsigned char* dataRGBA = new unsigned char[mWidth * mHeight * 4];
+	unsigned char* dataRGBA = static_cast<unsigned char*>(aligned_alloc(32, mWidth * mHeight * 4));
 
 	double scale = ((float)((int)mHeight)) / svgImage->height;
 	double scaleV = ((float)((int)mWidth)) / svgImage->width;
@@ -142,10 +143,16 @@ bool TextureData::initSVGFromMemory(const unsigned char* fileData, size_t length
 	nsvgDeleteRasterizer(rast);
 	nsvgDelete(svgImage);
 
-	ImageIO::flipPixelsVert(dataRGBA, mWidth, mHeight);
+    /* Test rasterize SVG to ARGB1555
+    unsigned char* dataRGBA1555 = new unsigned char[mWidth * mHeight * 2];
+    libyuv::ARGBToARGB1555(dataRGBA, mWidth*4, dataRGBA1555, mWidth*2, mWidth, mHeight);
+    free(dataRGBA);
+	mDataRGBA = dataRGBA1555;
+    mDataRGBAFormat = 1555;
+    */
 
-	mDataRGBA = dataRGBA;
-
+    mTextureData = dataRGBA;
+    mTextureFormat = RGBA32;
 	return true;
 }
 
@@ -156,13 +163,30 @@ bool TextureData::initImageFromMemory(const unsigned char* fileData, size_t leng
 	// If already initialised then don't read again
 	{
 		std::unique_lock<std::mutex> lock(mMutex);
-		if (mDataRGBA || (mTextureID != 0))
+		if (mTextureData || (mTextureID != 0))
 			return true;
 	}
 
 	MaxSizeInfo maxSize(Renderer::getScreenWidth(), Renderer::getScreenHeight(), false);
 	if (!mMaxSize.empty())
 		maxSize = mMaxSize;
+
+    int channels = ImageIO::getChannelsFromImageMemory((const unsigned char*)(fileData), length);
+    if (channels == 3)
+    {
+        unsigned char* imageRGB = ImageIO::loadFromMemoryRGB24((const unsigned char*)(fileData), length, width, height, &maxSize, &mBaseSize, &mPackedSize);
+        if (imageRGB == nullptr)
+        {
+            LOG(LogError) << "Could not initialize texture from memory, invalid data!  (file path: " << mPath << ", data ptr: " << (size_t)fileData << ", reported size: " << length << ")";
+            return false;
+        }
+
+        mSourceWidth = (float) width;
+        mSourceHeight = (float) height;
+        mScalable = false;
+
+        return initFromRGB24(imageRGB, width, height, false);
+    }
 
 	unsigned char* imageRGBA = ImageIO::loadFromMemoryRGBA32((const unsigned char*)(fileData), length, width, height, &maxSize, &mBaseSize, &mPackedSize);
 	if (imageRGBA == nullptr)
@@ -178,6 +202,64 @@ bool TextureData::initImageFromMemory(const unsigned char* fileData, size_t leng
 	return initFromRGBA(imageRGBA, width, height, false);
 }
 
+bool TextureData::initJPGFromMemory(const unsigned char* fileData, size_t length)
+{
+    size_t width, height;
+
+    // If already initialised then don't read again
+    {
+        std::unique_lock<std::mutex> lock(mMutex);
+        if (mTextureData || (mTextureID != 0))
+            return true;
+    }
+
+    MaxSizeInfo maxSize(Renderer::getScreenWidth(), Renderer::getScreenHeight(), false);
+    if (!mMaxSize.empty())
+        maxSize = mMaxSize;
+
+    unsigned char* imageRGB = ImageIO::loadFromMemoryRGB24((const unsigned char*)(fileData), length, width, height, &maxSize, &mBaseSize, &mPackedSize);
+    if (imageRGB == nullptr)
+    {
+        LOG(LogError) << "Could not initialize texture from memory, invalid data!  (file path: " << mPath << ", data ptr: " << (size_t)fileData << ", reported size: " << length << ")";
+        return false;
+    }
+
+    mSourceWidth = (float) width;
+    mSourceHeight = (float) height;
+    mScalable = false;
+
+    return initFromRGB24(imageRGB, width, height, false);
+}
+
+bool TextureData::initFromRGB24(unsigned char* dataRGB, size_t width, size_t height, bool copyData)
+{
+    // If already initialised then don't read again
+    std::unique_lock<std::mutex> lock(mMutex);
+
+    if (mIsExternalDataRGBA)
+    {
+        mIsExternalDataRGBA = false;
+        mTextureData = nullptr;
+    }
+
+    if (mTextureData)
+        return true;
+
+    if (copyData)
+    {
+        // Take a copy
+        mTextureData = static_cast<unsigned char*>(aligned_alloc(32, width * height * 3));
+        memcpy(mTextureData, dataRGB, width * height * 3);
+    }
+    else
+        mTextureData = dataRGB;
+
+    mTextureFormat = RGB24;
+    mWidth = width;
+    mHeight = height;
+    return true;
+}
+
 bool TextureData::initFromRGBA(unsigned char* dataRGBA, size_t width, size_t height, bool copyData)
 {
 	// If already initialised then don't read again
@@ -186,21 +268,22 @@ bool TextureData::initFromRGBA(unsigned char* dataRGBA, size_t width, size_t hei
 	if (mIsExternalDataRGBA)
 	{
 		mIsExternalDataRGBA = false;
-		mDataRGBA = nullptr;
+        mTextureData = nullptr;
 	}
 
-	if (mDataRGBA)
+	if (mTextureData)
 		return true;
 
 	if (copyData)
 	{
 		// Take a copy
-		mDataRGBA = new unsigned char[width * height * 4];
-		memcpy(mDataRGBA, dataRGBA, width * height * 4);
+        mTextureData = static_cast<unsigned char*>(aligned_alloc(32, width * height * 4));
+		memcpy(mTextureData, dataRGBA, width * height * 4);
 	}
 	else
-		mDataRGBA = dataRGBA;
+        mTextureData = dataRGBA;
 
+    mTextureFormat = RGBA32;
 	mWidth = width;
 	mHeight = height;
 	return true;
@@ -211,16 +294,35 @@ bool TextureData::updateFromExternalRGBA(unsigned char* dataRGBA, size_t width, 
 	// If already initialised then don't read again
 	std::unique_lock<std::mutex> lock(mMutex);
 
-	if (!mIsExternalDataRGBA && mDataRGBA != nullptr)
-		delete[] mDataRGBA;
+	if (!mIsExternalDataRGBA && mTextureData != nullptr)
+		free(mTextureData);
 
 	mIsExternalDataRGBA = true;
-	mDataRGBA = dataRGBA;
+    mTextureData = dataRGBA;
 	mWidth = width;
 	mHeight = height;
 
-	if (mTextureID != 0)
-		Renderer::updateTexture(mTextureID, Renderer::Texture::RGBA, 0, 0, mWidth, mHeight, mDataRGBA);
+    //if ((mTextureID == 0) && (mWidth != 0) && (mHeight != 0))
+    //    mTextureID = Renderer::createTexture(Renderer::Texture::RGBA, mLinear, mTile, mWidth, mHeight, nullptr);
+
+    Renderer::Texture::Type type = Renderer::Texture::RGBA;
+    switch (mTextureFormat)
+    {
+        case RGBA32:
+            type = Renderer::Texture::RGBA;
+            break;
+
+        case RGB24:
+            type = Renderer::Texture::RGB;
+        case RGB565:
+            break;
+
+        // case RGBA1555:
+            //type = Renderer::Texture::RGBA1555;
+            //break;
+    }
+    if ((mTextureID != 0) && (mWidth != 0) && (mHeight != 0) && (mTextureData != nullptr))
+		Renderer::updateTexture(mTextureID, type, 0, 0, mWidth, mHeight, mTextureData);
 
 	return true;
 }
@@ -299,6 +401,10 @@ bool TextureData::load(bool updateCache)
 			mScalable = true;
 			retval = initSVGFromMemory((const unsigned char*)data.ptr.get(), data.length);
 		}
+        else if (mPath.substr(mPath.size() - 4, std::string::npos) == ".jpg")
+        {
+            retval = initJPGFromMemory((const unsigned char*)data.ptr.get(), data.length);
+        }
 		else
 			retval = initImageFromMemory((const unsigned char*)data.ptr.get(), data.length);
 
@@ -312,7 +418,7 @@ bool TextureData::load(bool updateCache)
 bool TextureData::isLoaded()
 {
 	std::unique_lock<std::mutex> lock(mMutex);
-	if (mDataRGBA || (mTextureID != 0))
+	if (mTextureData || (mTextureID != 0))
 		return true;
 	return false;
 }
@@ -327,21 +433,26 @@ bool TextureData::uploadAndBind()
 	else
 	{
 		// Make sure we're ready to upload
-		if (mWidth == 0 || mHeight == 0 || mDataRGBA == nullptr)
+		if (mWidth == 0 || mHeight == 0 || mTextureData == nullptr)
 		{
 			Renderer::bindTexture(mTextureID);
 			return false;
 		}
 
 		// Upload texture
-		mTextureID = Renderer::createTexture(Renderer::Texture::RGBA, mLinear, mTile, mWidth, mHeight, mDataRGBA);
+        Renderer::Texture::Type format = Renderer::Texture::RGBA;
+        if (mTextureFormat == RGB24)
+            format = Renderer::Texture::RGB;
+        else if (mTextureFormat == RGB565)
+            format = Renderer::Texture::RGB;
+		mTextureID = Renderer::createTexture(format, mLinear, mTile, mWidth, mHeight, mTextureData);
 		if (mTextureID == 0)
 			return false;
 
-		if (mDataRGBA != nullptr && !mIsExternalDataRGBA)
-			delete[] mDataRGBA;
+		if (mTextureData != nullptr && !mIsExternalDataRGBA)
+			free(mTextureData);
 
-		mDataRGBA = nullptr;
+		mTextureData = nullptr;
 	}
 
 	return true;
@@ -361,10 +472,10 @@ void TextureData::releaseRAM()
 {
 	std::unique_lock<std::mutex> lock(mMutex);
 
-	if (mDataRGBA != nullptr && !mIsExternalDataRGBA)
-		delete[] mDataRGBA;
+	if (mTextureData != nullptr && !mIsExternalDataRGBA)
+		free(mTextureData);
 
-	mDataRGBA = 0;
+    mTextureData = nullptr;
 }
 
 size_t TextureData::width()
@@ -422,7 +533,7 @@ void TextureData::setSourceSize(float width, float height)
 
 size_t TextureData::getVRAMUsage()
 {
-	if ((mTextureID != 0) || (mDataRGBA != nullptr))
+	if ((mTextureID != 0) || (mTextureData != nullptr))
 		return mWidth * mHeight * 4;
 	else
 		return 0;

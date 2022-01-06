@@ -10,6 +10,8 @@
 #include "components/MultiLineMenuEntry.h"
 #include "components/MenuComponent.h"
 
+#include <tuple>
+
 //Used to display a list of options.
 //Can select one or multiple options.
 
@@ -347,19 +349,29 @@ public:
 
   	bool IsMultiSelect() { return mMultiSelect; }
         
-        // batocera
 	std::string getSelectedName()
 	{
-                assert(mMultiSelect == false);
-                for(unsigned int i = 0; i < mEntries.size(); i++)
-		{
-			if(mEntries.at(i).selected)
+		assert(mMultiSelect == false);
+
+		for (unsigned int i = 0; i < mEntries.size(); i++)
+			if (mEntries.at(i).selected)
 				return mEntries.at(i).name;
-		}
-                return "";
+
+		return "";
 	}
-        
-	void addEx(const std::string name, const std::string description, const T& obj, bool selected, bool treeChild = false)
+
+	int getSelectedIndex()
+	{
+		assert(mMultiSelect == false);
+
+		for (unsigned int i = 0; i < mEntries.size(); i++)
+			if (mEntries.at(i).selected)
+				return i;
+
+		return -1;
+	}
+
+	void addEx(const std::string& name, const std::string& description, const T& obj, bool selected, bool treeChild = false)
 	{
 		for (auto sysIt = mEntries.cbegin(); sysIt != mEntries.cend(); sysIt++)
 			if (sysIt->name == name)
@@ -381,7 +393,7 @@ public:
 		onSelectedChanged();
 	}
 
-	void add(const std::string name, const T& obj, bool selected, bool distinct = true, bool treeChild = false)
+	void add(const std::string& name, const T& obj, bool selected, bool distinct = true, bool treeChild = false)
 	{
 		if (distinct)
 		{
@@ -413,11 +425,20 @@ public:
 		if (!hasSelection())
 			selectFirstItem();
 	}
-
+	
 	void addRange(const std::vector<std::pair<std::string, T>> values, const T selectedValue)
 	{
 		for (auto value : values)
 			add(value.first.c_str(), value.second, selectedValue == value.second);
+
+		if (!hasSelection())
+			selectFirstItem();
+	}
+
+	void addRange(const std::vector<std::tuple<std::string, std::string, T>> values, const T selectedValue)
+	{
+		for (auto value : values)
+			addEx(std::get<0>(value), std::get<1>(value), std::get<2>(value), selectedValue == std::get<2>(value));
 
 		if (!hasSelection())
 			selectFirstItem();

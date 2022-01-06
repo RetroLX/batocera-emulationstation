@@ -152,10 +152,11 @@ public:
 	bool hasContentFiles();
 	std::set<std::string> getContentFiles();
 
-	void speak();
+	void setSelectedGame();
 
 private:
 	std::string getKeyboardMappingFilePath();
+	std::string getMessageFromExitCode(int exitCode);
 	MetaDataList mMetadata;
 
 protected:	

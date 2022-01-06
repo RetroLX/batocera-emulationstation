@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-16 07:49+0100\n"
+"POT-Creation-Date: 2021-12-15 23:48+0100\n"
 "PO-Revision-Date: 2021-10-02 17:16+0000\n"
 "Last-Translator: Weblate Admin <quentinantonin@free.fr>\n"
 "Language-Team: Occitan <https://fabrica.mejans.fr/projects/autres/batocera/"
@@ -100,6 +100,12 @@ msgstr "Mapa"
 
 msgid "enter path to map"
 msgstr "dintrar lo camin d’accès a la mapa"
+
+msgid "Bezel (16:9)"
+msgstr ""
+
+msgid "enter path to bezel (16:9)"
+msgstr ""
 
 msgid "Cartridge"
 msgstr "Cartocha"
@@ -359,6 +365,68 @@ msgstr "PAQUET INSTALLAT AMB SUCCÈS"
 msgid "PACKAGE REMOVED SUCCESSFULLY"
 msgstr "PAQUET SUPRIMIT AMB SUCCÈS"
 
+msgid "RETROACHIEVEMENT SETTINGS"
+msgstr ""
+
+msgid "SETTINGS"
+msgstr "PARAMÈTRES"
+
+msgid "RETROACHIEVEMENTS"
+msgstr "RETROACHIEVEMENTS"
+
+msgid "HARDCORE MODE"
+msgstr "MÒDE DIFICIL DIFICIL"
+
+msgid "LEADERBOARDS"
+msgstr ""
+
+msgid "VERBOSE MODE"
+msgstr ""
+
+msgid "AUTOMATIC SCREENSHOT"
+msgstr "CAPTURA D'ECRAN AUTOMATICA"
+
+msgid "CHALLENGE INDICATORS"
+msgstr ""
+
+msgid ""
+"Shows icons in the bottom right corner when eligible achievements can be "
+"earned."
+msgstr ""
+
+msgid "RETROACHIEVEMENT UNLOCK SOUND"
+msgstr ""
+
+msgid "none"
+msgstr ""
+
+msgid "UNLOCK SOUND"
+msgstr ""
+
+msgid "USERNAME"
+msgstr "NOM UTILIZAIRE"
+
+msgid "PASSWORD"
+msgstr "SENHAL"
+
+msgid "SHOW RETROACHIEVEMENTS ENTRY IN MAIN MENU"
+msgstr ""
+
+msgid "GAME INDEXES"
+msgstr ""
+
+msgid "INDEX NEW GAMES AT STARTUP"
+msgstr ""
+
+msgid "INDEX GAMES"
+msgstr ""
+
+msgid "UNABLE TO ACTIVATE RETROACHIEVEMENTS:"
+msgstr ""
+
+msgid "OK"
+msgstr "D'ACÒRDI"
+
 msgid "FILTER GAMELIST BY"
 msgstr "FILTRAR LAS LISTAS DE JÒCS PER"
 
@@ -495,9 +563,6 @@ msgstr "ESPERATZ"
 msgid "%d%% (%d of %d)"
 msgstr "%d%% (%d de %d)"
 
-msgid "RETROACHIEVEMENTS"
-msgstr "RETROACHIEVEMENTS"
-
 msgid "Points"
 msgstr "Punts"
 
@@ -510,11 +575,38 @@ msgstr "VEIRE LOS DETALHS"
 msgid "LAUNCH"
 msgstr "LANÇAR"
 
+msgid "NETPLAY SETTINGS"
+msgstr "PARAMÈTRES NETPLAY"
+
+msgid "ENABLE NETPLAY"
+msgstr "ACTIVAR NETPLAY"
+
+msgid "NICKNAME"
+msgstr "ESCAIS"
+
+msgid "PORT"
+msgstr "PÒRT"
+
+msgid "USE RELAY SERVER"
+msgstr ""
+
+msgid "NEW YORK"
+msgstr ""
+
+msgid "MADRID"
+msgstr ""
+
+msgid "MONTREAL"
+msgstr ""
+
+msgid "SAO PAULO"
+msgstr ""
+
+msgid "SHOW UNAVAILABLE GAMES"
+msgstr ""
+
 msgid "FINISHED"
 msgstr "TERMINAT"
-
-msgid "OK"
-msgstr "D'ACÒRDI"
 
 msgid "VIEW OPTIONS"
 msgstr "VEIRE OPCIONS"
@@ -630,6 +722,9 @@ msgstr "CAP DE RET WIFI PAS TROBAT"
 msgid "SEARCHING WI-FI NETWORKS"
 msgstr "RECÈRCA DE RET WIFI"
 
+msgid "YOU ARE NOT CONNECTED TO A NETWORK"
+msgstr ""
+
 msgid "FORGET A BLUETOOTH DEVICE"
 msgstr "OBLIDAR LO PERIFERIC BLUETOOTH"
 
@@ -725,9 +820,6 @@ msgstr ""
 msgid "never"
 msgstr "jamai"
 
-msgid "none"
-msgstr ""
-
 msgid "systems"
 msgstr ""
 
@@ -736,9 +828,6 @@ msgstr ""
 
 msgid "SCREENSAVER SETTINGS"
 msgstr ""
-
-msgid "SETTINGS"
-msgstr "PARAMÈTRES"
 
 msgid "START SCREENSAVER AFTER"
 msgstr "ESTALVIADOR D’ECRAN APRÈP"
@@ -939,7 +1028,7 @@ msgstr ""
 msgid "OPEN"
 msgstr ""
 
-msgid "NETPLAY HOSTING/OPTIONS"
+msgid "START A NETPLAY GAME"
 msgstr ""
 
 msgid "NETPLAY"
@@ -948,19 +1037,16 @@ msgstr "NETPLAY"
 msgid "START GAME"
 msgstr ""
 
-msgid "BEGIN HOSTING A NETPLAY SESSION"
-msgstr ""
-
-msgid "YOU ARE NOT CONNECTED TO A NETWORK"
+msgid "HOST A NETPLAY GAME"
 msgstr ""
 
 msgid "PUBLICLY ANNOUNCE GAME"
 msgstr ""
 
-msgid "SET PLAYER PASSWORD"
+msgid "PLAYER PASSWORD"
 msgstr ""
 
-msgid "SET VIEWER PASSWORD"
+msgid "VIEWER PASSWORD"
 msgstr ""
 
 msgid "FIND SIMILAR GAMES..."
@@ -1041,7 +1127,7 @@ msgstr ""
 msgid "START NEW GAME"
 msgstr ""
 
-msgid "START AUTO SAVE"
+msgid "START NEW AUTO SAVE"
 msgstr ""
 
 msgid "AUTO SAVE"
@@ -1053,20 +1139,122 @@ msgstr ""
 msgid "COPY TO FREE SLOT"
 msgstr ""
 
-msgid "SCRAPE CRITERIA"
+msgid "SCRAPER SETTINGS"
 msgstr ""
 
-msgid "MEDIA TO SCRAPE FOR"
+msgid "IMAGE SOURCE"
+msgstr "FONT IMATGE"
+
+msgid "SCREENSHOT"
+msgstr "CAPTURA D'ECRAN"
+
+msgid "TITLE SCREENSHOT"
+msgstr ""
+
+msgid "MIX V1"
+msgstr ""
+
+msgid "MIX V2"
+msgstr ""
+
+msgid "BOX 2D"
+msgstr ""
+
+msgid "BOX 3D"
+msgstr ""
+
+msgid "FAN ART"
+msgstr ""
+
+msgid "BOX SOURCE"
+msgstr ""
+
+msgid "LOGO SOURCE"
+msgstr ""
+
+msgid "WHEEL"
+msgstr ""
+
+msgid "MARQUEE"
+msgstr ""
+
+msgid "SCRAPE RATINGS"
+msgstr ""
+
+msgid "SCRAPE VIDEOS"
+msgstr ""
+
+msgid "SCRAPE FANART"
+msgstr ""
+
+msgid "SCRAPE BEZEL (16:9)"
+msgstr ""
+
+msgid "SCRAPE BOX BACKSIDE"
+msgstr ""
+
+msgid "SCRAPE MAP"
+msgstr ""
+
+msgid "SCRAPE MANUAL"
+msgstr ""
+
+msgid "SCRAPE PADTOKEY SETTINGS"
+msgstr ""
+
+msgid "SCRAPER"
+msgstr "SEGADOIRA d’INFO"
+
+msgid "SCRAPING DATABASE"
+msgstr ""
+
+msgid "SOURCE"
+msgstr ""
+
+msgid "SCRAPE FROM"
+msgstr "RECUPERAR DE"
+
+msgid "FILTERS"
+msgstr ""
+
+msgid "GAMES TO SCRAPE FOR"
 msgstr ""
 
 msgid "ALL"
 msgstr ""
 
-msgid "ONLY MISSING"
+msgid "GAMES MISSING MEDIAS"
+msgstr ""
+
+msgid "GAMES WITHOUT ANY MEDIA"
+msgstr ""
+
+msgid "IGNORE RECENTLY SCRAPED GAMES"
+msgstr ""
+
+msgid "LAST DAY"
+msgstr ""
+
+msgid "LAST WEEK"
+msgstr ""
+
+msgid "LAST 15 DAYS"
+msgstr ""
+
+msgid "LAST MONTH"
+msgstr ""
+
+msgid "LAST 3 MONTHS"
+msgstr ""
+
+msgid "LAST YEAR"
 msgstr ""
 
 msgid "SYSTEMS INCLUDED"
 msgstr ""
+
+msgid "SCRAPE NOW"
+msgstr "RECUPERAR ARA"
 
 msgid "START"
 msgstr "COMENÇAR"
@@ -1081,6 +1269,24 @@ msgid "SCRAPING IS RUNNING. DO YOU WANT TO STOP IT?"
 msgstr ""
 
 msgid "NO GAMES FIT THAT CRITERIA."
+msgstr ""
+
+msgid "INFORMATION"
+msgstr "INFORMATION"
+
+msgid "VERSION"
+msgstr "VERSION"
+
+msgid "USER DISK USAGE"
+msgstr ""
+
+msgid "SYSTEM DISK USAGE"
+msgstr ""
+
+msgid "SYSTEM"
+msgstr "SISTÈMA"
+
+msgid "VIDEO DRIVER"
 msgstr ""
 
 msgid "THE BEZEL PROJECT"
@@ -1161,9 +1367,6 @@ msgstr ""
 msgid "RENDERER"
 msgstr ""
 
-msgid "VERSION"
-msgstr "VERSION"
-
 msgid "SHADERS"
 msgstr ""
 
@@ -1197,95 +1400,17 @@ msgstr "CONFIGURAR ENTRADA"
 msgid "EMULATOR SETTINGS"
 msgstr "PARAMÈTRES EMULATOR"
 
-msgid "SCRAPER"
-msgstr "SEGADOIRA d’INFO"
-
 msgid "UPDATES & DOWNLOADS"
 msgstr "MESAS A JORN E TELECARGAMENTS"
 
 msgid "SYSTEM SETTINGS"
 msgstr "PARAMÈTRE SISTÈMA"
 
-msgid "INFORMATION"
-msgstr "INFORMATION"
-
 msgid "UNLOCK UI MODE"
 msgstr ""
 
 msgid "QUIT"
 msgstr "QUITAR"
-
-msgid "SCRAPER IS RUNNING. DO YOU WANT TO STOP IT?"
-msgstr ""
-
-msgid "NEXT"
-msgstr ""
-
-msgid "SCRAPING DATABASE"
-msgstr ""
-
-msgid "IMAGE SOURCE"
-msgstr "FONT IMATGE"
-
-msgid "SCREENSHOT"
-msgstr "CAPTURA D'ECRAN"
-
-msgid "TITLE SCREENSHOT"
-msgstr ""
-
-msgid "MIX V1"
-msgstr ""
-
-msgid "MIX V2"
-msgstr ""
-
-msgid "BOX 2D"
-msgstr ""
-
-msgid "BOX 3D"
-msgstr ""
-
-msgid "FAN ART"
-msgstr ""
-
-msgid "BOX SOURCE"
-msgstr ""
-
-msgid "LOGO SOURCE"
-msgstr ""
-
-msgid "WHEEL"
-msgstr ""
-
-msgid "MARQUEE"
-msgstr ""
-
-msgid "SCRAPE RATINGS"
-msgstr ""
-
-msgid "SCRAPE VIDEOS"
-msgstr ""
-
-msgid "SCRAPE FANART"
-msgstr ""
-
-msgid "SCRAPE BOX BACKSIDE"
-msgstr ""
-
-msgid "SCRAPE MAP"
-msgstr ""
-
-msgid "SCRAPE MANUAL"
-msgstr ""
-
-msgid "SCRAPE PADTOKEY SETTINGS"
-msgstr ""
-
-msgid "USERNAME"
-msgstr "NOM UTILIZAIRE"
-
-msgid "PASSWORD"
-msgstr "SENHAL"
 
 msgid "ARE YOU SURE YOU WANT TO CONFIGURE THE INPUT?"
 msgstr ""
@@ -1297,18 +1422,6 @@ msgid "THE UI MODE IS NOW UNLOCKED"
 msgstr ""
 
 msgid "ENTER THE CODE TO UNLOCK THE CURRENT UI MODE"
-msgstr ""
-
-msgid "USER DISK USAGE"
-msgstr ""
-
-msgid "SYSTEM DISK USAGE"
-msgstr ""
-
-msgid "SYSTEM"
-msgstr "SISTÈMA"
-
-msgid "VIDEO DRIVER"
 msgstr ""
 
 msgid "DEVELOPER"
@@ -1455,16 +1568,19 @@ msgstr ""
 msgid "OPTIMIZATIONS"
 msgstr ""
 
-msgid "PRELOAD UI ELEMENTS"
+msgid "PRELOAD UI ELEMENTS ON BOOT"
 msgstr ""
 
-msgid "Reduce overall menu lag at the cost of storage space"
+msgid ""
+"Reduces lag when entering gamelists from the system menu, increases boot time"
 msgstr ""
 
-msgid "PRELOAD METADATA MEDIA"
+msgid "PRELOAD METADATA MEDIA ON BOOT"
 msgstr ""
 
-msgid "Reduce gamelist lag at the cost of storage space"
+msgid ""
+"Reduces lag when scrolling through a fully scraped gamelist, increases boot "
+"time"
 msgstr ""
 
 msgid "THREADED LOADING"
@@ -1596,12 +1712,6 @@ msgstr ""
 msgid "SPLASH SETTING"
 msgstr ""
 
-msgid "RETROACHIEVEMENT SETTINGS"
-msgstr ""
-
-msgid "NETPLAY SETTINGS"
-msgstr "PARAMÈTRES NETPLAY"
-
 msgid "CHECK BIOS FILES BEFORE RUNNING A GAME"
 msgstr ""
 
@@ -1689,49 +1799,15 @@ msgstr ""
 msgid "RUN-AHEAD USE SECOND INSTANCE"
 msgstr ""
 
-msgid "HARDCORE MODE"
-msgstr "MÒDE DIFICIL DIFICIL"
-
-msgid "LEADERBOARDS"
+msgid "AUTOMATIC FRAME DELAY"
 msgstr ""
 
-msgid "VERBOSE MODE"
+msgid "AUTO FRAME DELAY"
 msgstr ""
 
-msgid "AUTOMATIC SCREENSHOT"
-msgstr "CAPTURA D'ECRAN AUTOMATICA"
-
-msgid "RETROACHIEVEMENT UNLOCK SOUND"
-msgstr ""
-
-msgid "UNLOCK SOUND"
-msgstr ""
-
-msgid "SHOW RETROACHIEVEMENTS ENTRY IN MAIN MENU"
-msgstr ""
-
-msgid "GAME INDEXES"
-msgstr ""
-
-msgid "INDEX NEW GAMES AT STARTUP"
-msgstr ""
-
-msgid "INDEX GAMES"
-msgstr ""
-
-msgid "UNABLE TO ACTIVATE RETROACHIEVEMENTS:"
-msgstr ""
-
-msgid "ENABLE NETPLAY"
-msgstr "ACTIVAR NETPLAY"
-
-msgid "NICKNAME"
-msgstr "ESCAIS"
-
-msgid "PORT"
-msgstr "PÒRT"
-
-msgid "USE RELAY SERVER"
+msgid ""
+"Automatically decrease frame delay temporarily to prevent frame drops. Turn "
+"off if this worsens audio/video stuttering."
 msgstr ""
 
 msgid "DECORATION SET"
@@ -1755,18 +1831,6 @@ msgstr "RECULAR"
 msgid "INTEGER SCALING (PIXEL PERFECT)"
 msgstr ""
 
-msgid "AUTO SAVE/LOAD ON GAME LAUNCH"
-msgstr "SALVAGARDA/CARGAMENT AUTO"
-
-msgid "SHOW SAVE STATES"
-msgstr ""
-
-msgid "SHOW SAVE STATES IF NOT EMPTY"
-msgstr ""
-
-msgid "INCREMENTAL SAVESTATES"
-msgstr ""
-
 msgid "SHADER SET"
 msgstr ""
 
@@ -1776,16 +1840,19 @@ msgstr "DECORACIONS"
 msgid "STRETCH BEZELS (4K & ULTRAWIDE)"
 msgstr ""
 
-msgid "SHOW CONTROLLER OVERLAYS"
+msgid "SHOW TATTOO OVER BEZEL"
 msgstr ""
 
 msgid "SYSTEM CONTROLLERS"
 msgstr ""
 
-msgid "CUSTOM .PNG IMAGE"
+msgid "CUSTOM IMAGE"
 msgstr ""
 
-msgid "OVERLAY CORNER"
+msgid "Show an image overlaid on top of the bezel."
+msgstr ""
+
+msgid "TATTOO CORNER"
 msgstr ""
 
 msgid "NORTH WEST"
@@ -1803,6 +1870,12 @@ msgstr ""
 msgid "CUSTOM .PNG IMAGE PATH"
 msgstr ""
 
+msgid "RESIZE TATTOO"
+msgstr ""
+
+msgid "Shrink/expand tattoo to fit within the bezel's border."
+msgstr ""
+
 msgid "AI GAME TRANSLATION"
 msgstr ""
 
@@ -1818,7 +1891,40 @@ msgstr ""
 msgid "PAUSE ON TRANSLATED SCREEN"
 msgstr ""
 
+msgid "SAVESTATES"
+msgstr ""
+
+msgid "AUTO SAVE/LOAD"
+msgstr ""
+
+msgid "INCREMENTAL SAVESTATES"
+msgstr ""
+
+msgid "NEW GAME CREATES NEW SLOT"
+msgstr ""
+
+msgid "NEW GAME OVERWRITES CURRENT SLOT"
+msgstr ""
+
+msgid "DISPLAY SAVE STATE MANAGER"
+msgstr ""
+
+msgid "ALWAYS"
+msgstr ""
+
+msgid "IF NOT EMPTY"
+msgstr ""
+
+msgid "SHOW SAVE STATE MANAGER"
+msgstr ""
+
+msgid "DISPLAY SAVE STATE MANAGER BEFORE LAUNCHING A GAME"
+msgstr ""
+
 msgid "PER SYSTEM ADVANCED CONFIGURATION"
+msgstr ""
+
+msgid "SCRAPER IS RUNNING. DO YOU WANT TO STOP IT?"
 msgstr ""
 
 msgid "GAME HASHING IS RUNNING. DO YOU WANT TO STOP IT?"
@@ -1941,6 +2047,9 @@ msgstr "OPCIONS D'AFICHATGE"
 msgid "LIST TRANSITION STYLE"
 msgstr "ESTIL DE TRANSICION"
 
+msgid "auto"
+msgstr ""
+
 msgid "GAME LAUNCH TRANSITION"
 msgstr ""
 
@@ -2037,10 +2146,10 @@ msgstr "ERROR DE CONFIGURACION WIFI"
 msgid "QUICK ACCESS"
 msgstr ""
 
-msgid "SKIP TO NEXT SONG"
+msgid "SKIP TO THE NEXT SONG"
 msgstr ""
 
-msgid "LISTENING NOW"
+msgid "NOW PLAYING"
 msgstr ""
 
 msgid "LAUNCH SCREENSAVER"
@@ -2067,6 +2176,9 @@ msgstr "ATUDAR PER DE BON ?"
 msgid "FAST SHUTDOWN SYSTEM"
 msgstr "ATUDA RAPIDA DEL SISTÈMA"
 
+msgid "Shutdown without saving metadata."
+msgstr ""
+
 msgid "REALLY SHUTDOWN WITHOUT SAVING METADATA?"
 msgstr "VOLÈTZ ATUDAR PER DE BON SENS ENREGISTRAR LAS METADONADAS ?"
 
@@ -2075,6 +2187,18 @@ msgstr "QUITAR EMULATIONSTATION"
 
 msgid "REALLY QUIT?"
 msgstr "QUITAR PER DE BON ?"
+
+msgid "AUTO SAVE/LOAD ON GAME LAUNCH"
+msgstr "SALVAGARDA/CARGAMENT AUTO"
+
+msgid "SHOW CONTROLLER OVERLAYS"
+msgstr ""
+
+msgid "CUSTOM .PNG IMAGE"
+msgstr ""
+
+msgid "OVERLAY CORNER"
+msgstr ""
 
 msgid "COLORIZATION"
 msgstr "COLORIZACION"
@@ -2148,6 +2272,9 @@ msgid "ZOOM"
 msgstr ""
 
 msgid "GAMES TO INDEX"
+msgstr ""
+
+msgid "ONLY MISSING"
 msgstr ""
 
 msgid "SYSTEM INFO"
@@ -2275,6 +2402,9 @@ msgstr "IGNORAR"
 msgid "Downloading"
 msgstr "Telecargament"
 
+msgid "SEARCH FOR"
+msgstr ""
+
 msgid "ACCEPT RESULT"
 msgstr "ACCEPTAR RESULTAT"
 
@@ -2389,6 +2519,27 @@ msgstr ""
 msgid "UPDATE GAMELISTS TO APPLY CHANGES."
 msgstr ""
 
+msgid "THE EMULATOR EXITED UNEXPECTEDLY"
+msgstr ""
+
+msgid "BAD COMMAND LINE ARGUMENTS"
+msgstr ""
+
+msgid "INVALID CONFIGURATION"
+msgstr ""
+
+msgid "UNKNOWN EMULATOR"
+msgstr ""
+
+msgid "EMULATOR IS MISSING"
+msgstr ""
+
+msgid "CORE IS MISSING"
+msgstr ""
+
+msgid "UKNOWN ERROR"
+msgstr ""
+
 msgid "GENRE"
 msgstr "GENRE"
 
@@ -2451,42 +2602,63 @@ msgstr ""
 msgid "SPACE"
 msgstr "ESPACI"
 
+msgctxt "joystick"
 msgid "UP"
-msgstr "AMONT"
+msgstr ""
 
+msgctxt "joystick"
 msgid "DOWN"
-msgstr "AVAL"
+msgstr ""
 
+msgctxt "joystick"
 msgid "LEFT"
-msgstr "ESQUÈRRA"
+msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT"
-msgstr "DRECHA"
+msgstr ""
 
+msgctxt "joystick"
+msgid "START"
+msgstr ""
+
+msgctxt "joystick"
+msgid "SELECT"
+msgstr ""
+
+msgctxt "joystick"
 msgid "LEFT ANALOG UP"
 msgstr ""
 
+msgctxt "joystick"
 msgid "LEFT ANALOG DOWN"
 msgstr ""
 
+msgctxt "joystick"
 msgid "LEFT ANALOG LEFT"
 msgstr ""
 
+msgctxt "joystick"
 msgid "LEFT ANALOG RIGHT"
 msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG UP"
 msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG DOWN"
 msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG LEFT"
 msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG RIGHT"
 msgstr ""
 
+msgctxt "joystick"
 msgid "HOTKEY"
 msgstr ""
 
@@ -2631,6 +2803,18 @@ msgstr ""
 msgid "SCREEN READER DISABLED"
 msgstr ""
 
+#~ msgid "UP"
+#~ msgstr "AMONT"
+
+#~ msgid "DOWN"
+#~ msgstr "AVAL"
+
+#~ msgid "LEFT"
+#~ msgstr "ESQUÈRRA"
+
+#~ msgid "RIGHT"
+#~ msgstr "DRECHA"
+
 #~ msgid "All Games"
 #~ msgstr "Totes los jòcs"
 
@@ -2702,9 +2886,6 @@ msgstr ""
 #~ msgid "SELECT THEMES TO INSTALL / REMOVE"
 #~ msgstr "CAUSISSÈTZ TÈMAS D'INSTALLAR / SUPRIMIR"
 
-#~ msgid "SCRAPE NOW"
-#~ msgstr "RECUPERAR ARA"
-
 #~ msgid "FILTER"
 #~ msgstr "FILTRAR"
 
@@ -2713,9 +2894,6 @@ msgstr ""
 
 #~ msgid "INFORMATIONS"
 #~ msgstr "INFORMACIONS"
-
-#~ msgid "SCRAPE FROM"
-#~ msgstr "RECUPERAR DE"
 
 #~ msgid "UPDATE IS ALREADY RUNNING"
 #~ msgstr "LA MESA A JORN ES JA EN CORS"

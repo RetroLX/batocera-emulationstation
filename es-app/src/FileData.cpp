@@ -29,6 +29,8 @@
 #include "SaveStateRepository.h"
 #include "Genres.h"
 #include "TextToSpeech.h"
+#include "LocaleES.h"
+#include "guis/GuiMsgBox.h"
 
 FileData::FileData(FileType type, const std::string& path, SystemData* system)
 	: mPath(path), mType(type), mSystem(system), mParent(nullptr), mDisplayName(nullptr), mMetadata(type == GAME ? GAME_METADATA : FOLDER_METADATA) // metadata is REALLY set in the constructor!
@@ -320,6 +322,9 @@ const std::string FileData::getImagePath()
 	// no image, try to use local image
 	if(image.empty())
 	{		
+		if (Utils::String::toLower(Utils::FileSystem::getExtension(getPath())) == ".png")
+			return getPath();
+
 		if (Settings::getInstance()->getBool("LocalArt"))
 		{
 			const char* extList[2] = { ".png", ".jpg" };
@@ -396,6 +401,14 @@ FileData* FileData::getSourceFileData()
 	return this;
 }
 
+static std::string formatCommandLineArgument(const std::string& name)
+{
+	if (name.find(" ") != std::string::npos)
+		return "\"" + Utils::String::replace(name, "\"", "\\\"") + "\"";
+
+	return Utils::String::replace(name, "\"", "\\\"");
+};
+
 std::string FileData::getlaunchCommand(LaunchGameOptions& options, bool includeControllers)
 {
 	FileData* gameToUpdate = getSourceFileData();
@@ -470,7 +483,7 @@ std::string FileData::getlaunchCommand(LaunchGameOptions& options, bool includeC
 	const std::string rom = Utils::FileSystem::getEscapedPath(getPath());
 	const std::string basename = Utils::FileSystem::getStem(getPath());
 	const std::string rom_raw = Utils::FileSystem::getPreferredPath(getPath());
-
+	
 	command = Utils::String::replace(command, "%SYSTEM%", systemName); // batocera
 	command = Utils::String::replace(command, "%ROM%", rom);
 	command = Utils::String::replace(command, "%BASENAME%", basename);
@@ -478,7 +491,24 @@ std::string FileData::getlaunchCommand(LaunchGameOptions& options, bool includeC
 	command = Utils::String::replace(command, "%EMULATOR%", emulator);
 	command = Utils::String::replace(command, "%CORE%", core);
 	command = Utils::String::replace(command, "%HOME%", Utils::FileSystem::getHomePath());
+	command = Utils::String::replace(command, "%GAMENAME%", formatCommandLineArgument(gameToUpdate->getName()));
+	command = Utils::String::replace(command, "%SYSTEMNAME%", formatCommandLineArgument(system->getFullName()));
 
+	// Export Game info XML is requested
+#ifdef WIN32
+	std::string fileInfo = Utils::FileSystem::combine(Utils::FileSystem::getTempPath(), "game.xml");
+#else
+	std::string fileInfo = "/tmp/game.xml";
+#endif
+
+	if (command.find("%GAMEINFOXML%") != std::string::npos && saveToXml(gameToUpdate, fileInfo, true))
+		command = Utils::String::replace(command, "%GAMEINFOXML%", Utils::FileSystem::getEscapedPath(fileInfo));
+	else
+	{
+		command = Utils::String::replace(command, "%GAMEINFOXML%", "");
+		Utils::FileSystem::removeFile(fileInfo);
+	}
+	
 	if (includeControllers)
 		command = Utils::String::replace(command, "%CONTROLLERSCONFIG%", controllersConfig); // batocera
 
@@ -520,6 +550,43 @@ std::string FileData::getlaunchCommand(LaunchGameOptions& options, bool includeC
 		command = options.saveStateInfo.setupSaveState(this, command);
 
 	return command;
+}
+
+std::string FileData::getMessageFromExitCode(int exitCode)
+{
+	switch (exitCode)
+	{
+	case 200:
+		return _("THE EMULATOR EXITED UNEXPECTEDLY");
+	case 201:
+		return _("BAD COMMAND LINE ARGUMENTS");
+	case 202:
+		return _("INVALID CONFIGURATION");
+	case 203:
+		return _("UNKNOWN EMULATOR");
+	case 204:
+		return _("EMULATOR IS MISSING");
+	case 205:
+		return _("CORE IS MISSING");
+	case 299:
+		{
+	#if WIN32
+			std::string messageFile = Utils::FileSystem::combine(Utils::FileSystem::getTempPath(), "launch_error.log");
+	#else
+			std::string messageFile = "/tmp/launch_error.log";
+	#endif
+			if (Utils::FileSystem::exists(messageFile))
+			{
+				auto message = Utils::FileSystem::readAllText(messageFile);
+				Utils::FileSystem::removeFile(messageFile);
+
+				if (!message.empty())
+					return message;
+			}
+		}
+	}
+
+	return _("UKNOWN ERROR") + " : " + std::to_string(exitCode);
 }
 
 bool FileData::launchGame(Window* window, LaunchGameOptions options)
@@ -611,6 +678,9 @@ bool FileData::launchGame(Window* window, LaunchGameOptions options)
 		AudioManager::getInstance()->changePlaylist(system->getTheme(), true);
 	else
 		AudioManager::getInstance()->playRandomMusic();
+
+	if (exitCode >= 200 && exitCode <= 300)
+		window->pushGui(new GuiMsgBox(window, _("AN ERROR OCCURED") + ":\r\n" + getMessageFromExitCode(exitCode), _("OK"), nullptr, GuiMsgBoxIcon::ICON_ERROR));
 
 	return exitCode == 0;
 }
@@ -845,9 +915,8 @@ const std::vector<FileData*> FolderData::getChildrenListToDisplay()
 
 	std::vector<std::string> hiddenExts;
 	if (mSystem->isGameSystem() && !mSystem->isCollection())
-		for (auto ext : Utils::String::split(Settings::getInstance()->getString(mSystem->getName() + ".HiddenExt"), ';'))	
-			hiddenExts.push_back("." + Utils::String::toLower(ext));
-	
+		hiddenExts = Utils::String::split(Utils::String::toLower(Settings::getInstance()->getString(mSystem->getName() + ".HiddenExt")), ';');
+
 	FileFilterIndex* idx = sys->getIndex(false);
 	if (idx != nullptr && !idx->isFiltered())
 		idx = nullptr;
@@ -875,7 +944,7 @@ const std::vector<FileData*> FolderData::getChildrenListToDisplay()
 
 		if (hiddenExts.size() > 0 && (*it)->getType() == GAME)
 		{
-			std::string extlow = Utils::String::toLower(Utils::FileSystem::getExtension((*it)->getFileName()));
+			std::string extlow = Utils::String::toLower(Utils::FileSystem::getExtension((*it)->getFileName(), false));
 			if (std::find(hiddenExts.cbegin(), hiddenExts.cend(), extlow) != hiddenExts.cend())
 				continue;
 		}
@@ -1045,11 +1114,10 @@ std::vector<FileData*> FolderData::getFilesRecursive(unsigned int typeMask, bool
 	else if (shv == "0") showHiddenFiles = false;
 
 	SystemData* pSystem = (system != nullptr ? system : mSystem);
-
+	
 	std::vector<std::string> hiddenExts;
 	if (pSystem->isGameSystem() && !pSystem->isCollection())
-		for (auto ext : Utils::String::split(Settings::getInstance()->getString(pSystem->getName() + ".HiddenExt"), ';'))
-			hiddenExts.push_back("." + Utils::String::toLower(ext));
+		hiddenExts = Utils::String::split(Utils::String::toLower(Settings::getInstance()->getString(pSystem->getName() + ".HiddenExt")), ';');
 
 	bool filterKidGame = UIModeController::getInstance()->isUIModeKid();
 
@@ -1069,9 +1137,9 @@ std::vector<FileData*> FolderData::getFilesRecursive(unsigned int typeMask, bool
 					if (filterKidGame && it->getKidGame())
 						continue;
 
-					if (hiddenExts.size() > 0 && it->getType() == GAME)
+					if (typeMask == GAME && hiddenExts.size() > 0)
 					{
-						std::string extlow = Utils::String::toLower(Utils::FileSystem::getExtension(it->getFileName()));
+						std::string extlow = Utils::String::toLower(Utils::FileSystem::getExtension(it->getFileName(), false));
 						if (std::find(hiddenExts.cbegin(), hiddenExts.cend(), extlow) != hiddenExts.cend())
 							continue;
 					}
@@ -1288,7 +1356,7 @@ bool FileData::isNetplaySupported()
 	std::string emulName = getEmulator();
 	std::string coreName = getCore();
 
-	if (!SystemData::es_features_loaded)
+	if (!CustomFeatures::FeaturesLoaded)
 	{
 		std::string command = system->getLaunchCommand(emulName, coreName);
 		if (command.find("%NETPLAY%") != std::string::npos)
@@ -1583,11 +1651,15 @@ std::string FileData::getCurrentGameSetting(const std::string& settingName)
 	return SystemConf::getInstance()->get("global." + settingName);
 }
 
-void FileData::speak()
+void FileData::setSelectedGame()
 {
 	TextToSpeech::getInstance()->say(getName(), false);
+
+	Scripting::fireEvent("game-selected", getSourceFileData()->getSystem()->getName(), getPath(), getName());
 
 	std::string desc = getMetadata(MetaDataId::Desc);
 	if (!desc.empty())
 		TextToSpeech::getInstance()->say(desc, true);
+
+	
 }

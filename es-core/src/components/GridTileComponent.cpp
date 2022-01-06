@@ -16,6 +16,7 @@
 
 #include "Settings.h"
 #include "ImageGridComponent.h"
+#include "VideoGstreamerComponent.h"
 
 #define VIDEODELAY	100
 
@@ -457,7 +458,8 @@ void GridTileComponent::createVideo()
 	if (mVideo != nullptr)
 		return;
 
-	mVideo = new VideoVlcComponent(mWindow, "");
+	//mVideo = new VideoVlcComponent(mWindow, "");
+    mVideo = new VideoGstreamerComponent(mWindow, "");
 
 	// video
 	mVideo->setOrigin(0.5f, 0.5f);

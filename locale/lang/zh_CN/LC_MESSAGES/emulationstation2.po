@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: emulationstation\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-16 07:49+0100\n"
+"POT-Creation-Date: 2021-12-15 23:48+0100\n"
 "Language: zh-CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -90,6 +90,12 @@ msgstr "地图"
 
 msgid "enter path to map"
 msgstr "输入地图路径"
+
+msgid "Bezel (16:9)"
+msgstr ""
+
+msgid "enter path to bezel (16:9)"
+msgstr ""
 
 msgid "Cartridge"
 msgstr "存储器"
@@ -348,6 +354,68 @@ msgstr "包安装成功"
 msgid "PACKAGE REMOVED SUCCESSFULLY"
 msgstr "包卸载成功"
 
+msgid "RETROACHIEVEMENT SETTINGS"
+msgstr ""
+
+msgid "SETTINGS"
+msgstr "设置"
+
+msgid "RETROACHIEVEMENTS"
+msgstr "RetroArch成就"
+
+msgid "HARDCORE MODE"
+msgstr "专家模式"
+
+msgid "LEADERBOARDS"
+msgstr "排行榜"
+
+msgid "VERBOSE MODE"
+msgstr "详细模式"
+
+msgid "AUTOMATIC SCREENSHOT"
+msgstr "自动截图"
+
+msgid "CHALLENGE INDICATORS"
+msgstr ""
+
+msgid ""
+"Shows icons in the bottom right corner when eligible achievements can be "
+"earned."
+msgstr ""
+
+msgid "RETROACHIEVEMENT UNLOCK SOUND"
+msgstr ""
+
+msgid "none"
+msgstr "无"
+
+msgid "UNLOCK SOUND"
+msgstr ""
+
+msgid "USERNAME"
+msgstr "用户名"
+
+msgid "PASSWORD"
+msgstr "密码"
+
+msgid "SHOW RETROACHIEVEMENTS ENTRY IN MAIN MENU"
+msgstr ""
+
+msgid "GAME INDEXES"
+msgstr "游戏索引"
+
+msgid "INDEX NEW GAMES AT STARTUP"
+msgstr ""
+
+msgid "INDEX GAMES"
+msgstr ""
+
+msgid "UNABLE TO ACTIVATE RETROACHIEVEMENTS:"
+msgstr ""
+
+msgid "OK"
+msgstr "确定"
+
 msgid "FILTER GAMELIST BY"
 msgstr "游戏列表筛选方式:"
 
@@ -484,9 +552,6 @@ msgstr "请稍后"
 msgid "%d%% (%d of %d)"
 msgstr ""
 
-msgid "RETROACHIEVEMENTS"
-msgstr "RetroArch成就"
-
 msgid "Points"
 msgstr ""
 
@@ -499,11 +564,38 @@ msgstr ""
 msgid "LAUNCH"
 msgstr "启动"
 
+msgid "NETPLAY SETTINGS"
+msgstr "联网游戏设置"
+
+msgid "ENABLE NETPLAY"
+msgstr "启用联网游戏"
+
+msgid "NICKNAME"
+msgstr "昵称"
+
+msgid "PORT"
+msgstr "端口"
+
+msgid "USE RELAY SERVER"
+msgstr "使用中继服务"
+
+msgid "NEW YORK"
+msgstr ""
+
+msgid "MADRID"
+msgstr ""
+
+msgid "MONTREAL"
+msgstr ""
+
+msgid "SAO PAULO"
+msgstr ""
+
+msgid "SHOW UNAVAILABLE GAMES"
+msgstr ""
+
 msgid "FINISHED"
 msgstr "完成"
-
-msgid "OK"
-msgstr "确定"
 
 msgid "VIEW OPTIONS"
 msgstr "视图选项"
@@ -619,6 +711,9 @@ msgstr "未发现可用的WIFI网络"
 msgid "SEARCHING WI-FI NETWORKS"
 msgstr "正在查询WIFI网络"
 
+msgid "YOU ARE NOT CONNECTED TO A NETWORK"
+msgstr "你没联网"
+
 msgid "FORGET A BLUETOOTH DEVICE"
 msgstr ""
 
@@ -714,9 +809,6 @@ msgstr "开始和结束"
 msgid "never"
 msgstr "从未"
 
-msgid "none"
-msgstr "无"
-
 msgid "systems"
 msgstr "系统"
 
@@ -725,9 +817,6 @@ msgstr "随机"
 
 msgid "SCREENSAVER SETTINGS"
 msgstr "屏保设置"
-
-msgid "SETTINGS"
-msgstr "设置"
 
 msgid "START SCREENSAVER AFTER"
 msgstr "屏保等待时间"
@@ -928,7 +1017,7 @@ msgstr ""
 msgid "OPEN"
 msgstr ""
 
-msgid "NETPLAY HOSTING/OPTIONS"
+msgid "START A NETPLAY GAME"
 msgstr ""
 
 msgid "NETPLAY"
@@ -937,19 +1026,16 @@ msgstr "联网游戏"
 msgid "START GAME"
 msgstr ""
 
-msgid "BEGIN HOSTING A NETPLAY SESSION"
+msgid "HOST A NETPLAY GAME"
 msgstr ""
-
-msgid "YOU ARE NOT CONNECTED TO A NETWORK"
-msgstr "你没联网"
 
 msgid "PUBLICLY ANNOUNCE GAME"
 msgstr ""
 
-msgid "SET PLAYER PASSWORD"
+msgid "PLAYER PASSWORD"
 msgstr ""
 
-msgid "SET VIEWER PASSWORD"
+msgid "VIEWER PASSWORD"
 msgstr ""
 
 msgid "FIND SIMILAR GAMES..."
@@ -1032,7 +1118,7 @@ msgstr ""
 msgid "START NEW GAME"
 msgstr ""
 
-msgid "START AUTO SAVE"
+msgid "START NEW AUTO SAVE"
 msgstr ""
 
 msgid "AUTO SAVE"
@@ -1044,20 +1130,122 @@ msgstr ""
 msgid "COPY TO FREE SLOT"
 msgstr ""
 
-msgid "SCRAPE CRITERIA"
+msgid "SCRAPER SETTINGS"
 msgstr ""
 
-msgid "MEDIA TO SCRAPE FOR"
+msgid "IMAGE SOURCE"
+msgstr "图片数据"
+
+msgid "SCREENSHOT"
+msgstr "截图"
+
+msgid "TITLE SCREENSHOT"
+msgstr "标题截图"
+
+msgid "MIX V1"
+msgstr "V1 滤镜"
+
+msgid "MIX V2"
+msgstr "V2 滤镜"
+
+msgid "BOX 2D"
+msgstr "2D 盒子"
+
+msgid "BOX 3D"
+msgstr "3D 盒子"
+
+msgid "FAN ART"
+msgstr "同人作品"
+
+msgid "BOX SOURCE"
+msgstr "封面数据"
+
+msgid "LOGO SOURCE"
+msgstr "LOGO数据"
+
+msgid "WHEEL"
+msgstr "旋转"
+
+msgid "MARQUEE"
+msgstr "蒙版"
+
+msgid "SCRAPE RATINGS"
+msgstr "抓取游戏评分"
+
+msgid "SCRAPE VIDEOS"
+msgstr "抓取视频"
+
+msgid "SCRAPE FANART"
+msgstr "抓取同人作品"
+
+msgid "SCRAPE BEZEL (16:9)"
+msgstr ""
+
+msgid "SCRAPE BOX BACKSIDE"
+msgstr ""
+
+msgid "SCRAPE MAP"
+msgstr ""
+
+msgid "SCRAPE MANUAL"
+msgstr "抓取手册"
+
+msgid "SCRAPE PADTOKEY SETTINGS"
+msgstr "抓取pad按键设置"
+
+msgid "SCRAPER"
+msgstr "抓取元数据"
+
+msgid "SCRAPING DATABASE"
+msgstr ""
+
+msgid "SOURCE"
+msgstr ""
+
+msgid "SCRAPE FROM"
+msgstr "游戏数据来源"
+
+msgid "FILTERS"
+msgstr ""
+
+msgid "GAMES TO SCRAPE FOR"
 msgstr ""
 
 msgid "ALL"
 msgstr ""
 
-msgid "ONLY MISSING"
+msgid "GAMES MISSING MEDIAS"
+msgstr ""
+
+msgid "GAMES WITHOUT ANY MEDIA"
+msgstr ""
+
+msgid "IGNORE RECENTLY SCRAPED GAMES"
+msgstr ""
+
+msgid "LAST DAY"
+msgstr ""
+
+msgid "LAST WEEK"
+msgstr ""
+
+msgid "LAST 15 DAYS"
+msgstr ""
+
+msgid "LAST MONTH"
+msgstr ""
+
+msgid "LAST 3 MONTHS"
+msgstr ""
+
+msgid "LAST YEAR"
 msgstr ""
 
 msgid "SYSTEMS INCLUDED"
 msgstr ""
+
+msgid "SCRAPE NOW"
+msgstr "开始抓取"
 
 msgid "START"
 msgstr "开始"
@@ -1073,6 +1261,24 @@ msgstr "抓取进行中"
 
 msgid "NO GAMES FIT THAT CRITERIA."
 msgstr "没有匹配的游戏。"
+
+msgid "INFORMATION"
+msgstr "系统信息"
+
+msgid "VERSION"
+msgstr "版本"
+
+msgid "USER DISK USAGE"
+msgstr "用户磁盘使用"
+
+msgid "SYSTEM DISK USAGE"
+msgstr "系统磁盘使用"
+
+msgid "SYSTEM"
+msgstr "系统"
+
+msgid "VIDEO DRIVER"
+msgstr ""
 
 msgid "THE BEZEL PROJECT"
 msgstr "框架项目"
@@ -1152,9 +1358,6 @@ msgstr ""
 msgid "RENDERER"
 msgstr ""
 
-msgid "VERSION"
-msgstr "版本"
-
 msgid "SHADERS"
 msgstr ""
 
@@ -1188,95 +1391,17 @@ msgstr "配置控制器"
 msgid "EMULATOR SETTINGS"
 msgstr "模拟器设置"
 
-msgid "SCRAPER"
-msgstr "抓取元数据"
-
 msgid "UPDATES & DOWNLOADS"
 msgstr "更新文件和下载文件"
 
 msgid "SYSTEM SETTINGS"
 msgstr "系统设置"
 
-msgid "INFORMATION"
-msgstr "系统信息"
-
 msgid "UNLOCK UI MODE"
 msgstr "界面不锁定"
 
 msgid "QUIT"
 msgstr "退出"
-
-msgid "SCRAPER IS RUNNING. DO YOU WANT TO STOP IT?"
-msgstr ""
-
-msgid "NEXT"
-msgstr ""
-
-msgid "SCRAPING DATABASE"
-msgstr ""
-
-msgid "IMAGE SOURCE"
-msgstr "图片数据"
-
-msgid "SCREENSHOT"
-msgstr "截图"
-
-msgid "TITLE SCREENSHOT"
-msgstr "标题截图"
-
-msgid "MIX V1"
-msgstr "V1 滤镜"
-
-msgid "MIX V2"
-msgstr "V2 滤镜"
-
-msgid "BOX 2D"
-msgstr "2D 盒子"
-
-msgid "BOX 3D"
-msgstr "3D 盒子"
-
-msgid "FAN ART"
-msgstr "同人作品"
-
-msgid "BOX SOURCE"
-msgstr "封面数据"
-
-msgid "LOGO SOURCE"
-msgstr "LOGO数据"
-
-msgid "WHEEL"
-msgstr "旋转"
-
-msgid "MARQUEE"
-msgstr "蒙版"
-
-msgid "SCRAPE RATINGS"
-msgstr "抓取游戏评分"
-
-msgid "SCRAPE VIDEOS"
-msgstr "抓取视频"
-
-msgid "SCRAPE FANART"
-msgstr "抓取同人作品"
-
-msgid "SCRAPE BOX BACKSIDE"
-msgstr ""
-
-msgid "SCRAPE MAP"
-msgstr ""
-
-msgid "SCRAPE MANUAL"
-msgstr "抓取手册"
-
-msgid "SCRAPE PADTOKEY SETTINGS"
-msgstr "抓取pad按键设置"
-
-msgid "USERNAME"
-msgstr "用户名"
-
-msgid "PASSWORD"
-msgstr "密码"
 
 msgid "ARE YOU SURE YOU WANT TO CONFIGURE THE INPUT?"
 msgstr ""
@@ -1288,18 +1413,6 @@ msgid "THE UI MODE IS NOW UNLOCKED"
 msgstr ""
 
 msgid "ENTER THE CODE TO UNLOCK THE CURRENT UI MODE"
-msgstr ""
-
-msgid "USER DISK USAGE"
-msgstr "用户磁盘使用"
-
-msgid "SYSTEM DISK USAGE"
-msgstr "系统磁盘使用"
-
-msgid "SYSTEM"
-msgstr "系统"
-
-msgid "VIDEO DRIVER"
 msgstr ""
 
 msgid "DEVELOPER"
@@ -1446,16 +1559,19 @@ msgstr "显示网络标识"
 msgid "OPTIMIZATIONS"
 msgstr "优化"
 
-msgid "PRELOAD UI ELEMENTS"
+msgid "PRELOAD UI ELEMENTS ON BOOT"
 msgstr ""
 
-msgid "Reduce overall menu lag at the cost of storage space"
+msgid ""
+"Reduces lag when entering gamelists from the system menu, increases boot time"
 msgstr ""
 
-msgid "PRELOAD METADATA MEDIA"
+msgid "PRELOAD METADATA MEDIA ON BOOT"
 msgstr ""
 
-msgid "Reduce gamelist lag at the cost of storage space"
+msgid ""
+"Reduces lag when scrolling through a fully scraped gamelist, increases boot "
+"time"
 msgstr ""
 
 msgid "THREADED LOADING"
@@ -1587,12 +1703,6 @@ msgstr ""
 msgid "SPLASH SETTING"
 msgstr ""
 
-msgid "RETROACHIEVEMENT SETTINGS"
-msgstr ""
-
-msgid "NETPLAY SETTINGS"
-msgstr "联网游戏设置"
-
 msgid "CHECK BIOS FILES BEFORE RUNNING A GAME"
 msgstr "在启动游戏前检查BIOS"
 
@@ -1680,50 +1790,16 @@ msgstr "使用 RUN-AHEAD 框架"
 msgid "RUN-AHEAD USE SECOND INSTANCE"
 msgstr "RUN-AHEAD 使用第二个实例"
 
-msgid "HARDCORE MODE"
-msgstr "专家模式"
-
-msgid "LEADERBOARDS"
-msgstr "排行榜"
-
-msgid "VERBOSE MODE"
-msgstr "详细模式"
-
-msgid "AUTOMATIC SCREENSHOT"
-msgstr "自动截图"
-
-msgid "RETROACHIEVEMENT UNLOCK SOUND"
+msgid "AUTOMATIC FRAME DELAY"
 msgstr ""
 
-msgid "UNLOCK SOUND"
+msgid "AUTO FRAME DELAY"
 msgstr ""
 
-msgid "SHOW RETROACHIEVEMENTS ENTRY IN MAIN MENU"
+msgid ""
+"Automatically decrease frame delay temporarily to prevent frame drops. Turn "
+"off if this worsens audio/video stuttering."
 msgstr ""
-
-msgid "GAME INDEXES"
-msgstr "游戏索引"
-
-msgid "INDEX NEW GAMES AT STARTUP"
-msgstr ""
-
-msgid "INDEX GAMES"
-msgstr ""
-
-msgid "UNABLE TO ACTIVATE RETROACHIEVEMENTS:"
-msgstr ""
-
-msgid "ENABLE NETPLAY"
-msgstr "启用联网游戏"
-
-msgid "NICKNAME"
-msgstr "昵称"
-
-msgid "PORT"
-msgstr "端口"
-
-msgid "USE RELAY SERVER"
-msgstr "使用中继服务"
 
 msgid "DECORATION SET"
 msgstr ""
@@ -1746,18 +1822,6 @@ msgstr "倒带功能"
 msgid "INTEGER SCALING (PIXEL PERFECT)"
 msgstr "整数缩放 (像素完美显示)"
 
-msgid "AUTO SAVE/LOAD ON GAME LAUNCH"
-msgstr "自动保存/加载"
-
-msgid "SHOW SAVE STATES"
-msgstr ""
-
-msgid "SHOW SAVE STATES IF NOT EMPTY"
-msgstr ""
-
-msgid "INCREMENTAL SAVESTATES"
-msgstr ""
-
 msgid "SHADER SET"
 msgstr "着色器设置"
 
@@ -1767,16 +1831,19 @@ msgstr "装饰框"
 msgid "STRETCH BEZELS (4K & ULTRAWIDE)"
 msgstr "弹性挡板（4K和超宽）"
 
-msgid "SHOW CONTROLLER OVERLAYS"
+msgid "SHOW TATTOO OVER BEZEL"
 msgstr ""
 
 msgid "SYSTEM CONTROLLERS"
 msgstr ""
 
-msgid "CUSTOM .PNG IMAGE"
+msgid "CUSTOM IMAGE"
 msgstr ""
 
-msgid "OVERLAY CORNER"
+msgid "Show an image overlaid on top of the bezel."
+msgstr ""
+
+msgid "TATTOO CORNER"
 msgstr ""
 
 msgid "NORTH WEST"
@@ -1794,6 +1861,12 @@ msgstr ""
 msgid "CUSTOM .PNG IMAGE PATH"
 msgstr ""
 
+msgid "RESIZE TATTOO"
+msgstr ""
+
+msgid "Shrink/expand tattoo to fit within the bezel's border."
+msgstr ""
+
 msgid "AI GAME TRANSLATION"
 msgstr "AI游戏翻译"
 
@@ -1809,8 +1882,41 @@ msgstr ""
 msgid "PAUSE ON TRANSLATED SCREEN"
 msgstr "翻译时暂停"
 
+msgid "SAVESTATES"
+msgstr ""
+
+msgid "AUTO SAVE/LOAD"
+msgstr ""
+
+msgid "INCREMENTAL SAVESTATES"
+msgstr ""
+
+msgid "NEW GAME CREATES NEW SLOT"
+msgstr ""
+
+msgid "NEW GAME OVERWRITES CURRENT SLOT"
+msgstr ""
+
+msgid "DISPLAY SAVE STATE MANAGER"
+msgstr ""
+
+msgid "ALWAYS"
+msgstr ""
+
+msgid "IF NOT EMPTY"
+msgstr ""
+
+msgid "SHOW SAVE STATE MANAGER"
+msgstr ""
+
+msgid "DISPLAY SAVE STATE MANAGER BEFORE LAUNCHING A GAME"
+msgstr ""
+
 msgid "PER SYSTEM ADVANCED CONFIGURATION"
 msgstr "按系统配置"
+
+msgid "SCRAPER IS RUNNING. DO YOU WANT TO STOP IT?"
+msgstr ""
 
 msgid "GAME HASHING IS RUNNING. DO YOU WANT TO STOP IT?"
 msgstr "正在效验游戏.你想停止吗?"
@@ -1932,6 +2038,9 @@ msgstr "视图画面选项"
 msgid "LIST TRANSITION STYLE"
 msgstr "画面转场样式"
 
+msgid "auto"
+msgstr ""
+
 msgid "GAME LAUNCH TRANSITION"
 msgstr "游戏启动过程"
 
@@ -2028,11 +2137,11 @@ msgstr "WiFi 配置错误"
 msgid "QUICK ACCESS"
 msgstr "快速进入"
 
-msgid "SKIP TO NEXT SONG"
-msgstr "切换到下一首"
+msgid "SKIP TO THE NEXT SONG"
+msgstr ""
 
-msgid "LISTENING NOW"
-msgstr "开始聆听"
+msgid "NOW PLAYING"
+msgstr ""
 
 msgid "LAUNCH SCREENSAVER"
 msgstr "启动屏保"
@@ -2058,6 +2167,9 @@ msgstr "是否关机?"
 msgid "FAST SHUTDOWN SYSTEM"
 msgstr "快速关机"
 
+msgid "Shutdown without saving metadata."
+msgstr ""
+
 msgid "REALLY SHUTDOWN WITHOUT SAVING METADATA?"
 msgstr "是否不保存元数据并直接关机?"
 
@@ -2066,6 +2178,18 @@ msgstr "退出EmulationStation"
 
 msgid "REALLY QUIT?"
 msgstr "确定退出?"
+
+msgid "AUTO SAVE/LOAD ON GAME LAUNCH"
+msgstr "自动保存/加载"
+
+msgid "SHOW CONTROLLER OVERLAYS"
+msgstr ""
+
+msgid "CUSTOM .PNG IMAGE"
+msgstr ""
+
+msgid "OVERLAY CORNER"
+msgstr ""
 
 msgid "COLORIZATION"
 msgstr "彩色化"
@@ -2139,6 +2263,9 @@ msgid "ZOOM"
 msgstr ""
 
 msgid "GAMES TO INDEX"
+msgstr ""
+
+msgid "ONLY MISSING"
 msgstr ""
 
 msgid "SYSTEM INFO"
@@ -2262,6 +2389,9 @@ msgstr "跳过"
 msgid "Downloading"
 msgstr "下载中"
 
+msgid "SEARCH FOR"
+msgstr "搜索方式按"
+
 msgid "ACCEPT RESULT"
 msgstr "接受结果"
 
@@ -2376,6 +2506,27 @@ msgstr ""
 msgid "UPDATE GAMELISTS TO APPLY CHANGES."
 msgstr ""
 
+msgid "THE EMULATOR EXITED UNEXPECTEDLY"
+msgstr ""
+
+msgid "BAD COMMAND LINE ARGUMENTS"
+msgstr ""
+
+msgid "INVALID CONFIGURATION"
+msgstr ""
+
+msgid "UNKNOWN EMULATOR"
+msgstr ""
+
+msgid "EMULATOR IS MISSING"
+msgstr ""
+
+msgid "CORE IS MISSING"
+msgstr ""
+
+msgid "UKNOWN ERROR"
+msgstr ""
+
 msgid "GENRE"
 msgstr "类型"
 
@@ -2438,44 +2589,65 @@ msgstr "SHIFT"
 msgid "SPACE"
 msgstr "空格"
 
+msgctxt "joystick"
 msgid "UP"
-msgstr "上"
+msgstr ""
 
+msgctxt "joystick"
 msgid "DOWN"
-msgstr "下"
+msgstr ""
 
+msgctxt "joystick"
 msgid "LEFT"
-msgstr "左"
+msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT"
-msgstr "右"
+msgstr ""
 
+msgctxt "joystick"
+msgid "START"
+msgstr ""
+
+msgctxt "joystick"
+msgid "SELECT"
+msgstr ""
+
+msgctxt "joystick"
 msgid "LEFT ANALOG UP"
-msgstr "左侧类比摇杆 上"
+msgstr ""
 
+msgctxt "joystick"
 msgid "LEFT ANALOG DOWN"
 msgstr ""
 
+msgctxt "joystick"
 msgid "LEFT ANALOG LEFT"
-msgstr "左侧类比摇杆 左"
+msgstr ""
 
+msgctxt "joystick"
 msgid "LEFT ANALOG RIGHT"
 msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG UP"
-msgstr "右侧类比摇杆 上"
+msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG DOWN"
 msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG LEFT"
-msgstr "右侧类比摇杆 左"
+msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG RIGHT"
 msgstr ""
 
+msgctxt "joystick"
 msgid "HOTKEY"
-msgstr "热键"
+msgstr ""
 
 msgid "CONFIGURING"
 msgstr "配置"
@@ -2611,6 +2783,39 @@ msgstr ""
 msgid "SCREEN READER DISABLED"
 msgstr ""
 
+#~ msgid "UP"
+#~ msgstr "上"
+
+#~ msgid "DOWN"
+#~ msgstr "下"
+
+#~ msgid "LEFT"
+#~ msgstr "左"
+
+#~ msgid "RIGHT"
+#~ msgstr "右"
+
+#~ msgid "LEFT ANALOG UP"
+#~ msgstr "左侧类比摇杆 上"
+
+#~ msgid "LEFT ANALOG LEFT"
+#~ msgstr "左侧类比摇杆 左"
+
+#~ msgid "RIGHT ANALOG UP"
+#~ msgstr "右侧类比摇杆 上"
+
+#~ msgid "RIGHT ANALOG LEFT"
+#~ msgstr "右侧类比摇杆 左"
+
+#~ msgid "HOTKEY"
+#~ msgstr "热键"
+
+#~ msgid "SKIP TO NEXT SONG"
+#~ msgstr "切换到下一首"
+
+#~ msgid "LISTENING NOW"
+#~ msgstr "开始聆听"
+
 #~ msgid "PRELOAD UI"
 #~ msgstr "预加载UI"
 
@@ -2711,9 +2916,6 @@ msgstr ""
 #~ msgid "SELECT THEMES TO INSTALL / REMOVE"
 #~ msgstr "选择主题安装 / 卸载"
 
-#~ msgid "SCRAPE NOW"
-#~ msgstr "开始抓取"
-
 #~ msgid "SCRAPE THESE GAMES"
 #~ msgstr "抓取游戏元数据"
 
@@ -2743,9 +2945,6 @@ msgstr ""
 
 #~ msgid "INFORMATIONS"
 #~ msgstr "信息"
-
-#~ msgid "SCRAPE FROM"
-#~ msgstr "游戏数据来源"
 
 #~ msgid "ARE YOU SURE YOU WANT TO CONFIGURE INPUT?"
 #~ msgstr "你确定需要设置控制器吗"
@@ -3275,9 +3474,6 @@ msgstr ""
 
 #~ msgid "NUMBER OF PLAYERS"
 #~ msgstr "游玩人数"
-
-#~ msgid "SEARCH FOR"
-#~ msgstr "搜索方式按"
 
 #~ msgid "JOYSTICK 1 UP"
 #~ msgstr "摇杆 1 上"

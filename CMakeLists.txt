@@ -14,6 +14,8 @@ option(ENABLE_PULSE "Set to ON to enable pulse audio (versus alsa)" OFF)
 option(ENABLE_TTS "Set to ON to enable text to speech" OFF)
 option(USE_SYSTEM_PUGIXML "Set to ON to use system-wide pugixml library" OFF)
 option(USE_SYSTEM_LIBYUV "Set to ON to use system-wide libyuv library" OFF)
+option(USE_GSTREAMER "Set to ON to use GStreamer library for video playback" ON)
+option(USE_VLC "Set to ON to use VLC library for video playback" ON)
 
 project(emulationstation-all)
 
@@ -100,7 +102,14 @@ find_package(SDL2MIXER REQUIRED)
 # batocera / customisations
 find_package(SDL2 REQUIRED)
 find_package(CURL REQUIRED)
+if (USE_VLC)
 find_package(VLC REQUIRED)
+endif()
+if (USE_GSTREAMER)
+    include(FindPkgConfig)
+    pkg_check_modules(GSTREAMER REQUIRED gstreamer-1.0 gstreamer-video-1.0 gstreamer-audio-1.0)
+    pkg_check_modules(Glib2 REQUIRED glib-2.0 gobject-2.0 gthread-2.0 gmodule-2.0)
+endif()
 find_package(RapidJSON REQUIRED)
 
 if(ENABLE_PULSE)
@@ -226,6 +235,14 @@ set(COMMON_INCLUDE_DIRS
     ${CMAKE_CURRENT_SOURCE_DIR}/es-core/src
 )
 
+if (USE_GSTREAMER)
+ LIST(APPEND COMMON_INCLUDE_DIRS
+    "${GLIB2_INCLUDE_DIRS}"
+    "${GSTREAMER_INCLUDE_DIRS}"
+    )
+endif()
+
+
 if(ENABLE_PULSE)
  LIST(APPEND COMMON_INCLUDE_DIRS
     ${PULSEAUDIO_INCLUDE_DIR}
@@ -305,6 +322,12 @@ set(COMMON_LIBRARIES
     jpeg
 )
 
+if (USE_GSTREAMER)
+ LIST(APPEND COMMON_LIBRARIES
+    ${GLIB2_LIBRARIES}
+    ${GSTREAMER_LIBRARIES}
+ )
+endif()
 if(ENABLE_PULSE)
  LIST(APPEND COMMON_LIBRARIES
     ${PULSEAUDIO_LIBRARY}

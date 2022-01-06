@@ -393,7 +393,7 @@ namespace Utils
 						fi.path = path + "/" + name;
 						fi.hidden = (findData.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN) == FILE_ATTRIBUTE_HIDDEN;
 						fi.directory = (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY;
-						fi.creationTime = to_time_t(findData.ftCreationTime);
+						fi.lastWriteTime = to_time_t(findData.ftLastWriteTime);
 
 						contentList.push_back(fi);
 
@@ -766,15 +766,21 @@ namespace Utils
 			return _path.substr(lastPathSplit, extPos - lastPathSplit);
 		}
 
-		std::string getExtension(const std::string& _path)
+		std::string getExtension(const std::string& _path, bool withPoint)
 		{
-			const char *str = _path.c_str();
+			const char* path = _path.c_str();
+			const char* ptr = path + _path.length();
 
-			const char *ext;
-			if (str && *str != '\0' && ((ext = strrchr(str, '.'))) && strpbrk(ext, "/\\") == nullptr)
-				return ext;
+			do
+			{
+				if (ptr[-1] == '.')
+					return withPoint ? ptr -1 : ptr;
 
-			return std::string();
+				--ptr;
+			} 
+			while (ptr > path);
+
+			return "";
 		}
 
 		std::string changeExtension(const std::string& _path, const std::string& extension)
@@ -1468,16 +1474,24 @@ namespace Utils
 #endif
 			if (file)
 			{
-				#define CRCBUFFERSIZE 64 * 1024
-				char* buffer = new char[CRCBUFFERSIZE];
+				// Retroarch CRC calculations are limited in size. See encoding_crc32.c
+				#define CRC32_BUFFER_SIZE 1048576
+				#define CRC32_MAX_MB 64
+
+				char* buffer = new char[CRC32_BUFFER_SIZE];
 				if (buffer)
 				{
 					size_t size;
-
 					unsigned int file_crc32 = 0;
 
-					while (size = fread(buffer, 1, CRCBUFFERSIZE, file))
+					for (int i = 0; i < CRC32_MAX_MB; i++)
+					{
+						size = fread(buffer, 1, CRC32_BUFFER_SIZE, file);
+						if (size == 0)
+							break;
+
 						file_crc32 = Utils::Zip::ZipFile::computeCRC(file_crc32, buffer, size);
+					}
 
 					hex = Utils::String::toHexString(file_crc32);
 

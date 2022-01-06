@@ -29,30 +29,31 @@ std::vector<std::string> ResourceManager::getResourcePaths() const
 	std::vector<std::string> paths;
 
 	// check if theme overrides default resources
+#ifdef WIN32
 	std::string themePath = Utils::FileSystem::getEsConfigPath() + "/themes/" + Settings::getInstance()->getString("ThemeSet") + "/resources";
 	if (Utils::FileSystem::isDirectory(themePath))
 		paths.push_back(themePath);
 
-	// check if default readonly theme overrides default resources
-#ifndef WIN32
+#else
+	std::string themePath = "/userdata/themes/" + Settings::getInstance()->getString("ThemeSet") + "/resources";
+	if (Utils::FileSystem::isDirectory(themePath))
+		paths.push_back(themePath);
+
 	std::string roThemePath = Utils::FileSystem::getSharedConfigPath() + "/themes/" + Settings::getInstance()->getString("ThemeSet") + "/resources";
 	if (Utils::FileSystem::isDirectory(roThemePath))
 		paths.push_back(roThemePath);
 #endif
 
 	// check in homepath
-	paths.push_back(Utils::FileSystem::getEsConfigPath() + "/resources");
-
-	// check in shared path
-	paths.push_back(Utils::FileSystem::getSharedConfigPath() + "/resources");
-
-	// check in cwd
-	auto cwd = Utils::FileSystem::getCWDPath() + "/resources";
-	if (std::find(paths.cbegin(), paths.cend(), cwd) == paths.cend())
-		paths.push_back(cwd);
-
+	paths.push_back(Utils::FileSystem::getEsConfigPath() + "/resources"); 
+	
 	// check in exepath
-	paths.push_back(Utils::FileSystem::getExePath() + "/resources");
+	paths.push_back(Utils::FileSystem::getSharedConfigPath() + "/resources"); 
+		
+	// check in cwd
+	auto cwd = Utils::FileSystem::getCWDPath() + "/resources";	
+	if (std::find(paths.cbegin(), paths.cend(), cwd) == paths.cend())
+		paths.push_back(cwd); 
 
 	return paths;
 }
@@ -71,9 +72,13 @@ std::string ResourceManager::getResourcePath(const std::string& path) const
 	}
 
 #if WIN32
-	if (Utils::String::startsWith(path, ":/locale/"))
+	if (Utils::String::startsWith(path, ":/locale/") || Utils::String::startsWith(path, ":/es_features.locale/"))
 	{
 		std::string test = Utils::FileSystem::getCanonicalPath(Utils::FileSystem::getExePath() + "/" + &path[2]);
+		if (Utils::FileSystem::exists(test))
+			return test;
+
+		test = Utils::FileSystem::getCanonicalPath(Utils::FileSystem::getEsConfigPath() + "/" + &path[2]);
 		if (Utils::FileSystem::exists(test))
 			return test;
 	}

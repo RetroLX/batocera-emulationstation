@@ -140,7 +140,7 @@ void HttpReq::performRequest(const std::string& url, HttpReqOptions* options)
 	{
 		curl_easy_setopt(mHandle, CURLOPT_POST, 1L);
 		curl_easy_setopt(mHandle, CURLOPT_POSTFIELDSIZE, options->dataToPost.length());
-		curl_easy_setopt(mHandle, CURLOPT_COPYPOSTFIELDS, options->dataToPost);
+		curl_easy_setopt(mHandle, CURLOPT_COPYPOSTFIELDS, options->dataToPost.c_str());
 	}
 
 	if (options != nullptr && options->customHeaders.size() > 0)
@@ -242,9 +242,9 @@ void HttpReq::performRequest(const std::string& url, HttpReqOptions* options)
 			{
 				size_t pxe = proxyServer.find(";", pxs);
 				if (pxe == std::string::npos)
-					pxe = proxyServer.size() - 1;
-
-				proxyServer = proxyServer.substr(pxs + protocol.size(), pxe - pxs - protocol.size());
+					proxyServer = proxyServer.substr(pxs + protocol.size());
+				else 
+					proxyServer = proxyServer.substr(pxs + protocol.size(), pxe - pxs - protocol.size());
 			}
 
 			if (!proxyServer.empty())

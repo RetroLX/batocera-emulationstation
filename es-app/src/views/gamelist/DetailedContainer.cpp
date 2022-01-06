@@ -11,6 +11,7 @@
 #include "Window.h"
 #include "components/ComponentGrid.h"
 #include <set>
+#include <components/VideoGstreamerComponent.h>
 
 #ifdef _RPI_
 #include "Settings.h"
@@ -255,7 +256,8 @@ void DetailedContainer::createVideo()
 		mVideo = new VideoPlayerComponent(mWindow, "");
 	else
 #endif
-		mVideo = new VideoVlcComponent(mWindow, "");
+		//mVideo = new VideoVlcComponent(mWindow, "");
+        mVideo = new VideoGstreamerComponent(mWindow, "");
 
 	// Default is IMAGE in Recalbox themes -> video view does not exist
 	mVideo->setSnapshotSource(IMAGE);
@@ -1140,7 +1142,7 @@ void DetailedContainerHost::updateControls(FileData* file, bool isClearing, int 
 	if (!mContainer->anyComponentHasStoryBoard() || file == nullptr || isClearing || moveBy == 0)
 	{
 		if (file != nullptr && !isClearing)
-			file->speak();
+			file->setSelectedGame();
 
 		mContainer->updateControls(file, isClearing, moveBy);
 		return;
@@ -1156,7 +1158,7 @@ void DetailedContainerHost::updateControls(FileData* file, bool isClearing, int 
 	}
 
 	mActiveFile = file;
-	mActiveFile->speak();
+	mActiveFile->setSelectedGame();
 	bool clear = isClearing;
 	int by = moveBy;
 

@@ -32,6 +32,7 @@
 #include "ImageIO.h"
 #include "components/VideoVlcComponent.h"
 #include <csignal>
+#include <components/VideoGstreamerComponent.h>
 #include "InputConfig.h"
 #include "RetroAchievements.h"
 #include "TextToSpeech.h"
@@ -44,6 +45,7 @@
 
 static std::string gPlayVideo;
 static int gPlayVideoDuration = 0;
+static bool enable_startup_game = true;
 
 bool parseArgs(int argc, char* argv[])
 {
@@ -159,9 +161,21 @@ bool parseArgs(int argc, char* argv[])
 		}else if(strcmp(argv[i], "--exit-on-reboot-required") == 0)
 		{
 			Settings::getInstance()->setBool("ExitOnRebootRequired", true);
+		}else if(strcmp(argv[i], "--no-startup-game") == 0)
+		{
+		        enable_startup_game = false;
 		}else if(strcmp(argv[i], "--no-splash") == 0)
 		{
 			Settings::getInstance()->setBool("SplashScreen", false);
+		}else if(strcmp(argv[i], "--splash-image") == 0)
+		{
+		        if (i >= argc - 1)
+			{
+				std::cerr << "Invalid splash image supplied.";
+				return false;
+			}
+			Settings::getInstance()->setString("AlternateSplashScreen", argv[i+1]);
+			++i; // skip the argument value
 		}else if(strcmp(argv[i], "--debug") == 0)
 		{
 			Settings::getInstance()->setBool("Debug", true);
@@ -275,7 +289,7 @@ bool loadSystemConfigFile(Window* window, const char** errorString)
 		return false;
 	}
 
-	/*if(SystemData::sSystemVector.size() == 0)
+	if(SystemData::sSystemVector.size() == 0)
 	{
 		LOG(LogError) << "No systems found! Does at least one system have a game present? (check that extensions match!)\n(Also, make sure you've updated your es_systems.cfg for XML!)";
 		*errorString = "WE CAN'T FIND ANY SYSTEMS!\n"
@@ -283,7 +297,7 @@ bool loadSystemConfigFile(Window* window, const char** errorString)
 			"AND YOUR GAME DIRECTORY HAS AT LEAST ONE GAME WITH THE CORRECT EXTENSION.\n\n"
 			"VISIT EMULATIONSTATION.ORG FOR MORE INFORMATION.";
 		return false;
-	}*/
+	}
 
 	return true;
 }
@@ -347,7 +361,7 @@ void playVideo()
 
 	bool exitLoop = false;
 
-	VideoVlcComponent vid(&window);
+	VideoGstreamerComponent vid(&window);
 	vid.setVideo(gPlayVideo);
 	vid.setOrigin(0.5f, 0.5f);
 	vid.setPosition(Renderer::getScreenWidth() / 2.0f, Renderer::getScreenHeight() / 2.0f);
@@ -495,8 +509,10 @@ int main(int argc, char* argv[])
 	setLocale(argv[0]);	
 
 #if !WIN32
-	// Run boot game, before Window Create for linux
-	launchStartupGame();
+	if(enable_startup_game) {
+	  // Run boot game, before Window Create for linux
+	  launchStartupGame();
+	}
 #endif
 
 	// metadata init
@@ -598,12 +614,7 @@ int main(int argc, char* argv[])
 	AudioManager::getInstance()->init();
 
 	if (ViewController::get()->getState().viewing == ViewController::GAME_LIST || ViewController::get()->getState().viewing == ViewController::SYSTEM_SELECT)
-	{
-		if (ViewController::get()->getState().getSystem() != nullptr)
-			AudioManager::getInstance()->changePlaylist(ViewController::get()->getState().getSystem()->getTheme());
-		else
-			AudioManager::getInstance()->playRandomMusic();
-	}
+		AudioManager::getInstance()->changePlaylist(ViewController::get()->getState().getSystem()->getTheme());
 	else
 		AudioManager::getInstance()->playRandomMusic();
 

@@ -8,6 +8,15 @@
 
 class TextureResource;
 
+enum TextureFormat
+{
+    RGBA32,
+    RGB24,
+    RGB565,
+    ETC1,
+    ETC2
+};
+
 class TextureData
 {
 public:
@@ -19,8 +28,10 @@ public:
 	//!!!! Needs to be canonical path. Caller should check for duplicates before calling this
 	void initFromPath(const std::string& path);
 	bool initSVGFromMemory(const unsigned char* fileData, size_t length);
+    bool initJPGFromMemory(const unsigned char* fileData, size_t length);
 	bool initImageFromMemory(const unsigned char* fileData, size_t length);
 	bool initFromRGBA(unsigned char* dataRGBA, size_t width, size_t height, bool copyData = true);
+    bool initFromRGB24(unsigned char* dataRGB, size_t width, size_t height, bool copyData = true);
 
 	// Read the data into memory if necessary
 	bool load(bool updateCache = false);
@@ -49,11 +60,15 @@ public:
 
 	bool tiled() { return mTile; }
 
-	unsigned char* getDataRGBA() {
-		return mDataRGBA;
+	unsigned char* getTextureData() {
+		return mTextureData;
 	}
 
-	void setMaxSize(MaxSizeInfo maxSize);
+    TextureFormat getTextureFormat() {
+        return mTextureFormat;
+    }
+
+    void setMaxSize(MaxSizeInfo maxSize);
 	bool isMaxSizeValid();
 
 	void setTemporarySize(float width, float height);
@@ -73,7 +88,8 @@ private:
 	bool			mLinear;
 	std::string		mPath;
 	unsigned int	mTextureID;
-	unsigned char*	mDataRGBA;
+	unsigned char*	mTextureData;
+    TextureFormat   mTextureFormat;
 	size_t			mWidth;
 	size_t			mHeight;
 	float			mSourceWidth;

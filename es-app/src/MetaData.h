@@ -7,8 +7,11 @@
 #include <functional>
 #include <string>
 
+#include "utils/TimeUtil.h"
+
 class SystemData;
 class FileData;
+class Scraper;
 
 namespace pugi { class xml_node; }
 
@@ -71,7 +74,8 @@ enum MetaDataId
 	BoxBack = 37,
 	Magazine = 38,
 	GenreIds = 39,
-	Family = 40
+	Family = 40,
+	Bezel = 41
 };
 
 namespace MetaDataImportType
@@ -131,7 +135,7 @@ public:
 	static void initMetadata();
 
 	static MetaDataList createFromXML(MetaDataListType type, pugi::xml_node& node, SystemData* system);
-	void appendToXML(pugi::xml_node& parent, bool ignoreDefaults, const std::string& relativeTo) const;
+	void appendToXML(pugi::xml_node& parent, bool ignoreDefaults, const std::string& relativeTo, bool fullPaths = false) const;
 
 	void migrate(FileData* file, pugi::xml_node& node);
 
@@ -167,7 +171,12 @@ public:
 
 	std::string getRelativeRootPath();
 
+	void setScrapeDate(const std::string& scraper);
+	Utils::Time::DateTime* getScrapeDate(const std::string& scraper);
+
 private:
+	std::map<int, Utils::Time::DateTime> mScrapeDates;
+
 	std::string		mName;
 	MetaDataListType mType;
 	std::map<MetaDataId, std::string> mMap;

@@ -11,6 +11,7 @@
 #include "Settings.h"
 #include "SystemConf.h"
 #include <algorithm>
+#include <components/VideoGstreamerComponent.h>
 #include "LocaleES.h"
 #include "anim/ThemeStoryboard.h"
 
@@ -1732,7 +1733,7 @@ std::vector<GuiComponent*> ThemeData::makeExtras(const std::shared_ptr<ThemeData
 			else if (t == "ninepatch")
 				comp = new NinePatchComponent(window);
 			else if (t == "video")
-				comp = new VideoVlcComponent(window);
+				comp = new VideoGstreamerComponent(window); //new VideoVlcComponent(window);
 
 			if (comp == nullptr)
 				continue;

@@ -1,3 +1,4 @@
+#if 0
 #include "components/VideoVlcComponent.h"
 
 #include "renderers/Renderer.h"
@@ -795,3 +796,4 @@ void VideoVlcComponent::setProperty(const std::string name, const ThemeData::The
 	else
 		VideoComponent::setProperty(name, value);
 }
+#endif

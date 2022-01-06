@@ -42,7 +42,7 @@ void ArcadeDBScraper::generateRequests(const ScraperSearchParams& params,
 
 bool ArcadeDBScraper::isSupportedPlatform(SystemData* system)
 {
-	return system && system->hasPlatformId(PlatformIds::ARCADE) || system->hasPlatformId(PlatformIds::NEOGEO);
+	return system && system->hasPlatformId(PlatformIds::ARCADE) || system->hasPlatformId(PlatformIds::NEOGEO) || system->hasPlatformId(PlatformIds::LCD_GAMES);
 }
 
 const std::set<Scraper::ScraperMediaSource>& ArcadeDBScraper::getSupportedMedias()
@@ -117,7 +117,7 @@ std::string findMedia(const Value& v, std::string scrapeSource)
 
 void processGame(const Value& game, std::vector<ScraperSearchResult>& results)
 {
-	ScraperSearchResult result;
+	ScraperSearchResult result("ArcadeDB");
 
 	if (game.HasMember("short_title") && game["short_title"].IsString())
 		result.mdl.set(MetaDataId::Name, getStringOrThrow(game, "short_title"));

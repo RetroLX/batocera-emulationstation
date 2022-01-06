@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: emulationstation\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-16 07:49+0100\n"
+"POT-Creation-Date: 2021-12-15 23:48+0100\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -90,6 +90,12 @@ msgstr "Χάρτης"
 
 msgid "enter path to map"
 msgstr "προσθήκη διαδρομής χάρτη"
+
+msgid "Bezel (16:9)"
+msgstr ""
+
+msgid "enter path to bezel (16:9)"
+msgstr ""
 
 msgid "Cartridge"
 msgstr "Κασέτα"
@@ -349,6 +355,68 @@ msgstr "ΤΟ ΠΑΚΕΤΟ ΕΓΚΑΤΑΣΤΑΘΗΚΕ ΕΠΙΤΥΧΩΣ"
 msgid "PACKAGE REMOVED SUCCESSFULLY"
 msgstr "ΤΟ ΠΑΚΕΤΟ ΑΠΕΓΚΑΤΑΣΤΑΘΗΚΕ ΕΠΙΤΥΧΩΣ"
 
+msgid "RETROACHIEVEMENT SETTINGS"
+msgstr ""
+
+msgid "SETTINGS"
+msgstr "ΡΥΘΜΙΣΕΙΣ"
+
+msgid "RETROACHIEVEMENTS"
+msgstr ""
+
+msgid "HARDCORE MODE"
+msgstr "ΛΕΙΤΟΥΡΓΙΑ HARDCORE"
+
+msgid "LEADERBOARDS"
+msgstr ""
+
+msgid "VERBOSE MODE"
+msgstr "ΛΕΙΤΟΥΡΓΙΑ VERBOSE"
+
+msgid "AUTOMATIC SCREENSHOT"
+msgstr "AYTOMATO ΣΤΙΓΜΙΟΤΥΠΟ"
+
+msgid "CHALLENGE INDICATORS"
+msgstr ""
+
+msgid ""
+"Shows icons in the bottom right corner when eligible achievements can be "
+"earned."
+msgstr ""
+
+msgid "RETROACHIEVEMENT UNLOCK SOUND"
+msgstr ""
+
+msgid "none"
+msgstr "κανένα"
+
+msgid "UNLOCK SOUND"
+msgstr "ΞΕΚΛΕΙΔΩΜΑ ΗΧΟΥ"
+
+msgid "USERNAME"
+msgstr "ΟΝΟΜΑ ΧΡΗΣΤΗ"
+
+msgid "PASSWORD"
+msgstr "ΚΩΔΙΚΟΣ"
+
+msgid "SHOW RETROACHIEVEMENTS ENTRY IN MAIN MENU"
+msgstr ""
+
+msgid "GAME INDEXES"
+msgstr "ΕΥΡΕΤΗΡΙΑ ΠΑΙΧΝΙΔΙΟΥ"
+
+msgid "INDEX NEW GAMES AT STARTUP"
+msgstr ""
+
+msgid "INDEX GAMES"
+msgstr ""
+
+msgid "UNABLE TO ACTIVATE RETROACHIEVEMENTS:"
+msgstr ""
+
+msgid "OK"
+msgstr "ΕΝΤΑΞΕΙ"
+
 msgid "FILTER GAMELIST BY"
 msgstr "ΦΙΛΙΤΡΑΡΙΣΜΑ ΛΙΣΤΑΣ ΠΑΙΧΝΙΔΙΩΝ ΑΠΟ"
 
@@ -485,9 +553,6 @@ msgstr "ΠΑΡΑΚΑΛΩ ΠΕΡΙΜΕΝΕΤΕ"
 msgid "%d%% (%d of %d)"
 msgstr ""
 
-msgid "RETROACHIEVEMENTS"
-msgstr ""
-
 msgid "Points"
 msgstr "Πόντοι"
 
@@ -500,11 +565,38 @@ msgstr "ΠΡΟΒΟΛΗ ΛΕΠΤΟΜΕΡΙΩΝ"
 msgid "LAUNCH"
 msgstr "ΕΝΑΡΞΗ"
 
+msgid "NETPLAY SETTINGS"
+msgstr "ΡΥΘΜΙΣΕΙΣ NETPLAY"
+
+msgid "ENABLE NETPLAY"
+msgstr "ΕΝΕΡΓΟΠΟΙΗΣΗ NETPLAY"
+
+msgid "NICKNAME"
+msgstr "ΨΕΥΔΩΝΥΜΟ"
+
+msgid "PORT"
+msgstr "ΘΥΡΑ"
+
+msgid "USE RELAY SERVER"
+msgstr "ΧΡΗΣΗ RELAY ΣΕΡΒΕΡ"
+
+msgid "NEW YORK"
+msgstr ""
+
+msgid "MADRID"
+msgstr ""
+
+msgid "MONTREAL"
+msgstr ""
+
+msgid "SAO PAULO"
+msgstr ""
+
+msgid "SHOW UNAVAILABLE GAMES"
+msgstr ""
+
 msgid "FINISHED"
 msgstr "ΤΕΤΕΛΕΣΜΕΝΟ"
-
-msgid "OK"
-msgstr "ΕΝΤΑΞΕΙ"
 
 msgid "VIEW OPTIONS"
 msgstr "ΠΡΟΒΟΛΗ ΕΠΙΛΟΓΩΝ"
@@ -620,6 +712,9 @@ msgstr "ΔΕΝ ΒΡΕΘΗΚΑΝ ΑΣΥΡΜΑΤΑ ΔΙΚΤΥΑ"
 msgid "SEARCHING WI-FI NETWORKS"
 msgstr "ΑΝΑΖΗΤΗΣΗ ΑΣΥΡΜΑΤΩΝ ΔΙΚΤΥΩΝ"
 
+msgid "YOU ARE NOT CONNECTED TO A NETWORK"
+msgstr "ΔΕΝ ΕΙΣΤΕ ΣΥΝΔΕΔΕΜΕΝΟΣ ΣΕ ΔΙΚΤΥΟ"
+
 msgid "FORGET A BLUETOOTH DEVICE"
 msgstr "ΞΕΧΝΑ ΜΙΑ ΣΥΣΚΕΥΗ BLUETOOTH"
 
@@ -715,9 +810,6 @@ msgstr "αρχή & τέλος"
 msgid "never"
 msgstr "ποτέ"
 
-msgid "none"
-msgstr "κανένα"
-
 msgid "systems"
 msgstr "συστήματα"
 
@@ -726,9 +818,6 @@ msgstr "τυχαίο"
 
 msgid "SCREENSAVER SETTINGS"
 msgstr "ΡΥΘΜΙΣΗΣ ΠΡΟΦΥΛΑΞΗΣ ΟΘΟΝΗΣ"
-
-msgid "SETTINGS"
-msgstr "ΡΥΘΜΙΣΕΙΣ"
 
 msgid "START SCREENSAVER AFTER"
 msgstr "ΠΡΟΦΥΛΑΞΗ ΟΘΟΝΗΣ ΜΕΤΑ ΑΠΟ"
@@ -929,7 +1018,7 @@ msgstr ""
 msgid "OPEN"
 msgstr "ΑΝΟΙΓΜΑ"
 
-msgid "NETPLAY HOSTING/OPTIONS"
+msgid "START A NETPLAY GAME"
 msgstr ""
 
 msgid "NETPLAY"
@@ -938,20 +1027,17 @@ msgstr ""
 msgid "START GAME"
 msgstr "ΕΚΚΙΝΗΣΗ ΠΑΙΧΝΙΔΙΟΥ"
 
-msgid "BEGIN HOSTING A NETPLAY SESSION"
+msgid "HOST A NETPLAY GAME"
 msgstr ""
-
-msgid "YOU ARE NOT CONNECTED TO A NETWORK"
-msgstr "ΔΕΝ ΕΙΣΤΕ ΣΥΝΔΕΔΕΜΕΝΟΣ ΣΕ ΔΙΚΤΥΟ"
 
 msgid "PUBLICLY ANNOUNCE GAME"
 msgstr "ΔΗΜΟΣΙΑ ΑΝΑΚΟΙΝΩΣΗ ΠΑΙΧΝΙΔΙΟΥ "
 
-msgid "SET PLAYER PASSWORD"
-msgstr "ΟΡΙΣΜΟΣ ΚΩΔΙΚΟΥ ΠΑΙΧΝΙΔΙΟΥ"
+msgid "PLAYER PASSWORD"
+msgstr ""
 
-msgid "SET VIEWER PASSWORD"
-msgstr "ΟΡΙΣΜΟΣ ΚΩΔΙΚΟΥ ΘΕΑΤΗ"
+msgid "VIEWER PASSWORD"
+msgstr ""
 
 msgid "FIND SIMILAR GAMES..."
 msgstr "ΒΡΕΙΤΕ ΠΑΡΟΜΟΙΑ ΠΑΙΧΝΙΔΙΑ"
@@ -1033,8 +1119,8 @@ msgstr ""
 msgid "START NEW GAME"
 msgstr "ΕΚΚΙΝΗΣΗ ΝΕΟΥ ΠΑΙΧΝΙΔΙΟΥ"
 
-msgid "START AUTO SAVE"
-msgstr "ΕΚΚΙΝΗΣΗ ΑΥΤΟΜΑΤΗΣ ΑΠΟΘΗΚΕΥΣΗΣ"
+msgid "START NEW AUTO SAVE"
+msgstr ""
 
 msgid "AUTO SAVE"
 msgstr "ΑΥΤΟΜΑΤΗ ΑΠΟΘΗΚΕΥΣΗ"
@@ -1045,20 +1131,122 @@ msgstr ""
 msgid "COPY TO FREE SLOT"
 msgstr "ΑΝΤΙΓΡΑΦΗ ΣΕ ΕΛΕΥΘΕΡΟ SLOT"
 
-msgid "SCRAPE CRITERIA"
+msgid "SCRAPER SETTINGS"
 msgstr ""
 
-msgid "MEDIA TO SCRAPE FOR"
+msgid "IMAGE SOURCE"
+msgstr "ΠΗΓΗ ΕΙΚΟΝΑΣ"
+
+msgid "SCREENSHOT"
+msgstr "ΣΤΙΓΜΙΟΤΥΠΟ"
+
+msgid "TITLE SCREENSHOT"
+msgstr "ΣΤΙΓΜΙΟΤΥΠΟ ΤΙΤΛΟΥ"
+
+msgid "MIX V1"
+msgstr ""
+
+msgid "MIX V2"
+msgstr ""
+
+msgid "BOX 2D"
+msgstr ""
+
+msgid "BOX 3D"
+msgstr ""
+
+msgid "FAN ART"
+msgstr ""
+
+msgid "BOX SOURCE"
+msgstr "ΠΗΓΗ BOX"
+
+msgid "LOGO SOURCE"
+msgstr "ΠΗΓΗ ΛΟΓΟΤΥΠΟΥ"
+
+msgid "WHEEL"
+msgstr ""
+
+msgid "MARQUEE"
+msgstr "ΛΟΓΟΤΥΠΟ"
+
+msgid "SCRAPE RATINGS"
+msgstr "ΑΞΙΟΛΟΓΗΣΕΙΣ SCRAPE"
+
+msgid "SCRAPE VIDEOS"
+msgstr "SCRAPE ΒΙΝΤΕΟ"
+
+msgid "SCRAPE FANART"
+msgstr ""
+
+msgid "SCRAPE BEZEL (16:9)"
+msgstr ""
+
+msgid "SCRAPE BOX BACKSIDE"
+msgstr "SCRAPE ΠΙΣΩ ΜΕΡΟΣ BOX"
+
+msgid "SCRAPE MAP"
+msgstr "SCRAPE XAΡΤΗ"
+
+msgid "SCRAPE MANUAL"
+msgstr "SCRAPE ΕΓΧΕΙΡΙΔΙΟ"
+
+msgid "SCRAPE PADTOKEY SETTINGS"
+msgstr ""
+
+msgid "SCRAPER"
+msgstr ""
+
+msgid "SCRAPING DATABASE"
+msgstr ""
+
+msgid "SOURCE"
+msgstr ""
+
+msgid "SCRAPE FROM"
+msgstr "SCRAPE ΑΠΟ"
+
+msgid "FILTERS"
+msgstr ""
+
+msgid "GAMES TO SCRAPE FOR"
 msgstr ""
 
 msgid "ALL"
 msgstr ""
 
-msgid "ONLY MISSING"
+msgid "GAMES MISSING MEDIAS"
+msgstr ""
+
+msgid "GAMES WITHOUT ANY MEDIA"
+msgstr ""
+
+msgid "IGNORE RECENTLY SCRAPED GAMES"
+msgstr ""
+
+msgid "LAST DAY"
+msgstr ""
+
+msgid "LAST WEEK"
+msgstr ""
+
+msgid "LAST 15 DAYS"
+msgstr ""
+
+msgid "LAST MONTH"
+msgstr ""
+
+msgid "LAST 3 MONTHS"
+msgstr ""
+
+msgid "LAST YEAR"
 msgstr ""
 
 msgid "SYSTEMS INCLUDED"
 msgstr ""
+
+msgid "SCRAPE NOW"
+msgstr "SCRAPE ΤΩΡΑ"
 
 msgid "START"
 msgstr "ΕΚΚΙΝΗΣΗ"
@@ -1074,6 +1262,24 @@ msgstr "SCRAPING ΣΕ ΕΞΕΛΙΞΗ. ΘΕΛΕΤΕ ΝΑ ΤΟ ΣΤΑΜΑΤΗΣΕ�
 
 msgid "NO GAMES FIT THAT CRITERIA."
 msgstr "ΔΕΝ ΤΑΙΡΙΑΖΟΥΝ ΠΑΙΧΝΙΔΙΑ Σ'ΑΥΤΑ ΤΑ ΚΡΙΤΗΡΙΑ"
+
+msgid "INFORMATION"
+msgstr "ΠΛΗΡΟΦΟΡΙΑ"
+
+msgid "VERSION"
+msgstr "ΕΚΔΟΣΗ"
+
+msgid "USER DISK USAGE"
+msgstr "ΧΡΗΣΗ ΔΙΣΚΟΥ (ΑΠΟ) ΧΡΗΣΤΗ"
+
+msgid "SYSTEM DISK USAGE"
+msgstr "ΧΡΗΣΗ ΔΙΣΚΟΥ (ΑΠΟ) ΣΥΣΤΗΜΑ"
+
+msgid "SYSTEM"
+msgstr "ΣΥΣΤΗΜΑ"
+
+msgid "VIDEO DRIVER"
+msgstr "ΟΔΗΓΟΣ ΒΙΝΤΕΟ"
 
 msgid "THE BEZEL PROJECT"
 msgstr "ΤΟ PROJECT ΠΕΡΙΘΩΡΙΩΝ"
@@ -1153,9 +1359,6 @@ msgstr ""
 msgid "RENDERER"
 msgstr ""
 
-msgid "VERSION"
-msgstr "ΕΚΔΟΣΗ"
-
 msgid "SHADERS"
 msgstr "ΣΚΙΑΣΕΙΣ"
 
@@ -1189,95 +1392,17 @@ msgstr ""
 msgid "EMULATOR SETTINGS"
 msgstr "ΡΥΘΜΙΣΕΙΣ ΕΞΟΜΟΙΩΤΗ"
 
-msgid "SCRAPER"
-msgstr ""
-
 msgid "UPDATES & DOWNLOADS"
 msgstr "ΑΝΑΒΑΘΜΙΣΕΙΣ & ΛΗΨΕΙΣ"
 
 msgid "SYSTEM SETTINGS"
 msgstr "ΡΥΘΜΙΣΕΙΣ ΣΥΣΤΗΜΑΤΟΣ"
 
-msgid "INFORMATION"
-msgstr "ΠΛΗΡΟΦΟΡΙΑ"
-
 msgid "UNLOCK UI MODE"
 msgstr "ΞΕΚΛΕΙΔΩΜΑ ΛΕΙΤΟΥΡΓΙΑΣ ΠΕΡΙΒΑΛΛΟΝΤΟΣ ΧΡΗΣΤΗ"
 
 msgid "QUIT"
 msgstr "ΑΠΕΝΕΡΓΟΠΟΙΗΣΗ"
-
-msgid "SCRAPER IS RUNNING. DO YOU WANT TO STOP IT?"
-msgstr ""
-
-msgid "NEXT"
-msgstr ""
-
-msgid "SCRAPING DATABASE"
-msgstr ""
-
-msgid "IMAGE SOURCE"
-msgstr "ΠΗΓΗ ΕΙΚΟΝΑΣ"
-
-msgid "SCREENSHOT"
-msgstr "ΣΤΙΓΜΙΟΤΥΠΟ"
-
-msgid "TITLE SCREENSHOT"
-msgstr "ΣΤΙΓΜΙΟΤΥΠΟ ΤΙΤΛΟΥ"
-
-msgid "MIX V1"
-msgstr ""
-
-msgid "MIX V2"
-msgstr ""
-
-msgid "BOX 2D"
-msgstr ""
-
-msgid "BOX 3D"
-msgstr ""
-
-msgid "FAN ART"
-msgstr ""
-
-msgid "BOX SOURCE"
-msgstr "ΠΗΓΗ BOX"
-
-msgid "LOGO SOURCE"
-msgstr "ΠΗΓΗ ΛΟΓΟΤΥΠΟΥ"
-
-msgid "WHEEL"
-msgstr ""
-
-msgid "MARQUEE"
-msgstr "ΛΟΓΟΤΥΠΟ"
-
-msgid "SCRAPE RATINGS"
-msgstr "ΑΞΙΟΛΟΓΗΣΕΙΣ SCRAPE"
-
-msgid "SCRAPE VIDEOS"
-msgstr "SCRAPE ΒΙΝΤΕΟ"
-
-msgid "SCRAPE FANART"
-msgstr ""
-
-msgid "SCRAPE BOX BACKSIDE"
-msgstr "SCRAPE ΠΙΣΩ ΜΕΡΟΣ BOX"
-
-msgid "SCRAPE MAP"
-msgstr "SCRAPE XAΡΤΗ"
-
-msgid "SCRAPE MANUAL"
-msgstr "SCRAPE ΕΓΧΕΙΡΙΔΙΟ"
-
-msgid "SCRAPE PADTOKEY SETTINGS"
-msgstr ""
-
-msgid "USERNAME"
-msgstr "ΟΝΟΜΑ ΧΡΗΣΤΗ"
-
-msgid "PASSWORD"
-msgstr "ΚΩΔΙΚΟΣ"
 
 msgid "ARE YOU SURE YOU WANT TO CONFIGURE THE INPUT?"
 msgstr ""
@@ -1290,18 +1415,6 @@ msgstr ""
 
 msgid "ENTER THE CODE TO UNLOCK THE CURRENT UI MODE"
 msgstr ""
-
-msgid "USER DISK USAGE"
-msgstr "ΧΡΗΣΗ ΔΙΣΚΟΥ (ΑΠΟ) ΧΡΗΣΤΗ"
-
-msgid "SYSTEM DISK USAGE"
-msgstr "ΧΡΗΣΗ ΔΙΣΚΟΥ (ΑΠΟ) ΣΥΣΤΗΜΑ"
-
-msgid "SYSTEM"
-msgstr "ΣΥΣΤΗΜΑ"
-
-msgid "VIDEO DRIVER"
-msgstr "ΟΔΗΓΟΣ ΒΙΝΤΕΟ"
 
 msgid "DEVELOPER"
 msgstr "ΠΡΟΓΡΑΜΜΑΤΙΣΤΗΣ"
@@ -1450,16 +1563,19 @@ msgstr "ΕΜΦΑΝΙΣΗ ΔΕΙΚΤΗ ΔΙΚΤΥΟΥ"
 msgid "OPTIMIZATIONS"
 msgstr "ΒΕΛΤΙΣΤΟΠΟΙΗΣΕΙΣ"
 
-msgid "PRELOAD UI ELEMENTS"
+msgid "PRELOAD UI ELEMENTS ON BOOT"
 msgstr ""
 
-msgid "Reduce overall menu lag at the cost of storage space"
+msgid ""
+"Reduces lag when entering gamelists from the system menu, increases boot time"
 msgstr ""
 
-msgid "PRELOAD METADATA MEDIA"
+msgid "PRELOAD METADATA MEDIA ON BOOT"
 msgstr ""
 
-msgid "Reduce gamelist lag at the cost of storage space"
+msgid ""
+"Reduces lag when scrolling through a fully scraped gamelist, increases boot "
+"time"
 msgstr ""
 
 msgid "THREADED LOADING"
@@ -1591,12 +1707,6 @@ msgstr ""
 msgid "SPLASH SETTING"
 msgstr ""
 
-msgid "RETROACHIEVEMENT SETTINGS"
-msgstr ""
-
-msgid "NETPLAY SETTINGS"
-msgstr "ΡΥΘΜΙΣΕΙΣ NETPLAY"
-
 msgid "CHECK BIOS FILES BEFORE RUNNING A GAME"
 msgstr "ΕΛΕΓΧΟΣ ΑΡΧΕΙΩΝ BIOS ΠΡΙΝ ΤΗΝ ΕΝΑΡΞΗ ΕΝΟΣ ΠΑΙΧΝΙΔΙΟΥ"
 
@@ -1684,50 +1794,16 @@ msgstr "ΧΡΗΣΗ RUN-AHEAD ΚΑΡΕ"
 msgid "RUN-AHEAD USE SECOND INSTANCE"
 msgstr ""
 
-msgid "HARDCORE MODE"
-msgstr "ΛΕΙΤΟΥΡΓΙΑ HARDCORE"
-
-msgid "LEADERBOARDS"
+msgid "AUTOMATIC FRAME DELAY"
 msgstr ""
 
-msgid "VERBOSE MODE"
-msgstr "ΛΕΙΤΟΥΡΓΙΑ VERBOSE"
-
-msgid "AUTOMATIC SCREENSHOT"
-msgstr "AYTOMATO ΣΤΙΓΜΙΟΤΥΠΟ"
-
-msgid "RETROACHIEVEMENT UNLOCK SOUND"
+msgid "AUTO FRAME DELAY"
 msgstr ""
 
-msgid "UNLOCK SOUND"
-msgstr "ΞΕΚΛΕΙΔΩΜΑ ΗΧΟΥ"
-
-msgid "SHOW RETROACHIEVEMENTS ENTRY IN MAIN MENU"
+msgid ""
+"Automatically decrease frame delay temporarily to prevent frame drops. Turn "
+"off if this worsens audio/video stuttering."
 msgstr ""
-
-msgid "GAME INDEXES"
-msgstr "ΕΥΡΕΤΗΡΙΑ ΠΑΙΧΝΙΔΙΟΥ"
-
-msgid "INDEX NEW GAMES AT STARTUP"
-msgstr ""
-
-msgid "INDEX GAMES"
-msgstr ""
-
-msgid "UNABLE TO ACTIVATE RETROACHIEVEMENTS:"
-msgstr ""
-
-msgid "ENABLE NETPLAY"
-msgstr "ΕΝΕΡΓΟΠΟΙΗΣΗ NETPLAY"
-
-msgid "NICKNAME"
-msgstr "ΨΕΥΔΩΝΥΜΟ"
-
-msgid "PORT"
-msgstr "ΘΥΡΑ"
-
-msgid "USE RELAY SERVER"
-msgstr "ΧΡΗΣΗ RELAY ΣΕΡΒΕΡ"
 
 msgid "DECORATION SET"
 msgstr ""
@@ -1750,18 +1826,6 @@ msgstr "ΑΝΑΔΙΠΛΩΣΗ"
 msgid "INTEGER SCALING (PIXEL PERFECT)"
 msgstr "ΚΛΙΜΑΚΑ INTEGER (ΤΕΛΕΙΟΤΗΤΑ PIXEL)"
 
-msgid "AUTO SAVE/LOAD ON GAME LAUNCH"
-msgstr "ΑΥΤΟΜΑΤΗ ΑΠΟΘΗΚΕΥΣΗ/ΦΟΡΤΩΣΗ"
-
-msgid "SHOW SAVE STATES"
-msgstr ""
-
-msgid "SHOW SAVE STATES IF NOT EMPTY"
-msgstr ""
-
-msgid "INCREMENTAL SAVESTATES"
-msgstr ""
-
 msgid "SHADER SET"
 msgstr "ΟΡΙΣΜΟΣ ΣΚΙΑΣΕΩΝ"
 
@@ -1771,16 +1835,19 @@ msgstr "ΔΙΑΚΟΣΜΗΣΕΙΣ"
 msgid "STRETCH BEZELS (4K & ULTRAWIDE)"
 msgstr "ΕΠΕΚΤΑΣΗ ΠΕΡΙΘΟΡΙΩΝ (4K & ULTRAWIDE)"
 
-msgid "SHOW CONTROLLER OVERLAYS"
+msgid "SHOW TATTOO OVER BEZEL"
 msgstr ""
 
 msgid "SYSTEM CONTROLLERS"
 msgstr ""
 
-msgid "CUSTOM .PNG IMAGE"
+msgid "CUSTOM IMAGE"
 msgstr ""
 
-msgid "OVERLAY CORNER"
+msgid "Show an image overlaid on top of the bezel."
+msgstr ""
+
+msgid "TATTOO CORNER"
 msgstr ""
 
 msgid "NORTH WEST"
@@ -1798,6 +1865,12 @@ msgstr ""
 msgid "CUSTOM .PNG IMAGE PATH"
 msgstr ""
 
+msgid "RESIZE TATTOO"
+msgstr ""
+
+msgid "Shrink/expand tattoo to fit within the bezel's border."
+msgstr ""
+
 msgid "AI GAME TRANSLATION"
 msgstr "ΤΕΧΝΗΤΗΣ ΝΟΗΜΟΣΥΝΗΣ ΜΕΤΑΦΡΑΣΗ ΠΑΙΧΝΙΔΙΟΥ"
 
@@ -1813,8 +1886,41 @@ msgstr ""
 msgid "PAUSE ON TRANSLATED SCREEN"
 msgstr "ΠΑΥΣΗ ΣΤΗΝ ΜΕΤΑΦΡΑΣΜΕΝΗ ΟΘΟΝΗ"
 
+msgid "SAVESTATES"
+msgstr ""
+
+msgid "AUTO SAVE/LOAD"
+msgstr ""
+
+msgid "INCREMENTAL SAVESTATES"
+msgstr ""
+
+msgid "NEW GAME CREATES NEW SLOT"
+msgstr ""
+
+msgid "NEW GAME OVERWRITES CURRENT SLOT"
+msgstr ""
+
+msgid "DISPLAY SAVE STATE MANAGER"
+msgstr ""
+
+msgid "ALWAYS"
+msgstr ""
+
+msgid "IF NOT EMPTY"
+msgstr ""
+
+msgid "SHOW SAVE STATE MANAGER"
+msgstr ""
+
+msgid "DISPLAY SAVE STATE MANAGER BEFORE LAUNCHING A GAME"
+msgstr ""
+
 msgid "PER SYSTEM ADVANCED CONFIGURATION"
 msgstr "ΣΥΝΘΕΤΕΣ ΕΠΙΛΟΓΕΣ ΑΝΑ ΣΥΣΤΗΜΑ"
+
+msgid "SCRAPER IS RUNNING. DO YOU WANT TO STOP IT?"
+msgstr ""
 
 msgid "GAME HASHING IS RUNNING. DO YOU WANT TO STOP IT?"
 msgstr "ΤΟ HASHING ΤΟΥ ΠΑΙΧΝΙΔΙΟΥ ΕΚΤΕΛΕΙΤΑΙ. ΘΕΛΕΤΕ ΝΑ ΤΟ ΔΙΑΚΟΨΕΤΕ ;"
@@ -1936,6 +2042,9 @@ msgstr "ΕΠΙΛΟΓΕΣ ΕΜΦΑΝΙΣΗΣ"
 msgid "LIST TRANSITION STYLE"
 msgstr "ΣΤΥΛ ΜΕΤΑΒΑΣΗΣ"
 
+msgid "auto"
+msgstr ""
+
 msgid "GAME LAUNCH TRANSITION"
 msgstr "ΜΕΤΑΒΑΣΗ ΕΚΚΙΝΗΣΗΣ ΠΑΙΧΝΙΔΙΟΥ"
 
@@ -2032,11 +2141,11 @@ msgstr "ΣΦΑΛΜΑ ΔΙΜΟΡΦΩΣΗΣ ΑΣΥΡΜΑΤΗΣ ΣΥΝΔΕΣΗΣ"
 msgid "QUICK ACCESS"
 msgstr "ΓΡΗΓΟΡΗ ΠΡΟΣΒΑΣΗ"
 
-msgid "SKIP TO NEXT SONG"
-msgstr "ΜΕΤΑΒΑΣΗ ΣΤΟ ΕΠΟΜΕΝΟ ΤΡΑΓΟΥΔΙ"
+msgid "SKIP TO THE NEXT SONG"
+msgstr ""
 
-msgid "LISTENING NOW"
-msgstr "ΑΚΟΥΤΕ ΤΩΡΑ"
+msgid "NOW PLAYING"
+msgstr ""
 
 msgid "LAUNCH SCREENSAVER"
 msgstr "ΕΝΑΡΞΗ ΠΡΟΦΥΛΑΞΗΣ ΟΘΟΝΗΣ"
@@ -2062,6 +2171,9 @@ msgstr "ΘΕΛΕΤΕ ΝΑ ΚΑΝΕΤΕ ΑΠΕΝΕΡΓΟΠΟΙΗΣΗ;"
 msgid "FAST SHUTDOWN SYSTEM"
 msgstr "ΓΡΗΓΟΡΗ ΑΠΕΝΕΡΓΟΠΟΙΗΣΗ ΣΥΣΤΗΜΑΤΟΣ"
 
+msgid "Shutdown without saving metadata."
+msgstr ""
+
 msgid "REALLY SHUTDOWN WITHOUT SAVING METADATA?"
 msgstr "ΘΕΛΕΤΕ ΑΠΕΝΕΡΓΟΠΟΙΗΣΗ ΧΩΡΙΣ ΤΗΝ ΑΠΟΘΗΚΕΥΣΗ ΜΕΤΑΔΕΔΟΜΕΝΩΝ;"
 
@@ -2070,6 +2182,18 @@ msgstr "ΑΠΕΝΕΡΓΟΠΟΙΗΣΗ EMULATIONSTATION"
 
 msgid "REALLY QUIT?"
 msgstr "ΘΕΛΕΤΕ ΑΠΕΝΕΡΓΟΠΟΙΗΣΗ;"
+
+msgid "AUTO SAVE/LOAD ON GAME LAUNCH"
+msgstr "ΑΥΤΟΜΑΤΗ ΑΠΟΘΗΚΕΥΣΗ/ΦΟΡΤΩΣΗ"
+
+msgid "SHOW CONTROLLER OVERLAYS"
+msgstr ""
+
+msgid "CUSTOM .PNG IMAGE"
+msgstr ""
+
+msgid "OVERLAY CORNER"
+msgstr ""
 
 msgid "COLORIZATION"
 msgstr "ΧΡΩΜΑΤΙΣΜΟΣ"
@@ -2146,6 +2270,9 @@ msgid "ZOOM"
 msgstr "ΜΕΓΕΘΥΝΣΗ"
 
 msgid "GAMES TO INDEX"
+msgstr ""
+
+msgid "ONLY MISSING"
 msgstr ""
 
 msgid "SYSTEM INFO"
@@ -2275,6 +2402,9 @@ msgstr "ΠΑΡΑΛΕΙΨΗ"
 msgid "Downloading"
 msgstr "Μεταφορτώνεται"
 
+msgid "SEARCH FOR"
+msgstr ""
+
 msgid "ACCEPT RESULT"
 msgstr "ΑΠΟΔΟΧΗ ΑΠΟΤΕΛΕΣΜΑΤΟΣ"
 
@@ -2389,6 +2519,27 @@ msgstr "Η ΕΥΡΕΤΗΡΙΑΣΗ ΟΛΟΚΛΗΡΩΘΗΚΕ"
 msgid "UPDATE GAMELISTS TO APPLY CHANGES."
 msgstr ""
 
+msgid "THE EMULATOR EXITED UNEXPECTEDLY"
+msgstr ""
+
+msgid "BAD COMMAND LINE ARGUMENTS"
+msgstr ""
+
+msgid "INVALID CONFIGURATION"
+msgstr ""
+
+msgid "UNKNOWN EMULATOR"
+msgstr ""
+
+msgid "EMULATOR IS MISSING"
+msgstr ""
+
+msgid "CORE IS MISSING"
+msgstr ""
+
+msgid "UKNOWN ERROR"
+msgstr ""
+
 msgid "GENRE"
 msgstr "ΕΙΔΟΣ"
 
@@ -2451,44 +2602,65 @@ msgstr ""
 msgid "SPACE"
 msgstr "ΚΕΝΟ / ΔΙΑΣΤΗΜΑ"
 
+msgctxt "joystick"
 msgid "UP"
-msgstr "ΠΑΝΩ"
+msgstr ""
 
+msgctxt "joystick"
 msgid "DOWN"
-msgstr "ΚΑΤΩ"
+msgstr ""
 
+msgctxt "joystick"
 msgid "LEFT"
-msgstr "ΑΡΙΣΤΕΡΑ"
+msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT"
-msgstr "ΔΕΞΙΑ"
+msgstr ""
 
+msgctxt "joystick"
+msgid "START"
+msgstr ""
+
+msgctxt "joystick"
+msgid "SELECT"
+msgstr ""
+
+msgctxt "joystick"
 msgid "LEFT ANALOG UP"
-msgstr "ΠΑΝΩ ΑΡΙΣΤΕΡΟΥ ΑΝΑΛΟΓΙΚΟΥ"
+msgstr ""
 
+msgctxt "joystick"
 msgid "LEFT ANALOG DOWN"
-msgstr "ΚΑΤΩ ΑΡΙΣΤΕΡΟΥ ΑΝΑΛΟΓΙΚΟΥ"
+msgstr ""
 
+msgctxt "joystick"
 msgid "LEFT ANALOG LEFT"
-msgstr "ΑΡΙΣΤΕΡΟ ΑΡΙΣΤΕΡΟΥ ΑΝΑΛΟΓΙΚΟΥ"
+msgstr ""
 
+msgctxt "joystick"
 msgid "LEFT ANALOG RIGHT"
-msgstr "ΔΕΞΙ ΑΡΙΣΤΕΡΟΥ ΑΝΑΛΟΓΙΚΟΥ"
+msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG UP"
-msgstr "ΠΑΝΩ ΔΕΞΙΟΥ ΑΝΑΛΟΓΙΚΟΥ"
+msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG DOWN"
-msgstr "ΚΑΤΩ ΔΕΞΙΟΥ ΑΝΑΛΟΓΙΚΟΥ"
+msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG LEFT"
-msgstr "ΑΡΙΣΤΕΡΟ ΔΕΞΙΟΥ ΑΝΑΛΟΓΙΚΟΥ"
+msgstr ""
 
+msgctxt "joystick"
 msgid "RIGHT ANALOG RIGHT"
-msgstr "ΔΕΞΙ ΔΕΞΙΟΥ ΑΝΑΛΟΓΙΚΟΥ"
+msgstr ""
 
+msgctxt "joystick"
 msgid "HOTKEY"
-msgstr "ΠΛΗΚΤΡΟ ΚΛΕΙΔΙ"
+msgstr ""
 
 msgid "CONFIGURING"
 msgstr "ΤΡΟΠΟΠΟΙΗΣΗ"
@@ -2631,6 +2803,60 @@ msgstr ""
 msgid "SCREEN READER DISABLED"
 msgstr ""
 
+#~ msgid "SET PLAYER PASSWORD"
+#~ msgstr "ΟΡΙΣΜΟΣ ΚΩΔΙΚΟΥ ΠΑΙΧΝΙΔΙΟΥ"
+
+#~ msgid "SET VIEWER PASSWORD"
+#~ msgstr "ΟΡΙΣΜΟΣ ΚΩΔΙΚΟΥ ΘΕΑΤΗ"
+
+#~ msgid "START AUTO SAVE"
+#~ msgstr "ΕΚΚΙΝΗΣΗ ΑΥΤΟΜΑΤΗΣ ΑΠΟΘΗΚΕΥΣΗΣ"
+
+#~ msgid "UP"
+#~ msgstr "ΠΑΝΩ"
+
+#~ msgid "DOWN"
+#~ msgstr "ΚΑΤΩ"
+
+#~ msgid "LEFT"
+#~ msgstr "ΑΡΙΣΤΕΡΑ"
+
+#~ msgid "RIGHT"
+#~ msgstr "ΔΕΞΙΑ"
+
+#~ msgid "LEFT ANALOG UP"
+#~ msgstr "ΠΑΝΩ ΑΡΙΣΤΕΡΟΥ ΑΝΑΛΟΓΙΚΟΥ"
+
+#~ msgid "LEFT ANALOG DOWN"
+#~ msgstr "ΚΑΤΩ ΑΡΙΣΤΕΡΟΥ ΑΝΑΛΟΓΙΚΟΥ"
+
+#~ msgid "LEFT ANALOG LEFT"
+#~ msgstr "ΑΡΙΣΤΕΡΟ ΑΡΙΣΤΕΡΟΥ ΑΝΑΛΟΓΙΚΟΥ"
+
+#~ msgid "LEFT ANALOG RIGHT"
+#~ msgstr "ΔΕΞΙ ΑΡΙΣΤΕΡΟΥ ΑΝΑΛΟΓΙΚΟΥ"
+
+#~ msgid "RIGHT ANALOG UP"
+#~ msgstr "ΠΑΝΩ ΔΕΞΙΟΥ ΑΝΑΛΟΓΙΚΟΥ"
+
+#~ msgid "RIGHT ANALOG DOWN"
+#~ msgstr "ΚΑΤΩ ΔΕΞΙΟΥ ΑΝΑΛΟΓΙΚΟΥ"
+
+#~ msgid "RIGHT ANALOG LEFT"
+#~ msgstr "ΑΡΙΣΤΕΡΟ ΔΕΞΙΟΥ ΑΝΑΛΟΓΙΚΟΥ"
+
+#~ msgid "RIGHT ANALOG RIGHT"
+#~ msgstr "ΔΕΞΙ ΔΕΞΙΟΥ ΑΝΑΛΟΓΙΚΟΥ"
+
+#~ msgid "HOTKEY"
+#~ msgstr "ΠΛΗΚΤΡΟ ΚΛΕΙΔΙ"
+
+#~ msgid "SKIP TO NEXT SONG"
+#~ msgstr "ΜΕΤΑΒΑΣΗ ΣΤΟ ΕΠΟΜΕΝΟ ΤΡΑΓΟΥΔΙ"
+
+#~ msgid "LISTENING NOW"
+#~ msgstr "ΑΚΟΥΤΕ ΤΩΡΑ"
+
 #~ msgid "PRELOAD UI"
 #~ msgstr "ΠΡΟΦΟΡΤΩΣΗ ΠΕΡΙΒΑΛΛΟΝΤΟΣ ΧΡΗΣΤΗ"
 
@@ -2763,9 +2989,6 @@ msgstr ""
 #~ msgid "SELECT THEMES TO INSTALL / REMOVE"
 #~ msgstr "ΕΠΙΛΟΓΗ ΘΕΜΑΤΩΝ ΠΡΟΣ ΕΓΚΑΤΑΣΤΑΣΗ / ΔΙΑΓΡΑΦΗ"
 
-#~ msgid "SCRAPE NOW"
-#~ msgstr "SCRAPE ΤΩΡΑ"
-
 #~ msgid "SCRAPE THESE GAMES"
 #~ msgstr "SCRAPE ΑΥΤΩΝ ΤΩΝ ΠΑΙΧΝΙΔΙΩΝ"
 
@@ -2796,9 +3019,6 @@ msgstr ""
 
 #~ msgid "INFORMATIONS"
 #~ msgstr "ΠΛΗΡΟΦΟΡΙΕΣ"
-
-#~ msgid "SCRAPE FROM"
-#~ msgstr "SCRAPE ΑΠΟ"
 
 #~ msgid "ARE YOU SURE YOU WANT TO CONFIGURE INPUT?"
 #~ msgstr "ΕΙΣΤΕ ΣΙΓΟΥΡΟΣ ΠΩΣ ΘΕΛΕΤΕ ΝΑ ΔΙΑΜΟΡΦΩΣΕΤΕ ΤΟ INPUT;"

@@ -3,7 +3,7 @@
 #ifdef _RPI_
 #include "components/VideoPlayerComponent.h"
 #endif
-#include "components/VideoVlcComponent.h"
+#include "components/VideoComponent.h"
 #include "utils/FileSystemUtil.h"
 #include "views/gamelist/IGameListView.h"
 #include "views/ViewController.h"
@@ -11,6 +11,7 @@
 #include "FileFilterIndex.h"
 #include "Log.h"
 #include "PowerSaver.h"
+#include "Scripting.h"
 #include "Sound.h"
 #include "SystemData.h"
 #include "components/ImageComponent.h"
@@ -122,6 +123,9 @@ void SystemScreenSaver::startScreenSaver()
 			mVideoScreensaver->setGame(mCurrentGame);
 			mVideoScreensaver->setVideo(path);
 
+			if (mCurrentGame)
+				Scripting::fireEvent("game-selected", mCurrentGame->getSystem()->getName(), mCurrentGame->getPath(), mCurrentGame->getName());
+
 			PowerSaver::runningScreenSaver(true);
 			mTimer = 0;
 			return;
@@ -162,6 +166,9 @@ void SystemScreenSaver::startScreenSaver()
 			mImageScreensaver = std::make_shared<ImageScreenSaver>(mWindow);
 			mImageScreensaver->setGame(mCurrentGame);
 			mImageScreensaver->setImage(path);
+
+			if (mCurrentGame)
+				Scripting::fireEvent("game-selected", mCurrentGame->getSystem()->getName(), mCurrentGame->getPath(), mCurrentGame->getName());
 
 			PowerSaver::runningScreenSaver(true);
 			mTimer = 0;
@@ -548,6 +555,7 @@ GameScreenSaverBase::~GameScreenSaverBase()
 #include <rapidjson/document.h>
 #include <rapidjson/error/en.h>
 #include <rapidjson/filereadstream.h>
+#include <components/VideoGstreamerComponent.h>
 
 void GameScreenSaverBase::setGame(FileData* game)
 {	
@@ -840,7 +848,8 @@ void VideoScreenSaver::setVideo(const std::string path)
 			mVideo = new VideoPlayerComponent(mWindow, getTitlePath());
 		else
 #endif
-		mVideo = new VideoVlcComponent(mWindow);
+		//mVideo = new VideoVlcComponent(mWindow);
+        mVideo = new VideoGstreamerComponent(mWindow);
 
 		mVideo->setRoundCorners(0);
 		mVideo->topWindow(true);
