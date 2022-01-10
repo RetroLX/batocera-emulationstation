@@ -520,7 +520,7 @@ void Font::renderGradientTextCache(TextCache* cache, unsigned int colorTop, unsi
 		}
 
 		Renderer::bindTexture(*it->textureIdPtr);
-		Renderer::drawAlphaText(&vxs[0], vxs.size());
+		Renderer::drawTriangleStrips(&vxs[0], vxs.size());
 	}
 }
 

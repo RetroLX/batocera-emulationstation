@@ -2,8 +2,7 @@
 
 #ifdef RENDERER_GLES_20
 
-#define USE_OPENGLES_20 1
-
+#include "Renderer_GLES20.h"
 #include "renderers/Renderer.h"
 #include "math/Transform4x4f.h"
 #include "Log.h"
@@ -14,10 +13,6 @@
 
 #include "GlExtensions.h"
 #include "Shader.h"
-
-#ifndef GL_UNSIGNED_SHORT_1_5_5_5_REV_EXT
-#define GL_UNSIGNED_SHORT_1_5_5_5_REV_EXT GL_UNSIGNED_SHORT_1_5_5_5_REV
-#endif
 
 namespace Renderer
 {
@@ -32,9 +27,7 @@ namespace Renderer
 
 	static Shader  	vertexShaderTexture;
 	static Shader  	fragmentShaderColorTexture;
-    static Shader  	fragmentShaderColorTextureOpaque;
 	static ShaderProgram    shaderProgramColorTexture;
-    static ShaderProgram    shaderProgramColorTextureOpaque;
 
 	static Shader  	vertexShaderNoTexture;
 	static Shader  	fragmentShaderColorNoTexture;
@@ -46,7 +39,6 @@ namespace Renderer
 	static GLuint        vertexBuffer     = 0;
 
 	static std::set<unsigned int> _alphaTextures;
-	static std::set<unsigned int> _opaqueTextures;
 
 	static unsigned int boundTexture = 0;
 
@@ -60,8 +52,6 @@ namespace Renderer
 		{
 			if (currentProgram == &shaderProgramColorTexture)
 				GL_CHECK_ERROR(glUniformMatrix4fv(shaderProgramColorTexture.mvpUniform, 1, GL_FALSE, (float*)&mvpMatrix));
-            else if (currentProgram == &shaderProgramColorTextureOpaque)
-                GL_CHECK_ERROR(glUniformMatrix4fv(shaderProgramColorTextureOpaque.mvpUniform, 1, GL_FALSE, (float*)&mvpMatrix));
 			else  if (currentProgram == &shaderProgramColorNoTexture)
 				GL_CHECK_ERROR(glUniformMatrix4fv(shaderProgramColorNoTexture.mvpUniform, 1, GL_FALSE, (float*)&mvpMatrix));
 			else  if (currentProgram == &shaderProgramAlpha)
@@ -77,20 +67,6 @@ namespace Renderer
 				GL_CHECK_ERROR(glDisableVertexAttribArray(shaderProgramColorTexture.posAttrib));
 				GL_CHECK_ERROR(glDisableVertexAttribArray(shaderProgramColorTexture.colAttrib));
 				GL_CHECK_ERROR(glDisableVertexAttribArray(shaderProgramColorTexture.texAttrib));
-			}
-
-            if (currentProgram == &shaderProgramColorTextureOpaque)
-            {
-                GL_CHECK_ERROR(glDisableVertexAttribArray(shaderProgramColorTextureOpaque.posAttrib));
-                GL_CHECK_ERROR(glDisableVertexAttribArray(shaderProgramColorTextureOpaque.colAttrib));
-                GL_CHECK_ERROR(glDisableVertexAttribArray(shaderProgramColorTextureOpaque.texAttrib));
-            }
-
-			if (currentProgram == &shaderProgramAlpha)
-			{
-				GL_CHECK_ERROR(glDisableVertexAttribArray(shaderProgramAlpha.posAttrib));
-				GL_CHECK_ERROR(glDisableVertexAttribArray(shaderProgramAlpha.colAttrib));
-				GL_CHECK_ERROR(glDisableVertexAttribArray(shaderProgramAlpha.texAttrib));
 			}
 
 			if (currentProgram == &shaderProgramColorNoTexture)
@@ -122,36 +98,6 @@ namespace Renderer
 
 			GL_CHECK_ERROR(glVertexAttribPointer(shaderProgramColorTexture.texAttrib, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, tex)));
 			GL_CHECK_ERROR(glEnableVertexAttribArray(shaderProgramColorTexture.texAttrib));
-		}
-
-        if (currentProgram == &shaderProgramColorTextureOpaque)
-        {
-            GL_CHECK_ERROR(glUseProgram(shaderProgramColorTextureOpaque.id));
-            GL_CHECK_ERROR(glUniformMatrix4fv(shaderProgramColorTextureOpaque.mvpUniform, 1, GL_FALSE, (float*)&mvpMatrix));
-
-            GL_CHECK_ERROR(glVertexAttribPointer(shaderProgramColorTextureOpaque.posAttrib, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, pos)));
-            GL_CHECK_ERROR(glEnableVertexAttribArray(shaderProgramColorTextureOpaque.posAttrib));
-
-            GL_CHECK_ERROR(glVertexAttribPointer(shaderProgramColorTextureOpaque.colAttrib, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), (const void*)offsetof(Vertex, col)));
-            GL_CHECK_ERROR(glEnableVertexAttribArray(shaderProgramColorTextureOpaque.colAttrib));
-
-            GL_CHECK_ERROR(glVertexAttribPointer(shaderProgramColorTextureOpaque.texAttrib, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, tex)));
-            GL_CHECK_ERROR(glEnableVertexAttribArray(shaderProgramColorTextureOpaque.texAttrib));
-        }
-
-		if (currentProgram == &shaderProgramAlpha)
-		{
-			GL_CHECK_ERROR(glUseProgram(shaderProgramAlpha.id));
-			GL_CHECK_ERROR(glUniformMatrix4fv(shaderProgramAlpha.mvpUniform, 1, GL_FALSE, (float*)&mvpMatrix));
-
-			GL_CHECK_ERROR(glVertexAttribPointer(shaderProgramAlpha.posAttrib, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, pos)));
-			GL_CHECK_ERROR(glEnableVertexAttribArray(shaderProgramAlpha.posAttrib));
-
-			GL_CHECK_ERROR(glVertexAttribPointer(shaderProgramAlpha.colAttrib, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), (const void*)offsetof(Vertex, col)));
-			GL_CHECK_ERROR(glEnableVertexAttribArray(shaderProgramAlpha.colAttrib));
-
-			GL_CHECK_ERROR(glVertexAttribPointer(shaderProgramAlpha.texAttrib, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, tex)));
-			GL_CHECK_ERROR(glEnableVertexAttribArray(shaderProgramAlpha.texAttrib));
 		}
 
 		if (currentProgram == &shaderProgramColorNoTexture)
@@ -212,7 +158,7 @@ namespace Renderer
 				"varying   vec4 v_col; \n"
 				"void main(void)                                     \n"
 				"{                                                   \n"
-				"    gl_Position = u_mvp * vec4(a_pos.x, a_pos.y, 0.0, 1.0); \n"
+				"    gl_Position = u_mvp * vec4(a_pos.xy, 0.0, 1.0); \n"
 				"    v_col       = a_col;                            \n"
 				"}                                                   \n";
 
@@ -251,8 +197,8 @@ namespace Renderer
 			"varying   vec4 v_col; \n"
 			"void main(void)                                     \n"
 			"{                                                   \n"
-			"    gl_Position = u_mvp * vec4(a_pos.x, a_pos.y, 0.0, 1.0); \n"
-			"    v_tex       = a_tex;                             \n"
+			"    gl_Position = u_mvp * vec4(a_pos.xy, 0.0, 1.0); \n"
+			"    v_tex       = a_tex;                            \n"
 			"    v_col       = a_col;                            \n"
 			"}                                                   \n";
 
@@ -268,37 +214,17 @@ namespace Renderer
 			"uniform   sampler2D u_tex; \n"
 			"void main(void)                                     \n"
 			"{                                                   \n"
-			"    gl_FragColor = texture2D(u_tex, vec2(v_tex.s, 1.0 - v_tex.t)) * v_col; \n"
+			"    gl_FragColor = texture2D(u_tex, v_tex) * v_col; \n"
 			"}                                                   \n";
-
-        // fragment shader (texture)
-        std::string fragmentSourceTextureOpaque =
-            SHADER_VERSION_STRING +
-            "precision mediump float;       \n"
-            #if defined(USE_OPENGLES_20)
-            "precision mediump sampler2D; \n"
-            #endif
-            "varying   vec4      v_col; \n"
-            "varying   vec2      v_tex; \n"
-            "uniform   sampler2D u_tex; \n"
-            "void main(void)                                     \n"
-            "{                                                   \n"
-            "    gl_FragColor = vec4(texture2D(u_tex, vec2(v_tex.s, 1.0 - v_tex.t)).rgb, 1.0) * v_col; \n"
-            "}                                                   \n";
-
-        // Compile each shader, link them to make a full program
+		
+		// Compile each shader, link them to make a full program
 		const GLuint vertexShaderColorNoTextureId = glCreateShader(GL_VERTEX_SHADER);
 		result = vertexShaderTexture.compile(vertexShaderColorNoTextureId, vertexSourceTexture.c_str());
 
 		const GLuint fragmentShaderTextureId = glCreateShader(GL_FRAGMENT_SHADER);
 		result = fragmentShaderColorTexture.compile(fragmentShaderTextureId, fragmentSourceTexture.c_str());
-
-        const GLuint fragmentShaderTextureOpaqueId = glCreateShader(GL_FRAGMENT_SHADER);
-        result = fragmentShaderColorTextureOpaque.compile(fragmentShaderTextureOpaqueId, fragmentSourceTextureOpaque.c_str());
-
 		result = shaderProgramColorTexture.linkShaderProgram(vertexShaderTexture, fragmentShaderColorTexture);
-        result = shaderProgramColorTextureOpaque.linkShaderProgram(vertexShaderTexture, fragmentShaderColorTextureOpaque);
-
+		
 		// Set shader active, retrieve attributes and uniforms locations
 		GL_CHECK_ERROR(glUseProgram(shaderProgramColorTexture.id));
 		shaderProgramColorTexture.posAttrib = glGetAttribLocation(shaderProgramColorTexture.id, "a_pos");
@@ -308,13 +234,6 @@ namespace Renderer
 		GLint texUniform = glGetUniformLocation(shaderProgramColorTexture.id, "u_tex");
 		GL_CHECK_ERROR(glUniform1i(texUniform, 0));
 
-		GL_CHECK_ERROR(glUseProgram(shaderProgramColorTextureOpaque.id));
-		shaderProgramColorTextureOpaque.posAttrib = glGetAttribLocation(shaderProgramColorTextureOpaque.id, "a_pos");
-		shaderProgramColorTextureOpaque.colAttrib = glGetAttribLocation(shaderProgramColorTextureOpaque.id, "a_col");
-		shaderProgramColorTextureOpaque.texAttrib = glGetAttribLocation(shaderProgramColorTextureOpaque.id, "a_tex");
-		shaderProgramColorTextureOpaque.mvpUniform = glGetUniformLocation(shaderProgramColorTextureOpaque.id, "u_mvp");
-		GLint texUniformOpaque = glGetUniformLocation(shaderProgramColorTextureOpaque.id, "u_tex");
-		GL_CHECK_ERROR(glUniform1i(texUniformOpaque, 0));
 
 		// fragment shader (alpha texture)
 		std::string fragmentSourceAlpha =
@@ -329,12 +248,9 @@ namespace Renderer
 			"void main(void)                                              \n"
 			"{                                                            \n"
 			"    vec4 a = vec4(1.0, 1.0, 1.0, texture2D(u_tex, v_tex).a); \n"
-			"    gl_FragColor = a * v_col;                                \n"
+			"    gl_FragColor = a * v_col;      					      \n"
 			"}\n";
 
-		// Compile each shader, link them to make a full program
-		//const GLuint vertexShaderColorNoTextureId = glCreateShader(GL_VERTEX_SHADER);
-		//result = vertexShaderTexture.compile(vertexShaderColorNoTextureId, vertexSourceTexture);
 
 		const GLuint fragmentShaderAlphaId = glCreateShader(GL_FRAGMENT_SHADER);
 		result = fragmentShaderAlpha.compile(fragmentShaderAlphaId, fragmentSourceAlpha.c_str());
@@ -388,9 +304,7 @@ namespace Renderer
 	{
 		switch(_type)
 		{
-			case Texture::RGBA:     { return GL_RGBA;  } break;
-			case Texture::RGB:      { return GL_RGB;   } break;
-			case Texture::RGBA1555: { return GL_RGBA;  } break;
+			case Texture::RGBA:  { return GL_RGBA;            } break;
 #if defined(USE_OPENGLES_20)
 			case Texture::ALPHA: { return GL_ALPHA; } break;
 #else
@@ -575,20 +489,6 @@ namespace Renderer
 		GL_CHECK_ERROR(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
 		GL_CHECK_ERROR(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, _linear ? GL_LINEAR : GL_NEAREST));
 
-        GLenum texFormat;
-        switch (_type)
-        {
-            case Texture::RGB:
-            case Texture::RGBA:
-            case Texture::ALPHA:
-                texFormat = GL_UNSIGNED_BYTE;
-                break;
-
-            case Texture::RGBA1555:
-                texFormat = GL_UNSIGNED_SHORT_1_5_5_5_REV_EXT;
-                break;
-        }
-
 		// Regular GL_ALPHA textures are black + alpha in shaders
 		// Create a GL_LUMINANCE_ALPHA texture instead so its white + alpha
 		
@@ -615,20 +515,17 @@ namespace Renderer
 		}
 		else
 		{
-        glTexImage2D(GL_TEXTURE_2D, 0, type, _width, _height, 0, type, texFormat, _data);
-		if (glGetError() != GL_NO_ERROR)
-		{
-			LOG(LogError) << "CreateTexture error: glTexImage2D failed";
-			destroyTexture(texture);
-			return 0;
+			glTexImage2D(GL_TEXTURE_2D, 0, type, _width, _height, 0, type, GL_UNSIGNED_BYTE, _data);
+			if (glGetError() != GL_NO_ERROR)
+			{
+				LOG(LogError) << "CreateTexture error: glTexImage2D failed";
+				destroyTexture(texture);
+				return 0;
+			}
 		}
-}
 
 		if (type == GL_ALPHA && texture != 0 && _alphaTextures.find(texture) == _alphaTextures.cend())
 			_alphaTextures.insert(texture);
-
-		if (_type == Texture::RGB && texture != 0 && _opaqueTextures.find(texture) == _opaqueTextures.cend())
-			_opaqueTextures.insert(texture);
 
 		return texture;
 
@@ -638,13 +535,9 @@ namespace Renderer
 
 	void GLES20Renderer::destroyTexture(const unsigned int _texture)
 	{
-		auto it1 = _alphaTextures.find(_texture);
-		if (it1 != _alphaTextures.cend())
-			_alphaTextures.erase(it1);
-
-		auto it2 = _opaqueTextures.find(_texture);
-		if (it2 != _opaqueTextures.cend())
-			_opaqueTextures.erase(it2);
+		auto it = _alphaTextures.find(_texture);
+		if (it != _alphaTextures.cend())
+			_alphaTextures.erase(it);
 
 		GL_CHECK_ERROR(glDeleteTextures(1, &_texture));
 
@@ -655,19 +548,7 @@ namespace Renderer
 	void GLES20Renderer::updateTexture(const unsigned int _texture, const Texture::Type _type, const unsigned int _x, const unsigned _y, const unsigned int _width, const unsigned int _height, void* _data)
 	{
 		const GLenum type = convertTextureType(_type);
-        GLenum texFormat;
-        switch (_type)
-        {
-            case Texture::RGB:
-            case Texture::RGBA:
-            case Texture::ALPHA:
-                texFormat = GL_UNSIGNED_BYTE;
-                break;
 
-            case Texture::RGBA1555:
-                texFormat = GL_UNSIGNED_SHORT_1_5_5_5_REV_EXT;
-                break;
-        }
 		bindTexture(_texture);
 
 		// Regular GL_ALPHA textures are black + alpha in shaders
@@ -752,12 +633,8 @@ namespace Renderer
 		{
 			if (_alphaTextures.find(boundTexture) != _alphaTextures.cend())
 				useProgram(&shaderProgramAlpha);
-			else if (_opaqueTextures.find(boundTexture) != _opaqueTextures.cend())
-            		{
-                		useProgram(&shaderProgramColorTextureOpaque);
-            		}
-            		else
-                		useProgram(&shaderProgramColorTexture);
+			else
+				useProgram(&shaderProgramColorTexture);
 		}
 		else
 			useProgram(&shaderProgramColorNoTexture);
@@ -851,9 +728,9 @@ namespace Renderer
 	} // swapBuffers
 
 //////////////////////////////////////////////////////////////////////////
-
+	
 	void GLES20Renderer::drawTriangleFan(const Vertex* _vertices, const unsigned int _numVertices, const Blend::Factor _srcBlendFactor, const Blend::Factor _dstBlendFactor)
-	{
+	{		
 		// Pass buffer data
 		GL_CHECK_ERROR(glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * _numVertices, _vertices, GL_DYNAMIC_DRAW));
 
@@ -862,10 +739,8 @@ namespace Renderer
 		{
 			if (_alphaTextures.find(boundTexture) != _alphaTextures.cend())
 				useProgram(&shaderProgramAlpha);
-			else if (_opaqueTextures.find(boundTexture) != _opaqueTextures.cend())
-                		useProgram(&shaderProgramColorTextureOpaque);
-            		else
-                		useProgram(&shaderProgramColorTexture);
+			else
+				useProgram(&shaderProgramColorTexture);
 		}
 		else
 			useProgram(&shaderProgramColorNoTexture);
@@ -896,7 +771,7 @@ namespace Renderer
 		glStencilOp(GL_REPLACE, GL_KEEP, GL_KEEP);
 		glStencilMask(0xFF);
 		glClear(GL_STENCIL_BUFFER_BIT);
-
+		
 		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * _numVertices, _vertices, GL_DYNAMIC_DRAW);
 		glDrawArrays(GL_TRIANGLE_FAN, 0, _numVertices);
 
