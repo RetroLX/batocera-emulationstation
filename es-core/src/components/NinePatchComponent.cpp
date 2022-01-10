@@ -139,7 +139,7 @@ void NinePatchComponent::buildVertices()
 
 void NinePatchComponent::render(const Transform4x4f& parentTrans)
 {
-	if (!isVisible() || mTexture == nullptr || mVertices == nullptr)
+	if (!mVisible || mTexture == nullptr || mVertices == nullptr)
 		return;
 
 	Transform4x4f trans = parentTrans * getTransform();
@@ -211,6 +211,8 @@ void NinePatchComponent::render(const Transform4x4f& parentTrans)
 
 void NinePatchComponent::onSizeChanged()
 {
+	GuiComponent::onSizeChanged();
+
 	if (mPreviousSize == mSize)
 		return;
 
