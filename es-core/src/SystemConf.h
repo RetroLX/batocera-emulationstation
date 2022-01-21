@@ -3,7 +3,9 @@
 
 
 #include <string>
-#include <map>
+
+#include <parallel_hashmap/phmap.h>
+using phmap::flat_hash_map;
 
 class SystemConf 
 {
@@ -26,7 +28,7 @@ private:
 	SystemConf();
 	static SystemConf* sInstance;
 
-	std::map<std::string, std::string> confMap;
+    flat_hash_map<std::string, std::string> confMap;
 	bool mWasChanged;
 };
 

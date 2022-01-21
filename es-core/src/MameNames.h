@@ -4,7 +4,9 @@
 
 #include <string>
 #include <vector>
-#include <unordered_set>
+
+#include <parallel_hashmap/phmap.h>
+using phmap::flat_hash_set;
 
 class MameNames
 {
@@ -36,10 +38,10 @@ private:
 
 	namePairVector mNamePairs;
 
-	std::unordered_set<std::string> mMameBioses;
-	std::unordered_set<std::string> mMameDevices;
-	std::unordered_set<std::string> mVerticalGames;
-	std::unordered_set<std::string> mLightGunGames;
+    phmap::flat_hash_set<std::string> mMameBioses;
+    phmap::flat_hash_set<std::string> mMameDevices;
+    phmap::flat_hash_set<std::string> mVerticalGames;
+    phmap::flat_hash_set<std::string> mLightGunGames;
 
 }; // MameNames
 
