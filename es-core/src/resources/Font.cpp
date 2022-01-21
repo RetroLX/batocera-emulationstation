@@ -383,7 +383,7 @@ Font::Glyph* Font::getGlyph(unsigned int id)
 
 	// upload glyph bitmap to texture
 	if (glyphSize.x() > 0 && glyphSize.y() > 0)
-	    Renderer::updateTexture(tex->textureId, Renderer::Texture::ALPHA, cursor.x(), cursor.y(), glyphSize.x(), glyphSize.y(), g->bitmap.buffer);
+		Renderer::updateTexture(tex->textureId, Renderer::Texture::ALPHA, cursor.x(), cursor.y(), glyphSize.x(), glyphSize.y(), g->bitmap.buffer);
 
 	// update max glyph height
 	if(glyphSize.y() > mMaxGlyphHeight)
@@ -415,7 +415,7 @@ void Font::rebuildTextures()
 		FT_Load_Char(face, it->first, FT_LOAD_RENDER);
 
 		Glyph* glyph = it->second;
-		
+
 		// upload to texture
 		Renderer::updateTexture(glyph->texture->textureId, Renderer::Texture::ALPHA,
 			glyph->cursor.x(), glyph->cursor.y(),
@@ -424,7 +424,7 @@ void Font::rebuildTextures()
 	}
 }
 
-void Font::renderTextCache(TextCache* cache, bool first)
+void Font::renderTextCache(TextCache* cache, bool verticesChanged)
 {
 	if(cache == NULL)
 	{
@@ -435,21 +435,21 @@ void Font::renderTextCache(TextCache* cache, bool first)
 	int tex = -1;
 
 	for(auto& vertex : cache->vertexLists)
-	{		
+	{
 		if (vertex.textureIdPtr == nullptr)
 			continue;
-		
+
 		if (tex != *vertex.textureIdPtr)
 		{
 			tex = *vertex.textureIdPtr;
-			Renderer::bindTexture(tex);			
+			Renderer::bindTexture(tex);
 		}
 
 		if (tex != 0)
-			Renderer::drawAlphaText(&vertex.verts[0], vertex.verts.size(), Renderer::Blend::SRC_ALPHA, Renderer::Blend::ONE_MINUS_SRC_ALPHA, first);
+			Renderer::drawTriangleStrips(&vertex.verts[0], vertex.verts.size(), Renderer::Blend::SRC_ALPHA, Renderer::Blend::ONE_MINUS_SRC_ALPHA, cache->vertexLists.size() > 1 || verticesChanged);
 	}
 
-	if (cache->renderingGlow)
+	if (cache->renderingGlow || !verticesChanged)
 		return;
 
 	for (auto sub : cache->imageSubstitutes)
@@ -520,7 +520,7 @@ void Font::renderGradientTextCache(TextCache* cache, unsigned int colorTop, unsi
 		}
 
 		Renderer::bindTexture(*it->textureIdPtr);
-		Renderer::drawAlphaText(&vxs[0], vxs.size());
+		Renderer::drawTriangleStrips(&vxs[0], vxs.size());
 	}
 }
 

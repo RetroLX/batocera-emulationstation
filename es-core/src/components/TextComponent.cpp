@@ -41,6 +41,7 @@ TextComponent::TextComponent(Window* window, const std::string& text, const std:
 
 void TextComponent::onSizeChanged()
 {
+	GuiComponent::onSizeChanged();
 	mAutoCalcExtent = Vector2i((getSize().x() == 0), (getSize().y() == 0));
 	onTextChanged();
 }
@@ -125,22 +126,18 @@ void TextComponent::setUppercase(bool uppercase)
 	onTextChanged();
 }
 
-void TextComponent::renderSingleGlow(const Transform4x4f& parentTrans, float yOff, float x, float y)
+void TextComponent::renderSingleGlow(const Transform4x4f& parentTrans, float yOff, float x, float y, bool verticesChanged)
 {
-	Vector3f off = Vector3f(mPadding.x() + x + mGlowOffset.x(), mPadding.y() + yOff + y + mGlowOffset.y(), 0);
-
-	Transform4x4f trans = parentTrans * getTransform();
-	trans.translate(off);
-
+	Transform4x4f trans = parentTrans;
+	trans.translate(x, y);
 	Renderer::setMatrix(trans);
-	mFont->renderTextCache(mTextCache.get());	
+	mFont->renderTextCache(mTextCache.get(), verticesChanged);
 }
 
 void TextComponent::renderGlow(const Transform4x4f& parentTrans, float yOff, float xOff)
 {
 	Transform4x4f glowTrans = parentTrans;
-	if (xOff != 0.0)
-		glowTrans.translate(Vector3f(xOff, 0, 0));
+	glowTrans.translate(mPadding.x() + mGlowOffset.x() + xOff, mPadding.y() + mGlowOffset.y() + yOff);
 
 	mTextCache->setRenderingGlow(true);
 	
@@ -149,22 +146,10 @@ void TextComponent::renderGlow(const Transform4x4f& parentTrans, float yOff, flo
 		int a = Math::min(0xFF, (mGlowColor & 0xFF) * 2);
 		mTextCache->setColor((mGlowColor & 0xFFFFFF00) | (unsigned char)(a * (mOpacity / 255.0)));
 
-        Vector3f off = Vector3f(mPadding.x() + mGlowOffset.x(), mPadding.y() + yOff + mGlowOffset.y(), 0);
-        Transform4x4f trans = parentTrans * getTransform();
-        trans.translate(off);
-
-        trans.translate(Vector3f(1,0,0));
-        Renderer::setMatrix(trans);
-        mFont->renderTextCache(mTextCache.get(),true);
-        trans.translate(Vector3f(-1,1,0));
-        Renderer::setMatrix(trans);
-        mFont->renderTextCache(mTextCache.get(),false);
-        trans.translate(Vector3f(-1,-1,0));
-        Renderer::setMatrix(trans);
-        mFont->renderTextCache(mTextCache.get(),false);
-        trans.translate(Vector3f(0,-1,0));
-        Renderer::setMatrix(trans);
-        mFont->renderTextCache(mTextCache.get(),false);
+		renderSingleGlow(glowTrans, yOff, 1, 0);
+		renderSingleGlow(glowTrans, yOff, 0, 1, false);
+		renderSingleGlow(glowTrans, yOff, -1, 0, false);
+		renderSingleGlow(glowTrans, yOff, 0, -1, false);
 	}
 	else
 	{
@@ -179,33 +164,17 @@ void TextComponent::renderGlow(const Transform4x4f& parentTrans, float yOff, flo
         Renderer::setMatrix(trans);
         mFont->renderTextCache(mTextCache.get(), true);
 
-        for (int i = 0; i < 2 * mGlowSize; i++)
-        {
-            trans.translate(Vector3f(1,0,0));
-            Renderer::setMatrix(trans);
-            mFont->renderTextCache(mTextCache.get(), false);
-        }
+		for (int i = 0; i < 2 * mGlowSize; i++)
+			renderSingleGlow(glowTrans, yOff, ++x, y, false);
 
 		for (int i = 0; i < 2 * mGlowSize; i++)
-        {
-            trans.translate(Vector3f(0,1,0));
-            Renderer::setMatrix(trans);
-            mFont->renderTextCache(mTextCache.get(), false);
-        }
+			renderSingleGlow(glowTrans, yOff, x, ++y, false);
 
 		for (int i = 0; i < 2 * mGlowSize; i++)
-        {
-            trans.translate(Vector3f(-1,0,0));
-            Renderer::setMatrix(trans);
-            mFont->renderTextCache(mTextCache.get(), false);
-        }
+			renderSingleGlow(glowTrans, yOff, --x, y, false);
 
 		for (int i = 0; i < 2 * mGlowSize; i++)
-        {
-            trans.translate(Vector3f(0,-1,0));
-            Renderer::setMatrix(trans);
-            mFont->renderTextCache(mTextCache.get(), false);
-        }
+			renderSingleGlow(glowTrans, yOff, x, --y, false);
 	}
 
 	mTextCache->setRenderingGlow(false);
@@ -213,15 +182,15 @@ void TextComponent::renderGlow(const Transform4x4f& parentTrans, float yOff, flo
 
 void TextComponent::render(const Transform4x4f& parentTrans)
 {
-	if (!isVisible())
+	if (!mVisible)
 		return;
 
 	Transform4x4f trans = parentTrans * getTransform();
-	
+
 	if (!Renderer::isVisibleOnScreen(trans.translation().x(), trans.translation().y(), mSize.x() * trans.r0().x(), mSize.y() * trans.r1().y()))
 		return;
 
-	if (mRenderBackground)
+	if (mRenderBackground && mBgColor != 0)
 	{
 		Renderer::setMatrix(trans);
 
@@ -229,7 +198,7 @@ void TextComponent::render(const Transform4x4f& parentTrans)
 		Renderer::drawRect(0.0f, 0.0f, mSize.x(), mSize.y(), bgColor, bgColor);
 	}
 
-	if (mTextCache == nullptr && mFont != nullptr)
+	if (mTextCache == nullptr && mFont != nullptr && !mText.empty())
 	{
 		buildTextCache();
 		onColorChanged();
@@ -239,27 +208,26 @@ void TextComponent::render(const Transform4x4f& parentTrans)
 		return;
 
 	if (mAutoScroll != AutoScrollType::NONE)
-		Renderer::pushClipRect(Vector2i(trans.translation().x(), trans.translation().y()), Vector2i(mSize.x() * trans.r0().x(), mSize.y() * trans.r1().y()));
-	
+		Renderer::pushClipRect(trans.translation().x(), trans.translation().y(), mSize.x() * trans.r0().x(), mSize.y() * trans.r1().y());
+
 	beginCustomClipRect();
 
 	const Vector2f& textSize = mTextCache->metrics.size;
+
 	float yOff = 0;
-	switch(mVerticalAlignment)
+	switch (mVerticalAlignment)
 	{
-		case ALIGN_TOP:
-			yOff = 0;
-			break;
-		case ALIGN_BOTTOM:
-			yOff = (getSize().y() - textSize.y());
-			break;
-		case ALIGN_CENTER:
-			yOff = (getSize().y() - textSize.y()) / 2.0f;
-			break;
+	case ALIGN_BOTTOM:
+		yOff = (getSize().y() - textSize.y());
+		break;
+	case ALIGN_CENTER:
+		yOff = (getSize().y() - textSize.y()) / 2.0f;
+		break;
 	}
+
 	Vector3f off(mPadding.x(), mPadding.y() + yOff, 0);
 
-	if(Settings::DebugText)
+	if (Settings::DebugText)
 	{
 		// draw the "textbox" area, what we are aligned within
 		Renderer::setMatrix(trans);
@@ -269,11 +237,11 @@ void TextComponent::render(const Transform4x4f& parentTrans)
 	if ((mGlowColor & 0x000000FF) != 0 && mGlowSize > 0)
 	{
 		if (mAutoScroll == AutoScrollType::VERTICAL)
-			renderGlow(parentTrans, yOff - mMarqueeOffset, 0);
+			renderGlow(trans, yOff - mMarqueeOffset, 0);
 		else
-			renderGlow(parentTrans, yOff, -mMarqueeOffset);
+			renderGlow(trans, yOff, -mMarqueeOffset);
 
-		onColorChanged();
+		mTextCache->setColor(mColor & 0xFFFFFF00 | (unsigned char)((mColor & 0xFF) * (mOpacity / 255.0)));
 	}
 
 	Transform4x4f drawTrans = trans;
@@ -288,13 +256,12 @@ void TextComponent::render(const Transform4x4f& parentTrans)
 	else
 		trans.translate(off);
 
-//		trans.translate(off);
 	Renderer::setMatrix(trans);
 
 	// draw the text area, where the text actually is going
-	if(Settings::DebugText)
+	if (Settings::DebugText)
 	{
-		switch(mHorizontalAlignment)
+		switch (mHorizontalAlignment)
 		{
 		case ALIGN_LEFT:
 			Renderer::drawRect(0.0f, 0.0f, mTextCache->metrics.size.x(), mTextCache->metrics.size.y(), 0x00000033, 0x00000033);
@@ -307,13 +274,12 @@ void TextComponent::render(const Transform4x4f& parentTrans)
 			break;
 		}
 	}
-		
 
 	mFont->renderTextCache(mTextCache.get());
 
 	// render currently selected item text again if
 	// marquee is scrolled far enough for it to repeat
-		
+
 	if (mMarqueeOffset2 != 0.0 && mAutoScroll != AutoScrollType::VERTICAL)
 	{
 		trans = drawTrans;
@@ -321,7 +287,7 @@ void TextComponent::render(const Transform4x4f& parentTrans)
 
 		if ((mGlowColor & 0x000000FF) != 0 && mGlowSize > 0)
 		{
-			renderGlow(parentTrans, yOff, -mMarqueeOffset2);
+			renderGlow(drawTrans, yOff, -mMarqueeOffset2);
 			onColorChanged();
 		}
 
@@ -343,7 +309,7 @@ void TextComponent::render(const Transform4x4f& parentTrans)
 			mirror.r3().y() = mirror.r3().y() + textSize.y();
 
 		Renderer::setMatrix(mirror);
-			
+
 		float baseOpacity = mOpacity / 255.0;
 		float alpha = baseOpacity * ((mColor & 0x000000ff)) / 255.0;
 		float alpha2 = baseOpacity * alpha * mReflection.y();
@@ -540,11 +506,8 @@ void TextComponent::onShow()
 
 void TextComponent::onColorChanged()
 {
-	if(mTextCache)
-	{
-		auto color = mColor & 0xFFFFFF00 | (unsigned char)((mColor & 0xFF) * (mOpacity / 255.0));
-		mTextCache->setColor(color);
-	}
+	if (mTextCache)
+		mTextCache->setColor(mColor & 0xFFFFFF00 | (unsigned char)((mColor & 0xFF) * (mOpacity / 255.0)));
 }
 
 void TextComponent::setHorizontalAlignment(Alignment align)

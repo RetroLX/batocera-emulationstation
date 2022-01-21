@@ -2,6 +2,8 @@
 
 #include <SDL.h>
 
+#define USE_OPENGLES_20 1
+
 #if USE_OPENGLES_20
 #include <SDL_opengles2.h>
 #else
