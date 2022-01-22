@@ -21,8 +21,8 @@ FT_Library Font::sLibrary = NULL;
 
 int Font::getSize() const { return mSize; }
 
-std::map< std::pair<std::string, int>, std::weak_ptr<Font> > Font::sFontMap;
-static std::map<unsigned int, std::string> substituableChars;
+parallel_flat_hash_map< std::pair<std::string, int>, std::weak_ptr<Font> > Font::sFontMap;
+static parallel_flat_hash_map<unsigned int, std::string> substituableChars;
 
 Font::FontFace::FontFace(ResourceData&& d, int size) : data(d)
 {
@@ -1001,7 +1001,7 @@ std::shared_ptr<Font> Font::getFromTheme(const ThemeData::ThemeElement* elem, un
 
 void Font::OnThemeChanged()
 {
-	static std::map<unsigned int, std::string> defaultMap =
+	static parallel_flat_hash_map<unsigned int, std::string> defaultMap =
 	{
 		{ 0xF300, ":/flags/au.png" },
 		{ 0xF301, ":/flags/br.png" },

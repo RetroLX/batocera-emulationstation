@@ -545,8 +545,8 @@ void HttpServerThread::run()
 
 			deleteSystem = true;
 		}
-			
-		std::unordered_map<std::string, FileData*> fileMap;
+
+		parallel_flat_hash_map<std::string, FileData*> fileMap;
 		for (auto file : system->getRootFolder()->getFilesRecursive(GAME))
 			fileMap[file->getPath()] = file;
 
@@ -614,7 +614,7 @@ void HttpServerThread::run()
 			return;
 		}
 
-		std::unordered_map<std::string, FileData*> fileMap;
+		parallel_flat_hash_map<std::string, FileData*> fileMap;
 		for (auto file : system->getRootFolder()->getFilesRecursive(GAME))
 			fileMap[file->getPath()] = file;
 

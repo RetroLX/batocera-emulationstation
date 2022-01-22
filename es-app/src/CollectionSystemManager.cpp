@@ -1318,7 +1318,7 @@ std::vector<std::string> CollectionSystemManager::getSystemsFromTheme()
 		return systems;
 	}
 
-	std::map<std::string, ThemeSet>::const_iterator set = themeSets.find(Settings::getInstance()->getString("ThemeSet"));
+    parallel_flat_hash_map<std::string, ThemeSet>::const_iterator set = themeSets.find(Settings::getInstance()->getString("ThemeSet"));
 	if(set == themeSets.cend())
 	{
 		// currently selected theme set is missing, so just pick the first available set

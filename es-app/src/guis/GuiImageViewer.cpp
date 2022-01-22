@@ -251,7 +251,7 @@ GuiImageViewer::GuiImageViewer(Window* window, bool linearSmooth) :
 		xml = Utils::String::replace(xml, "<linearSmooth>true</linearSmooth>", "<linearSmooth>false</linearSmooth>");
 
 	mTheme = std::shared_ptr<ThemeData>(new ThemeData());
-	std::map<std::string, std::string> emptyMap;
+	parallel_flat_hash_map<std::string, std::string> emptyMap;
 	mTheme->loadFile("imageviewer", emptyMap, xml, false);
 
 	mGrid.applyTheme(mTheme, "grid", "gamegrid", 0);

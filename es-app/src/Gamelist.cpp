@@ -22,7 +22,7 @@ std::string getGamelistRecoveryPath(SystemData* system)
 	return Utils::FileSystem::getGenericPath(Utils::FileSystem::getEsConfigPath() + "/recovery/" + system->getName());
 }
 
-FileData* findOrCreateFile(SystemData* system, const std::string& path, FileType type, std::unordered_map<std::string, FileData*>& fileMap)
+FileData* findOrCreateFile(SystemData* system, const std::string& path, FileType type, parallel_flat_hash_map<std::string, FileData*>& fileMap)
 {
 	auto pGame = fileMap.find(path);
 	if (pGame != fileMap.end())
@@ -105,7 +105,7 @@ FileData* findOrCreateFile(SystemData* system, const std::string& path, FileType
 	return NULL;
 }
 
-std::vector<FileData*> loadGamelistFile(const std::string xmlpath, SystemData* system, std::unordered_map<std::string, FileData*>& fileMap, size_t checkSize, bool fromFile)
+std::vector<FileData*> loadGamelistFile(const std::string xmlpath, SystemData* system, parallel_flat_hash_map<std::string, FileData*>& fileMap, size_t checkSize, bool fromFile)
 {	
 	std::vector<FileData*> ret;
 
@@ -199,7 +199,7 @@ void clearTemporaryGamelistRecovery(SystemData* system)
 	Utils::FileSystem::deleteDirectoryFiles(path, true);
 }
 
-void parseGamelist(SystemData* system, std::unordered_map<std::string, FileData*>& fileMap)
+void parseGamelist(SystemData* system, parallel_flat_hash_map<std::string, FileData*>& fileMap)
 {
 	std::string xmlpath = system->getGamelistPath(false);
 
