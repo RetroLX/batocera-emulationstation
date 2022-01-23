@@ -354,11 +354,13 @@ namespace Renderer
 
 //////////////////////////////////////////////////////////////////////////
 
+#define MAX_VERTICES 4096
+
 	static void setupVertexBuffer()
 	{
 		GL_CHECK_ERROR(glGenBuffers(1, &vertexBuffer));
 		GL_CHECK_ERROR(glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer));
-
+        GL_CHECK_ERROR(glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * MAX_VERTICES, nullptr, GL_DYNAMIC_DRAW));
 	} // setupVertexBuffer
 
 //////////////////////////////////////////////////////////////////////////
@@ -720,7 +722,7 @@ namespace Renderer
 	void GLES20Renderer::drawLines(const Vertex* _vertices, const unsigned int _numVertices, const Blend::Factor _srcBlendFactor, const Blend::Factor _dstBlendFactor)
 	{
 		// Pass buffer data
-		GL_CHECK_ERROR(glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * _numVertices, _vertices, GL_DYNAMIC_DRAW));
+		GL_CHECK_ERROR(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * _numVertices, _vertices));
 
 		useProgram(&shaderProgramColorNoTexture);
 
@@ -745,7 +747,7 @@ namespace Renderer
 	void GLES20Renderer::drawTriangleStrips(const Vertex* _vertices, const unsigned int _numVertices, const Blend::Factor _srcBlendFactor, const Blend::Factor _dstBlendFactor, bool verticesChanged)
 	{
 		if (verticesChanged)
-			GL_CHECK_ERROR(glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * _numVertices, _vertices, GL_DYNAMIC_DRAW));
+			GL_CHECK_ERROR(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * _numVertices, _vertices));
 
 		// Setup shader
 		if (boundTexture != 0)
@@ -855,7 +857,7 @@ namespace Renderer
 	void GLES20Renderer::drawTriangleFan(const Vertex* _vertices, const unsigned int _numVertices, const Blend::Factor _srcBlendFactor, const Blend::Factor _dstBlendFactor)
 	{
 		// Pass buffer data
-		GL_CHECK_ERROR(glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * _numVertices, _vertices, GL_DYNAMIC_DRAW));
+		GL_CHECK_ERROR(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * _numVertices, _vertices));
 
 		// Setup shader
 		if (boundTexture != 0)
@@ -897,7 +899,7 @@ namespace Renderer
 		glStencilMask(0xFF);
 		glClear(GL_STENCIL_BUFFER_BIT);
 
-		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * _numVertices, _vertices, GL_DYNAMIC_DRAW);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * _numVertices, _vertices);
 		glDrawArrays(GL_TRIANGLE_FAN, 0, _numVertices);
 
 		glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);

@@ -18,7 +18,7 @@
 std::vector<std::string> ThemeData::sSupportedViews{ { "system" }, { "basic" }, { "detailed" }, { "grid" }, { "video" }, { "gamecarousel" }, { "menu" }, { "screen" }, { "splash" } };
 std::vector<std::string> ThemeData::sSupportedFeatures { { "video" }, { "carousel" }, { "gamecarousel" }, { "z-index" }, { "visible" },{ "manufacturer" } };
 
-parallel_flat_hash_map<std::string, parallel_flat_hash_map<std::string, ThemeData::ElementPropertyType>> ThemeData::sElementMap {
+flat_hash_map<std::string, flat_hash_map<std::string, ThemeData::ElementPropertyType>> ThemeData::sElementMap {
 
 	{ "splash", {		
 		{ "backgroundColor", COLOR } } },
@@ -567,7 +567,7 @@ ThemeData::ThemeData()
 	mVersion = 0;
 }
 
-void ThemeData::loadFile(const std::string system, parallel_flat_hash_map<std::string, std::string> sysDataMap, const std::string& path, bool fromFile)
+void ThemeData::loadFile(const std::string system, flat_hash_map<std::string, std::string> sysDataMap, const std::string& path, bool fromFile)
 {
 	mPaths.push_back(path);
 
@@ -1401,7 +1401,7 @@ bool ThemeData::parseRegion(const pugi::xml_node& node)
 	return false;
 }
 
-void ThemeData::parseElement(const pugi::xml_node& root, const parallel_flat_hash_map<std::string, ElementPropertyType>& typeMap, ThemeElement& element, bool overwrite)
+void ThemeData::parseElement(const pugi::xml_node& root, const flat_hash_map<std::string, ElementPropertyType>& typeMap, ThemeElement& element, bool overwrite)
 {
 	// ThemeException error;
 	// error.setFiles(mPaths);
@@ -1683,7 +1683,7 @@ const std::shared_ptr<ThemeData>& ThemeData::getDefault()
 		{
 			try
 			{
-                parallel_flat_hash_map<std::string, std::string> emptyMap;
+                flat_hash_map<std::string, std::string> emptyMap;
 				theme->loadFile("", emptyMap, path);
 			} catch(ThemeException& e)
 			{
@@ -1749,9 +1749,9 @@ std::vector<GuiComponent*> ThemeData::makeExtras(const std::shared_ptr<ThemeData
 	return comps;
 }
 
-parallel_flat_hash_map<std::string, ThemeSet> ThemeData::getThemeSets()
+flat_hash_map<std::string, ThemeSet> ThemeData::getThemeSets()
 {
-    parallel_flat_hash_map<std::string, ThemeSet> sets;
+    flat_hash_map<std::string, ThemeSet> sets;
 
 	static const size_t pathCount = 3;
 	std::string paths[pathCount] =
@@ -1783,14 +1783,14 @@ parallel_flat_hash_map<std::string, ThemeSet> ThemeData::getThemeSets()
 
 std::string ThemeData::getThemeFromCurrentSet(const std::string& system)
 {
-	parallel_flat_hash_map<std::string, ThemeSet> themeSets = ThemeData::getThemeSets();
+	flat_hash_map<std::string, ThemeSet> themeSets = ThemeData::getThemeSets();
 	if(themeSets.empty())
 	{
 		// no theme sets available
 		return "";
 	}
 
-    parallel_flat_hash_map<std::string, ThemeSet>::const_iterator set = themeSets.find(Settings::getInstance()->getString("ThemeSet"));
+    flat_hash_map<std::string, ThemeSet>::const_iterator set = themeSets.find(Settings::getInstance()->getString("ThemeSet"));
 	if(set == themeSets.cend())
 	{
 		// currently selected theme set is missing, so just pick the first available set

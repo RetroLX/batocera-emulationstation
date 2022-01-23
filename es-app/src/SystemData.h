@@ -15,8 +15,8 @@
 #include "utils/VectorEx.h"
 
 #include <parallel_hashmap/phmap.h>
-using phmap::parallel_flat_hash_set;
-using phmap::parallel_flat_hash_map;
+using phmap::flat_hash_set;
+using phmap::flat_hash_map;
 
 class FileData;
 class FolderData;
@@ -49,7 +49,7 @@ struct SystemMetadata
 struct SystemEnvironmentData
 {
 	std::string mStartPath;
-	parallel_flat_hash_set<std::string> mSearchExtensions;
+	flat_hash_set<std::string> mSearchExtensions;
 	std::string mLaunchCommand;
 	std::vector<PlatformIds::PlatformId> mPlatformIds;
 	std::string mGroup;
@@ -73,7 +73,7 @@ public:
 	inline const std::string& getName() const { return mMetadata.name; }
 	inline const std::string& getFullName() const { return mMetadata.fullName; }
 	inline const std::string& getStartPath() const { return mEnvData->mStartPath; }
-	inline const parallel_flat_hash_set<std::string>& getExtensions() const { return mEnvData->mSearchExtensions; }
+	inline const flat_hash_set<std::string>& getExtensions() const { return mEnvData->mSearchExtensions; }
 	inline const std::string& getThemeFolder() const { return mMetadata.themeFolder; }
 	inline SystemEnvironmentData* getSystemEnvData() const { return mEnvData; }
 	inline const std::vector<PlatformIds::PlatformId>& getPlatformIds() const { return mEnvData->mPlatformIds; }
@@ -165,8 +165,8 @@ public:
 
 	SystemData* getParentGroupSystem();
 
-	static parallel_flat_hash_set<std::string> getAllGroupNames();
-	static parallel_flat_hash_set<std::string> getGroupChildSystemNames(const std::string groupName);
+	static flat_hash_set<std::string> getAllGroupNames();
+	static flat_hash_set<std::string> getGroupChildSystemNames(const std::string groupName);
 
 	std::string getEmulator(bool resolveDefault = true);
 	std::string getCore(bool resolveDefault = true);
@@ -188,7 +188,7 @@ public:
 	FileFilterIndex* getFilterIndex() { return mFilterIndex; }
 
 	static SystemData* loadSystem(std::string systemName, bool fullMode = true);
-	static parallel_flat_hash_map<std::string, std::string> getKnownSystemNames();
+	static flat_hash_map<std::string, std::string> getKnownSystemNames();
 
 	bool hasKeyboardMapping();
 	KeyMappingFile getKeyboardMapping();
@@ -225,10 +225,10 @@ private:
 	SystemEnvironmentData* mEnvData;
 	std::shared_ptr<ThemeData> mTheme;
 
-	void populateFolder(FolderData* folder, parallel_flat_hash_map<std::string, FileData*>& fileMap);
+	void populateFolder(FolderData* folder, flat_hash_map<std::string, FileData*>& fileMap);
 	void indexAllGameFilters(const FolderData* folder);
 	void setIsGameSystemStatus();
-	void removeMultiDiskContent(parallel_flat_hash_map<std::string, FileData*>& fileMap);
+	void removeMultiDiskContent(flat_hash_map<std::string, FileData*>& fileMap);
 
 	static SystemData* loadSystem(pugi::xml_node system, bool fullMode = true);
 	static void loadAdditionnalConfig(pugi::xml_node& srcSystems);

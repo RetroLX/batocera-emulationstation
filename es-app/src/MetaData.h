@@ -7,7 +7,7 @@
 #include <string>
 
 #include <parallel_hashmap/phmap.h>
-using phmap::parallel_node_hash_map;
+using phmap::flat_hash_map;
 
 #include "utils/TimeUtil.h"
 
@@ -177,11 +177,11 @@ public:
 	Utils::Time::DateTime* getScrapeDate(const std::string& scraper);
 
 private:
-    parallel_node_hash_map<int, Utils::Time::DateTime> mScrapeDates;
+    flat_hash_map<int, Utils::Time::DateTime> mScrapeDates;
 
 	std::string		mName;
 	MetaDataListType mType;
-    parallel_node_hash_map<MetaDataId, std::string> mMap;
+    flat_hash_map<MetaDataId, std::string> mMap;
 	bool mWasChanged;
 	SystemData*		mRelativeTo;
 

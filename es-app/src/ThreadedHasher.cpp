@@ -11,7 +11,6 @@
 #include "ApiSystem.h"
 #include "utils/StringUtil.h"
 #include "Log.h"
-#include <unordered_set>
 #include <queue>
 
 #include "LocaleES.h"

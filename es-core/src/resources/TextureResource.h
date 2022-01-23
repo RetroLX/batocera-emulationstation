@@ -7,9 +7,12 @@
 #include "resources/ResourceManager.h"
 #include "resources/TextureDataManager.h"
 #include "resources/TextureData.h"
-#include <set>
 #include <string>
 #include <tuple>
+
+#include <parallel_hashmap/phmap.h>
+using phmap::flat_hash_map;
+using phmap::flat_hash_set;
 
 // An OpenGL texture.
 // Automatically recreates the texture with renderer deinit/reinit.
@@ -61,8 +64,8 @@ private:
 	bool							mForceLoad;
 
 	typedef std::tuple<std::string, bool, bool> TextureKeyType;
-	static std::map< TextureKeyType, std::weak_ptr<TextureResource> > sTextureMap; // map of textures, used to prevent duplicate textures
-	static std::set<TextureResource*> 	sAllTextures;	// Set of all textures, used for memory management
+	static flat_hash_map< TextureKeyType, std::weak_ptr<TextureResource> > sTextureMap; // map of textures, used to prevent duplicate textures
+	static flat_hash_set<TextureResource*> 	sAllTextures;	// Set of all textures, used for memory management
 };
 
 #endif // ES_CORE_RESOURCES_TEXTURE_RESOURCE_H

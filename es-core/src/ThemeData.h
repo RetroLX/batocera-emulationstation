@@ -12,8 +12,8 @@
 #include <pugixml/src/pugixml.hpp>
 
 #include <parallel_hashmap/phmap.h>
-using phmap::parallel_flat_hash_set;
-using phmap::parallel_flat_hash_map;
+using phmap::flat_hash_set;
+using phmap::flat_hash_map;
 
 namespace pugi { class xml_node; }
 
@@ -193,7 +193,7 @@ public:
 		}
 
 	private:
-		parallel_flat_hash_map<std::string, std::string>		mMenuIcons;
+		flat_hash_map<std::string, std::string>		mMenuIcons;
 	};
 
 	class ThemeElement
@@ -205,7 +205,7 @@ public:
 
 		int extra;
 		std::string type;
-		parallel_flat_hash_map<std::string, ThemeStoryboard*> mStoryBoards;
+		flat_hash_map<std::string, ThemeStoryboard*> mStoryBoards;
 
 		struct Property
 		{
@@ -251,7 +251,7 @@ public:
 
 		};
 
-		parallel_flat_hash_map< std::string, Property > properties;
+		flat_hash_map< std::string, Property > properties;
 
 		template<typename T>
 		const T get(const std::string& prop) const
@@ -274,7 +274,7 @@ private:
 	public:
 		ThemeView() { isCustomView = false; }
 
-		parallel_flat_hash_map<std::string, ThemeElement> elements;
+		flat_hash_map<std::string, ThemeElement> elements;
 		std::vector<std::string> orderedKeys;
 		std::string baseType;
 
@@ -292,7 +292,7 @@ public:
 	ThemeData();
 
 	// throws ThemeException
-	void loadFile(const std::string system, parallel_flat_hash_map<std::string, std::string> sysDataMap, const std::string& path, bool fromFile = true);
+	void loadFile(const std::string system, flat_hash_map<std::string, std::string> sysDataMap, const std::string& path, bool fromFile = true);
 
 	enum ElementPropertyType
 	{
@@ -325,7 +325,7 @@ public:
 
 	static const std::shared_ptr<ThemeData>& getDefault();
 
-	static parallel_flat_hash_map<std::string, ThemeSet> getThemeSets();
+	static flat_hash_map<std::string, ThemeSet> getThemeSets();
 	static std::string getThemeFromCurrentSet(const std::string& system);
 	
 	bool hasSubsets() { return mSubsets.size() > 0; }
@@ -360,7 +360,7 @@ public:
 	std::string getViewDisplayName(const std::string& view);
 
 private:
-	static parallel_flat_hash_map< std::string, parallel_flat_hash_map<std::string, ElementPropertyType> > sElementMap;
+	static flat_hash_map< std::string, flat_hash_map<std::string, ElementPropertyType> > sElementMap;
 	static std::vector<std::string> sSupportedFeatures;
 	static std::vector<std::string> sSupportedViews;
 
@@ -380,7 +380,7 @@ private:
 	void parseCustomView(const pugi::xml_node& node, const pugi::xml_node& root);	
 	void parseViewElement(const pugi::xml_node& node);
 	void parseView(const pugi::xml_node& viewNode, ThemeView& view, bool overwriteElements = true);
-	void parseElement(const pugi::xml_node& elementNode, const parallel_flat_hash_map<std::string, ElementPropertyType>& typeMap, ThemeElement& element, bool overwrite = true);
+	void parseElement(const pugi::xml_node& elementNode, const flat_hash_map<std::string, ElementPropertyType>& typeMap, ThemeElement& element, bool overwrite = true);
 	bool parseRegion(const pugi::xml_node& node);
 	bool parseSubset(const pugi::xml_node& node);
 	bool isFirstSubset(const pugi::xml_node& node);
@@ -402,7 +402,7 @@ private:
 	std::string mLanguage;
 	std::string mRegion;
 
-	parallel_flat_hash_map<std::string, std::string> mVariables;
+	flat_hash_map<std::string, std::string> mVariables;
 	
 	class UnsortedViewMap : public std::vector<std::pair<std::string, ThemeView>>
 	{

@@ -427,7 +427,7 @@ void GuiCollectionSystemsOptions::createFilterCollection(std::string inName)
 	ViewController::get()->reloadAll(nullptr, false);
 	ViewController::get()->goToStart();
 
-	std::map<std::string, CollectionSystemData> customCollections = CollectionSystemManager::get()->getCustomCollectionSystems();
+    flat_hash_map<std::string, CollectionSystemData> customCollections = CollectionSystemManager::get()->getCustomCollectionSystems();
 	auto customCollection = customCollections.find(name);
 	if (customCollection == customCollections.cend())
 		return;
@@ -464,7 +464,7 @@ GuiCollectionSystemsOptions::~GuiCollectionSystemsOptions()
 void GuiCollectionSystemsOptions::addSystemsToMenu()
 {
 
-	std::map<std::string, CollectionSystemData> &autoSystems = CollectionSystemManager::get()->getAutoCollectionSystems();
+    flat_hash_map<std::string, CollectionSystemData> &autoSystems = CollectionSystemManager::get()->getAutoCollectionSystems();
 
 	autoOptionList = std::make_shared< OptionListComponent<std::string> >(mWindow, _("SELECT COLLECTIONS"), true);
 	autoOptionList->addGroup(_("AUTOMATIC COLLECTIONS"));
@@ -525,7 +525,7 @@ void GuiCollectionSystemsOptions::addSystemsToMenu()
 	}
 	addWithLabel(_("AUTOMATIC GAME COLLECTIONS"), autoOptionList);
 
-	std::map<std::string, CollectionSystemData> customSystems = CollectionSystemManager::get()->getCustomCollectionSystems();
+    flat_hash_map<std::string, CollectionSystemData> customSystems = CollectionSystemManager::get()->getCustomCollectionSystems();
 
 	customOptionList = std::make_shared< OptionListComponent<std::string> >(mWindow, _("SELECT COLLECTIONS"), true);
 

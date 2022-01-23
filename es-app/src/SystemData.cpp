@@ -58,7 +58,7 @@ SystemData::SystemData(const SystemMetadata& meta, SystemEnvironmentData* envDat
 		mRootFolder = new FolderData(mEnvData->mStartPath, this);
 		mRootFolder->getMetadata().set(MetaDataId::Name, mMetadata.fullName);
 
-		phmap::parallel_flat_hash_map<std::string, FileData*> fileMap;
+		phmap::flat_hash_map<std::string, FileData*> fileMap;
 		fileMap[mEnvData->mStartPath] = mRootFolder;
 
 		if (!Settings::ParseGamelistOnly())
@@ -119,7 +119,7 @@ SystemData::~SystemData()
 		delete mFilterIndex;
 }
 
-void SystemData::removeMultiDiskContent(phmap::parallel_flat_hash_map<std::string, FileData*>& fileMap)
+void SystemData::removeMultiDiskContent(phmap::flat_hash_map<std::string, FileData*>& fileMap)
 {	
 	if (mEnvData == nullptr ||!(mEnvData->isValidExtension(".cue") || mEnvData->isValidExtension(".ccd") || mEnvData->isValidExtension(".gdi") || mEnvData->isValidExtension(".m3u")))
 		return;
@@ -186,7 +186,7 @@ void SystemData::setIsGameSystemStatus()
 	mIsGameSystem = (mMetadata.name != "retropie" && mMetadata.name != "retrobat");
 }
 
-void SystemData::populateFolder(FolderData* folder, parallel_flat_hash_map<std::string, FileData*>& fileMap)
+void SystemData::populateFolder(FolderData* folder, flat_hash_map<std::string, FileData*>& fileMap)
 {
 	const std::string& folderPath = folder->getPath();
 
@@ -337,7 +337,7 @@ void SystemData::createGroupedSystems()
 {
 	auto hiddenSystems = Utils::String::split(Settings::HiddenSystems(), ';');
 
-	parallel_flat_hash_map<std::string, std::vector<SystemData*>> map;
+	flat_hash_map<std::string, std::vector<SystemData*>> map;
 
 	for (auto sys : sSystemVector)
 	{
@@ -898,9 +898,9 @@ SystemData* SystemData::loadSystem(std::string systemName, bool fullMode)
 	return nullptr;
 }
 
-parallel_flat_hash_map<std::string, std::string> SystemData::getKnownSystemNames()
+flat_hash_map<std::string, std::string> SystemData::getKnownSystemNames()
 {
-    parallel_flat_hash_map<std::string, std::string> ret;
+    flat_hash_map<std::string, std::string> ret;
 
 	std::string path = getConfigPath(false);
 	if (!Utils::FileSystem::exists(path))
@@ -951,7 +951,7 @@ SystemData* SystemData::loadSystem(pugi::xml_node system, bool fullMode)
 	md.themeFolder = system.child("theme").text().as_string(md.name.c_str());
 
 	// convert extensions list from a string into a vector of strings
-	parallel_flat_hash_set<std::string> extensions;
+	flat_hash_set<std::string> extensions;
 	for (auto ext : readList(system.child("extension").text().get()))
 	{
 		std::string extlow = Utils::String::toLower(ext);
@@ -1376,7 +1376,7 @@ void SystemData::loadTheme()
 	try
 	{
 		// build map with system variables for theme to use,
-		parallel_flat_hash_map<std::string, std::string> sysData;
+		flat_hash_map<std::string, std::string> sysData;
 		sysData.insert(std::pair<std::string, std::string>("system.name", getName()));
 		sysData.insert(std::pair<std::string, std::string>("system.theme", getThemeFolder()));
 		sysData.insert(std::pair<std::string, std::string>("system.fullName", Utils::String::proper(getFullName())));
@@ -1495,7 +1495,7 @@ bool SystemData::isCheevosSupported()
 
 		if (!CustomFeatures::FeaturesLoaded)
 		{
-			const parallel_flat_hash_set<std::string> cheevosSystems = {
+			const flat_hash_set<std::string> cheevosSystems = {
 				"megadrive", "n64", "snes", "gb", "gba", "gbc", "nes", "fds", "pcengine", "segacd", "sega32x", "mastersystem",
 				"atarilynx", "lynx", "ngp", "gamegear", "pokemini", "atari2600", "fbneo", "fbn", "virtualboy", "pcfx", "tg16", "famicom", "msx1",
 				"psx", "sg-1000", "sg1000", "coleco", "colecovision", "atari7800", "wonderswan", "pc88", "saturn", "3do", "apple2", "neogeo", "arcade", "mame",
@@ -1537,11 +1537,11 @@ bool SystemData::isGroupChildSystem()
 	return false;
 }
 
-parallel_flat_hash_set<std::string> SystemData::getAllGroupNames()
+flat_hash_set<std::string> SystemData::getAllGroupNames()
 {
 	auto hiddenSystems = Utils::String::split(Settings::HiddenSystems(), ';');
 
-	parallel_flat_hash_set<std::string> names;
+	flat_hash_set<std::string> names;
 	
 	for (auto sys : SystemData::sSystemVector)
 	{
@@ -1558,9 +1558,9 @@ parallel_flat_hash_set<std::string> SystemData::getAllGroupNames()
 	return names;
 }
 
-parallel_flat_hash_set<std::string> SystemData::getGroupChildSystemNames(const std::string groupName)
+flat_hash_set<std::string> SystemData::getGroupChildSystemNames(const std::string groupName)
 {
-	parallel_flat_hash_set<std::string> names;
+	flat_hash_set<std::string> names;
 
 	for (auto sys : SystemData::sSystemVector)
 		if (sys->mEnvData != nullptr && sys->mEnvData->mGroup == groupName)

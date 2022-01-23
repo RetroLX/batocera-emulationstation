@@ -90,8 +90,8 @@ void FileFilterIndex::importIndex(FileFilterIndex* indexToImport)
 {
 	struct IndexImportStructure
 	{
-		std::map<std::string, int>* destinationIndex;
-		std::map<std::string, int>* sourceIndex;
+        flat_hash_map<std::string, int>* destinationIndex;
+        flat_hash_map<std::string, int>* sourceIndex;
 	};
 
 	IndexImportStructure indexStructDecls[] = {
@@ -115,7 +115,7 @@ void FileFilterIndex::importIndex(FileFilterIndex* indexToImport)
 
 	for (std::vector<IndexImportStructure>::const_iterator indexesIt = indexImportDecl.cbegin(); indexesIt != indexImportDecl.cend(); ++indexesIt )
 	{
-		for (std::map<std::string, int>::const_iterator sourceIt = (*indexesIt).sourceIndex->cbegin(); sourceIt != (*indexesIt).sourceIndex->cend(); ++sourceIt )
+		for (flat_hash_map<std::string, int>::const_iterator sourceIt = (*indexesIt).sourceIndex->cbegin(); sourceIt != (*indexesIt).sourceIndex->cend(); ++sourceIt )
 		{
 			if ((*indexesIt).destinationIndex->find((*sourceIt).first) == (*indexesIt).destinationIndex->cend())
 			{
@@ -364,7 +364,7 @@ void FileFilterIndex::setFilter(FilterIndexType type, std::vector<std::string>* 
 			filterData.currentFilteredKeys->insert(value);	
 }
 
-std::unordered_set<std::string>* FileFilterIndex::getFilter(FilterIndexType type)
+flat_hash_set<std::string>* FileFilterIndex::getFilter(FilterIndexType type)
 {
 	std::vector<std::string> ret;
 	auto it = mFilterDecl.find(type);
@@ -861,7 +861,7 @@ void FileFilterIndex::manageYearEntryInIndex(FileData* game, bool remove)
 	manageIndexEntry(&yearIndexAllKeys, getIndexableKey(game, YEAR_FILTER, false), remove);
 }
 
-void FileFilterIndex::manageIndexEntry(std::map<std::string, int>* index, const std::string& key, bool remove, bool forceUnknown)
+void FileFilterIndex::manageIndexEntry(flat_hash_map<std::string, int>* index, const std::string& key, bool remove, bool forceUnknown)
 {
 	bool includeUnknown = INCLUDE_UNKNOWN;
 	if (!includeUnknown && key == UNKNOWN_LABEL && !forceUnknown)
@@ -892,7 +892,7 @@ void FileFilterIndex::manageIndexEntry(std::map<std::string, int>* index, const 
 		(index->at(key))++;
 }
 
-void FileFilterIndex::clearIndex(std::map<std::string, int> indexMap)
+void FileFilterIndex::clearIndex(flat_hash_map<std::string, int> indexMap)
 {
 	indexMap.clear();
 }

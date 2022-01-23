@@ -2,10 +2,12 @@
 #ifndef ES_APP_FILE_FILTER_INDEX_H
 #define ES_APP_FILE_FILTER_INDEX_H
 
-#include <map>
 #include <vector>
-#include <unordered_set>
 #include <string>
+
+#include <parallel_hashmap/phmap.h>
+using phmap::flat_hash_map;
+using phmap::flat_hash_set;
 
 class FileData;
 class SystemData;
@@ -32,9 +34,9 @@ enum FilterIndexType
 struct FilterDataDecl
 {
 	FilterIndexType type; // type of filter
-	std::map<std::string, int>* allIndexKeys; // all possible filters for this type
+    flat_hash_map<std::string, int>* allIndexKeys; // all possible filters for this type
 	bool* filteredByRef; // is it filtered by this type
-	std::unordered_set<std::string>* currentFilteredKeys; // current keys being filtered for
+    flat_hash_set<std::string>* currentFilteredKeys; // current keys being filtered for
 	std::string primaryKey; // primary key in metadata
 	bool hasSecondaryKey; // has secondary key for comparison
 	std::string secondaryKey; // what's the secondary key
@@ -56,7 +58,7 @@ public:
 	void addToIndex(FileData* game);
 	void removeFromIndex(FileData* game);
 	void setFilter(FilterIndexType type, std::vector<std::string>* values);
-	std::unordered_set<std::string>* getFilter(FilterIndexType type);
+    flat_hash_set<std::string>* getFilter(FilterIndexType type);
 
 	void clearAllFilters();
 	
@@ -80,7 +82,7 @@ public:
 
 protected:
 	//std::vector<FilterDataDecl> filterDataDecl;
-	std::map<int, FilterDataDecl> mFilterDecl;
+    flat_hash_map<int, FilterDataDecl> mFilterDecl;
 
 	std::string getIndexableKey(FileData* game, FilterIndexType type, bool getSecondary);
 
@@ -89,12 +91,12 @@ protected:
 	void managePlayerEntryInIndex(FileData* game, bool remove = false);
 	void managePubDevEntryInIndex(FileData* game, bool remove = false);	
 	void manageYearEntryInIndex(FileData* game, bool remove = false);
-	void manageIndexEntry(std::map<std::string, int>* index, const std::string& key, bool remove, bool forceUnknown = false);
+	void manageIndexEntry(flat_hash_map<std::string, int>* index, const std::string& key, bool remove, bool forceUnknown = false);
 
 	void manageLangEntryInIndex(FileData* game, bool remove = false);
 	void manageRegionEntryInIndex(FileData* game, bool remove = false);
 
-	void clearIndex(std::map<std::string, int> indexMap);
+	void clearIndex(flat_hash_map<std::string, int> indexMap);
 
 	bool filterByGenre;
 	bool filterByFamily;
@@ -110,34 +112,34 @@ protected:
 	bool filterByCheevos;
 	bool filterByVertical;
 
-	std::map<std::string, int> genreIndexAllKeys;
-	std::map<std::string, int> familyIndexAllKeys;
-	std::map<std::string, int> playersIndexAllKeys;
-	std::map<std::string, int> pubDevIndexAllKeys;
-	std::map<std::string, int> ratingsIndexAllKeys;
-	std::map<std::string, int> favoritesIndexAllKeys;
-	std::map<std::string, int> yearIndexAllKeys;
-	std::map<std::string, int> kidGameIndexAllKeys;
-	std::map<std::string, int> playedIndexAllKeys;
-	std::map<std::string, int> langIndexAllKeys;
-	std::map<std::string, int> regionIndexAllKeys;
-	std::map<std::string, int> cheevosIndexAllKeys;
+    flat_hash_map<std::string, int> genreIndexAllKeys;
+    flat_hash_map<std::string, int> familyIndexAllKeys;
+    flat_hash_map<std::string, int> playersIndexAllKeys;
+    flat_hash_map<std::string, int> pubDevIndexAllKeys;
+    flat_hash_map<std::string, int> ratingsIndexAllKeys;
+    flat_hash_map<std::string, int> favoritesIndexAllKeys;
+    flat_hash_map<std::string, int> yearIndexAllKeys;
+    flat_hash_map<std::string, int> kidGameIndexAllKeys;
+    flat_hash_map<std::string, int> playedIndexAllKeys;
+    flat_hash_map<std::string, int> langIndexAllKeys;
+    flat_hash_map<std::string, int> regionIndexAllKeys;
+    flat_hash_map<std::string, int> cheevosIndexAllKeys;
 
-	std::map<std::string, int> verticalIndexAllKeys;
+    flat_hash_map<std::string, int> verticalIndexAllKeys;
 
-	std::unordered_set<std::string> genreIndexFilteredKeys;
-	std::unordered_set<std::string> familyIndexFilteredKeys;
-	std::unordered_set<std::string> playersIndexFilteredKeys;
-	std::unordered_set<std::string> pubDevIndexFilteredKeys;
-	std::unordered_set<std::string> ratingsIndexFilteredKeys;
-	std::unordered_set<std::string> favoritesIndexFilteredKeys;
-	std::unordered_set<std::string> yearIndexFilteredKeys;
-	std::unordered_set<std::string> kidGameIndexFilteredKeys;
-	std::unordered_set<std::string> playedIndexFilteredKeys;
-	std::unordered_set<std::string> langIndexFilteredKeys;
-	std::unordered_set<std::string> regionIndexFilteredKeys;
-	std::unordered_set<std::string> cheevosIndexFilteredKeys;
-	std::unordered_set<std::string> verticalIndexFilteredKeys;
+    flat_hash_set<std::string> genreIndexFilteredKeys;
+    flat_hash_set<std::string> familyIndexFilteredKeys;
+    flat_hash_set<std::string> playersIndexFilteredKeys;
+    flat_hash_set<std::string> pubDevIndexFilteredKeys;
+    flat_hash_set<std::string> ratingsIndexFilteredKeys;
+    flat_hash_set<std::string> favoritesIndexFilteredKeys;
+    flat_hash_set<std::string> yearIndexFilteredKeys;
+    flat_hash_set<std::string> kidGameIndexFilteredKeys;
+    flat_hash_set<std::string> playedIndexFilteredKeys;
+    flat_hash_set<std::string> langIndexFilteredKeys;
+    flat_hash_set<std::string> regionIndexFilteredKeys;
+    flat_hash_set<std::string> cheevosIndexFilteredKeys;
+    flat_hash_set<std::string> verticalIndexFilteredKeys;
 
 	std::string mTextFilter;
 	bool		mUseRelevency;
@@ -162,7 +164,7 @@ public:
 protected:
 	std::string mName;
 	std::string mPath;
-	std::unordered_set<std::string> mSystemFilter;
+    flat_hash_set<std::string> mSystemFilter;
 };
 
 #endif // ES_APP_FILE_FILTER_INDEX_H

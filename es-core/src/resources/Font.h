@@ -77,7 +77,7 @@ public:
 
 private:
 	static FT_Library sLibrary;
-	static parallel_flat_hash_map< std::pair<std::string, int>, std::weak_ptr<Font> > sFontMap;
+	static flat_hash_map< std::pair<std::string, int>, std::weak_ptr<Font> > sFontMap;
 
 	Font(int size, const std::string& path);
 
@@ -114,7 +114,7 @@ private:
 
 	void getTextureForNewGlyph(const Vector2i& glyphSize, FontTexture*& tex_out, Vector2i& cursor_out);
 
-    parallel_flat_hash_map< unsigned int, std::unique_ptr<FontFace> > mFaceCache;
+    flat_hash_map< unsigned int, std::unique_ptr<FontFace> > mFaceCache;
 	FT_Face getFaceForChar(unsigned int id);
 	void clearFaceCache();
 
@@ -133,7 +133,7 @@ private:
 	};
 
 	Glyph* mGlyphCacheArray[255]; // used to cache 255 first chars
-    parallel_flat_hash_map<unsigned int, Glyph*> mGlyphMap;
+    flat_hash_map<unsigned int, Glyph*> mGlyphMap;
 
 	Glyph* getGlyph(unsigned int id);
 

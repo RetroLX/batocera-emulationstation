@@ -25,6 +25,9 @@
 #include "guis/GuiTextEditPopupKeyboard.h"
 #include "TextToSpeech.h"
 
+#include <parallel_hashmap/phmap.h>
+using phmap::flat_hash_set;
+
 // buffer values for scrolling velocity (left, stopped, right)
 const int logoBuffersLeft[] = { -5, -2, -1 };
 const int logoBuffersRight[] = { 1, 2, 5 };
@@ -1253,8 +1256,6 @@ void SystemView::renderInfoBar(const Transform4x4f& trans)
 	mSystemInfo.render(trans);
 }
 
-#include <unordered_set>
-
 void SystemView::setExtraRequired(int cursor, bool required)
 {
 	auto setTexture = [](GuiComponent* extra, const std::function<void(std::shared_ptr<TextureResource>)>& func)
@@ -1320,11 +1321,11 @@ void SystemView::renderExtras(const Transform4x4f& trans, float lower, float upp
 	int extrasCenter = (int)mExtrasCamOffset;
 
 	Renderer::pushClipRect(Vector2i::Zero(), Vector2i((int)mSize.x(), (int)mSize.y()));
-	
-	std::unordered_set<std::string> allPaths;
-	std::unordered_set<std::string> paths;
-	std::unordered_set<std::string> allValues;
-	std::unordered_set<std::string> values;
+
+    flat_hash_set<std::string> allPaths;
+    flat_hash_set<std::string> paths;
+    flat_hash_set<std::string> allValues;
+    flat_hash_set<std::string> values;
 
 	if (mExtrasFadeOpacity && mExtrasFadeOldCursor >= 0 && mExtrasFadeOldCursor < mEntries.size() && mExtrasFadeOldCursor != mCursor)
 	{

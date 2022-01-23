@@ -110,7 +110,7 @@ void GuiGamelistFilter::addFiltersToMenu()
 	for (std::vector<FilterDataDecl>::const_iterator it = decls.cbegin(); it != decls.cend()-skip; ++it ) {
 
 		FilterIndexType type = (*it).type; // type of filter
-		std::map<std::string, int>* allKeys = (*it).allIndexKeys; // all possible filters for this type
+        flat_hash_map<std::string, int>* allKeys = (*it).allIndexKeys; // all possible filters for this type
 		std::string menuLabel = (*it).menuLabel; // text to show in menu
 		std::shared_ptr< OptionListComponent<std::string> > optionList;
 		

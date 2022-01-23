@@ -1,7 +1,10 @@
 #pragma once
 
 #include <string>
-#include <unordered_set>
+
+#include <parallel_hashmap/phmap.h>
+using phmap::flat_hash_map;
+using phmap::flat_hash_set;
 
 class SystemData;
 
@@ -12,7 +15,7 @@ public:
 	static std::string getFlag(const std::string lang, const std::string region);
 
 	std::string region;
-	std::unordered_set<std::string> languages;
+    flat_hash_set<std::string> languages;
 
 	std::string getLanguageString();
 	bool empty() { return region.empty() && languages.size() == 0; }

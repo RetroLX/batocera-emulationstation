@@ -24,7 +24,7 @@ Splash::Splash(Window* window, const std::string image, bool fullScreenBackGroun
 	std::string themeFilePath = fullScreenBackGround ? ":/splash.xml" : ":/gamesplash.xml";
 	themeFilePath = ResourceManager::getInstance()->getResourcePath(themeFilePath);
 
-	parallel_flat_hash_map<std::string, ThemeSet> themeSets = ThemeData::getThemeSets();
+	flat_hash_map<std::string, ThemeSet> themeSets = ThemeData::getThemeSets();
 	auto themeset = themeSets.find(Settings::getInstance()->getString("ThemeSet"));
 	if (themeset != themeSets.cend())
 	{
@@ -35,7 +35,7 @@ Splash::Splash(Window* window, const std::string image, bool fullScreenBackGroun
 
 	if (Utils::FileSystem::exists(themeFilePath))
 	{
-		parallel_flat_hash_map<std::string, std::string> sysData;
+		flat_hash_map<std::string, std::string> sysData;
 
 		try { theme->loadFile("splash", sysData, themeFilePath); }
 		catch(...) { }
