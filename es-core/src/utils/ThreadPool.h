@@ -7,6 +7,13 @@
 #include <atomic>
 #include <functional>
 
+// Heavy multithreading only for X86 based systems
+#if defined(__x86_64__) || defined(_M_X64) || defined(i386) || defined(__i386__) || defined(__i386) || defined(_M_IX86)
+#define THREAD_BY_CORE 2
+#else
+#define THREAD_BY_CORE 1
+#endif
+
 namespace Utils
 {
 	class ThreadPool
@@ -14,7 +21,7 @@ namespace Utils
 	public:
 		typedef std::function<void(void)> work_function;
 
-		ThreadPool(int threadByCore = 2);
+		ThreadPool(int threadByCore = THREAD_BY_CORE);
 		~ThreadPool();
 
 		void start();
