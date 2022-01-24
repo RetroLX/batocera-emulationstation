@@ -778,11 +778,11 @@ TextCache* Font::buildTextCache(const std::string& _text, Vector2f offset, unsig
 	float y = offset[1] + (yBot + yTop)/2.0f;
 
 	// vertices by texture
-	std::map< FontTexture*, std::vector<Renderer::Vertex> > vertMap;
+    flat_hash_map< FontTexture*, std::vector<Renderer::Vertex> > vertMap;
 
 	std::string text = EsLocale::isRTL() ? tryFastBidi(_text) : _text;
 
-	std::map<int, int> tabStops;
+    flat_hash_map<int, int> tabStops;
 	int tabIndex = 0;
 
 	if (alignment == ALIGN_LEFT && text.find("\t") != std::string::npos)

@@ -36,78 +36,79 @@ MameNames* MameNames::getInstance()
 
 MameNames::MameNames()
 {
-	std::string xmlpath = ResourceManager::getInstance()->getResourcePath(":/mamenames.xml");
+    pugi::xml_document doc;
+    std::string xmlpath;
+    pugi::xml_parse_result result;
 
-	if(!Utils::FileSystem::exists(xmlpath))
-		return;
+	xmlpath = ResourceManager::getInstance()->getResourcePath(":/mamenames.xml");
 
-	LOG(LogInfo) << "Parsing XML file \"" << xmlpath << "\"...";
+	if(Utils::FileSystem::exists(xmlpath))
+    {
+        LOG(LogInfo) << "Parsing XML file \"" << xmlpath << "\"...";
 
-	pugi::xml_document doc;
-	pugi::xml_parse_result result = doc.load_file(xmlpath.c_str());
+        result = doc.load_file(xmlpath.c_str());
 
-	if(!result)
-	{
-		LOG(LogError) << "Error parsing XML file \"" << xmlpath << "\"!\n	" << result.description();
-		return;
-	}
+        if(!result)
+        {
+            LOG(LogError) << "Error parsing XML file \"" << xmlpath << "\"!\n	" << result.description();
+            return;
+        }
 
-	std::string sTrue = "true";
-	for(pugi::xml_node gameNode = doc.child("game"); gameNode; gameNode = gameNode.next_sibling("game"))
-	{
-		NamePair namePair = { gameNode.child("mamename").text().get(), gameNode.child("realname").text().get() };
-		mNamePairs.push_back(namePair);
+        std::string sTrue = "true";
+        for(pugi::xml_node gameNode = doc.child("game"); gameNode; gameNode = gameNode.next_sibling("game"))
+        {
+            NamePair namePair = { gameNode.child("mamename").text().get(), gameNode.child("realname").text().get() };
+            mNamePairs.push_back(namePair);
 
-		if (gameNode.attribute("vert") && gameNode.attribute("vert").value() == sTrue)
-			mVerticalGames.insert(namePair.mameName);
+            if (gameNode.attribute("vert") && gameNode.attribute("vert").value() == sTrue)
+                mVerticalGames.insert(namePair.mameName);
 
-		if (gameNode.attribute("gun") && gameNode.attribute("gun").value() == sTrue)
-			mLightGunGames.insert(namePair.mameName);
-	}
-	
+            if (gameNode.attribute("gun") && gameNode.attribute("gun").value() == sTrue)
+                mLightGunGames.insert(namePair.mameName);
+        }
+    }
+
 	// Read bios
 	xmlpath = ResourceManager::getInstance()->getResourcePath(":/mamebioses.xml");
- 	
-	if(!Utils::FileSystem::exists(xmlpath))
-		return;
- 	
-	LOG(LogInfo) << "Parsing XML file \"" << xmlpath << "\"...";
- 	
-	result = doc.load_file(xmlpath.c_str());
- 	
-	if(!result)
-	{
-		LOG(LogError) << "Error parsing XML file \"" << xmlpath << "\"!\n	" << result.description();
-		return;
-	}
- 	
-	for(pugi::xml_node biosNode = doc.child("bios"); biosNode; biosNode = biosNode.next_sibling("bios"))
-	{
-		std::string bios = biosNode.text().get();
-		mMameBioses.insert(bios);
-	}
-	
+	if(Utils::FileSystem::exists(xmlpath))
+    {
+        LOG(LogInfo) << "Parsing XML file \"" << xmlpath << "\"...";
+
+        result = doc.load_file(xmlpath.c_str());
+
+        if(!result)
+        {
+            LOG(LogError) << "Error parsing XML file \"" << xmlpath << "\"!\n	" << result.description();
+            return;
+        }
+
+        for(pugi::xml_node biosNode = doc.child("bios"); biosNode; biosNode = biosNode.next_sibling("bios"))
+        {
+            std::string bios = biosNode.text().get();
+            mMameBioses.insert(bios);
+        }
+    }
+
 	// Read devices
 	xmlpath = ResourceManager::getInstance()->getResourcePath(":/mamedevices.xml");
- 	
-	if(!Utils::FileSystem::exists(xmlpath))
-		return;
- 	
-	LOG(LogInfo) << "Parsing XML file \"" << xmlpath << "\"...";
- 	
-	result = doc.load_file(xmlpath.c_str());
- 	
-	if(!result)
-	{
-		LOG(LogError) << "Error parsing XML file \"" << xmlpath << "\"!\n	" << result.description();
-		return;
-	}
- 	
-	for(pugi::xml_node deviceNode = doc.child("device"); deviceNode; deviceNode = deviceNode.next_sibling("device"))
-	{		
-		std::string device = deviceNode.text().get();
-		mMameDevices.insert(device);
-	}
+	if(Utils::FileSystem::exists(xmlpath))
+    {
+        LOG(LogInfo) << "Parsing XML file \"" << xmlpath << "\"...";
+
+        result = doc.load_file(xmlpath.c_str());
+
+        if(!result)
+        {
+            LOG(LogError) << "Error parsing XML file \"" << xmlpath << "\"!\n	" << result.description();
+            return;
+        }
+
+        for(pugi::xml_node deviceNode = doc.child("device"); deviceNode; deviceNode = deviceNode.next_sibling("device"))
+        {
+            std::string device = deviceNode.text().get();
+            mMameDevices.insert(device);
+        }
+    }
 
 } // MameNames
 
