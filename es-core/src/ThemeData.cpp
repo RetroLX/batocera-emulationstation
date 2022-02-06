@@ -1754,7 +1754,7 @@ flat_hash_map<std::string, ThemeSet> ThemeData::getThemeSets()
 		"/etc/emulationstation/themes" // Backward compatibility with Retropie
 	};
 
-	std::map<std::string, ThemeSet> sets;
+	flat_hash_map<std::string, ThemeSet> sets;
 
 	for(auto path : paths)
 	{
