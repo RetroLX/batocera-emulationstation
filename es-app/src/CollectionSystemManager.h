@@ -2,11 +2,10 @@
 #ifndef ES_APP_COLLECTION_SYSTEM_MANAGER_H
 #define ES_APP_COLLECTION_SYSTEM_MANAGER_H
 
+#include <map>
 #include <string>
 #include <vector>
-
-#include <parallel_hashmap/phmap.h>
-using phmap::flat_hash_map;
+#include <unordered_map>
 
 class FileData;
 class FolderData;
@@ -77,8 +76,8 @@ public:
 	void updateCollectionSystem(FileData* file, CollectionSystemData sysData);
 	void deleteCollectionFiles(FileData* file);
 
-	inline flat_hash_map<std::string, CollectionSystemData>& getAutoCollectionSystems() { return mAutoCollectionSystemsData; };
-	inline flat_hash_map<std::string, CollectionSystemData> getCustomCollectionSystems() { return mCustomCollectionSystemsData; };
+	inline std::map<std::string, CollectionSystemData>& getAutoCollectionSystems() { return mAutoCollectionSystemsData; };
+	inline std::map<std::string, CollectionSystemData> getCustomCollectionSystems() { return mCustomCollectionSystemsData; };
 	inline SystemData* getCustomCollectionsBundle() { return mCustomCollectionsBundle; };
 	std::vector<std::string> getUnusedSystemsFromTheme();
 	SystemData* addNewCustomCollection(std::string name, bool needSave = true);
@@ -106,9 +105,9 @@ public:
 private:
 	static CollectionSystemManager* sInstance;
 	SystemEnvironmentData* mCollectionEnvData;
-    flat_hash_map<std::string, CollectionSystemDecl> mCollectionSystemDeclsIndex;
-    flat_hash_map<std::string, CollectionSystemData> mAutoCollectionSystemsData;
-    flat_hash_map<std::string, CollectionSystemData> mCustomCollectionSystemsData;
+	std::map<std::string, CollectionSystemDecl> mCollectionSystemDeclsIndex;
+	std::map<std::string, CollectionSystemData> mAutoCollectionSystemsData;
+	std::map<std::string, CollectionSystemData> mCustomCollectionSystemsData;
 	Window* mWindow;
 	
 	void initAutoCollectionSystems();
@@ -117,10 +116,10 @@ private:
 	SystemData* getAllGamesCollection();
 	SystemData* createNewCollectionEntry(std::string name, CollectionSystemDecl sysDecl, bool index = true, bool needSave = true);
 
-	void populateCustomCollection(CollectionSystemData* sysData, flat_hash_map<std::string, FileData*>* pMap = nullptr);
+	void populateCustomCollection(CollectionSystemData* sysData, std::unordered_map<std::string, FileData*>* pMap = nullptr);
 
 	void removeCollectionsFromDisplayedSystems();
-	void addEnabledCollectionsToDisplayedSystems(flat_hash_map<std::string, CollectionSystemData>* colSystemData, flat_hash_map<std::string, FileData*>* pMap);
+	void addEnabledCollectionsToDisplayedSystems(std::map<std::string, CollectionSystemData>* colSystemData, std::unordered_map<std::string, FileData*>* pMap);
 
 	std::vector<std::string> getSystemsFromConfig();
 	std::vector<std::string> getSystemsFromTheme();

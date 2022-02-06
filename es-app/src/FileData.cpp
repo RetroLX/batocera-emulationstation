@@ -931,7 +931,7 @@ const std::vector<FileData*> FolderData::getChildrenListToDisplay()
 		items = &flatGameList;		
 	}
 
-	flat_hash_map<FileData*, int> scoringBoard;
+	std::map<FileData*, int> scoringBoard;
 
 	bool refactorUniqueGameFolders = (showFoldersMode == "having multiple games");
 
@@ -1228,7 +1228,7 @@ FileData* FolderData::FindByPath(const std::string& path)
 	return nullptr;
 }
 
-void FolderData::createChildrenByFilenameMap(flat_hash_map<std::string, FileData*>& map)
+void FolderData::createChildrenByFilenameMap(std::unordered_map<std::string, FileData*>& map)
 {
 	std::vector<FileData*> children = getChildren();
 

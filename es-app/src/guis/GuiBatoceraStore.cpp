@@ -16,10 +16,8 @@
 #include "guis/GuiTextEditPopup.h"
 #include "guis/GuiTextEditPopupKeyboard.h"
 
+#include <unordered_set>
 #include <algorithm>
-#include <parallel_hashmap/phmap.h>
-using phmap::flat_hash_map;
-using phmap::flat_hash_set;
 
 #define WINDOW_WIDTH (float)Math::min(Renderer::getScreenHeight() * 1.125f, Renderer::getScreenWidth() * 0.95f)
 
@@ -168,11 +166,11 @@ void GuiBatoceraStore::loadList(bool updatePackageList, bool restoreIndex)
 	int idx = updatePackageList || !restoreIndex ? -1 : mList->getCursorIndex();
 	mList->clear();
 
-    flat_hash_set<std::string> repositories;
+	std::unordered_set<std::string> repositories;
 	for (auto& package : mPackages)
 	{
 		if (!mArchitecture.empty() && !package.arch.empty() && package.arch != "any" && package.arch != mArchitecture)
-        		continue;
+			continue;
 
 		if (repositories.find(package.repository) == repositories.cend())
 			repositories.insert(package.repository);
@@ -209,7 +207,7 @@ void GuiBatoceraStore::loadList(bool updatePackageList, bool restoreIndex)
 	for (auto package : mPackages)
 	{
 		if (!mArchitecture.empty() && !package.arch.empty() && package.arch != "any" && package.arch != mArchitecture)
-        		continue;
+			continue;
 
 		if (!mTabFilter.empty() && package.repository != mTabFilter)				
 			continue;		

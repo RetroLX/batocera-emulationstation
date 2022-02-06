@@ -7,6 +7,7 @@
 #include "components/NinePatchComponent.h"
 #include "components/TextComponent.h"
 #include <memory>
+#include <unordered_set>
 
 class HttpReq;
 class FileData;

@@ -207,7 +207,11 @@ std::string ApiSystem::getApplicationName()
 		return aboutInfo;
 	}
 
+#if BATOCERA
+	return "BATOCERA";
+#else
 	return "EMULATIONSTATION";
+#endif
 }
 
 bool ApiSystem::setOverscan(bool enable) 
@@ -233,7 +237,7 @@ std::pair<std::string, int> ApiSystem::updateSystem(const std::function<void(con
 	FILE *pipe = popen(updatecommand.c_str(), "r");
 	if (pipe == nullptr)
 		return std::pair<std::string, int>(std::string("Cannot call update command"), -1);
-
+	
 	char line[1024] = "";
 	FILE *flog = fopen(Utils::FileSystem::combine(Paths::getLogPath(), "system-upgrade.log").c_str(), "w");
 	while (fgets(line, 1024, pipe)) 
@@ -1631,6 +1635,7 @@ std::vector<std::string> ApiSystem::getTimezones()
 			}
 		}
 	}
+
 	std::sort(ret.begin(), ret.end());
 	return ret;
 }
@@ -1742,3 +1747,4 @@ bool ApiSystem::emuKill()
 
 	return executeScript("batocera-es-swissknife --emukill");
 }
+

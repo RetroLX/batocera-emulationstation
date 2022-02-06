@@ -71,10 +71,9 @@ namespace FileSorts
 		mSortTypes.push_back(SortType(RELEASEDATE_SYSTEM_DESCENDING, &compareReleaseYearSystem, false, _("RELEASE YEAR, SYSTEM, DESCENDING"), _U("\uF161 ")));
 	}
 
-    static const auto articlesPrefixes = Utils::String::commaStringToVector(_("A,AN,THE"));
     static const std::string ignoreArticlesSettingsKey = "IgnoreLeadingArticles";
 
-    //returns if file1 should come before file2
+	//returns if file1 should come before file2
 	bool compareName(const FileData* file1, const FileData* file2)
 	{
 		if (file1->getType() != file2->getType())
@@ -91,6 +90,7 @@ namespace FileSorts
 			name1 = stripLeadingArticle(name1, articles);
 			name2 = stripLeadingArticle(name2, articles);
 		}
+
 		return Utils::String::compareIgnoreCase(name1, name2) < 0;
 	}
 

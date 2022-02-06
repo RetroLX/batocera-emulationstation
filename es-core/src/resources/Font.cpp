@@ -21,8 +21,8 @@ FT_Library Font::sLibrary = NULL;
 
 int Font::getSize() const { return mSize; }
 
-flat_hash_map< std::pair<std::string, int>, std::weak_ptr<Font> > Font::sFontMap;
-static flat_hash_map<unsigned int, std::string> substituableChars;
+std::map< std::pair<std::string, int>, std::weak_ptr<Font> > Font::sFontMap;
+static std::map<unsigned int, std::string> substituableChars;
 
 Font::FontFace::FontFace(ResourceData&& d, int size) : data(d)
 {
@@ -778,11 +778,11 @@ TextCache* Font::buildTextCache(const std::string& _text, Vector2f offset, unsig
 	float y = offset[1] + (yBot + yTop)/2.0f;
 
 	// vertices by texture
-    flat_hash_map< FontTexture*, std::vector<Renderer::Vertex> > vertMap;
+	std::map< FontTexture*, std::vector<Renderer::Vertex> > vertMap;
 
 	std::string text = EsLocale::isRTL() ? tryFastBidi(_text) : _text;
 
-    flat_hash_map<int, int> tabStops;
+	std::map<int, int> tabStops;
 	int tabIndex = 0;
 
 	if (alignment == ALIGN_LEFT && text.find("\t") != std::string::npos)
@@ -1001,7 +1001,7 @@ std::shared_ptr<Font> Font::getFromTheme(const ThemeData::ThemeElement* elem, un
 
 void Font::OnThemeChanged()
 {
-	static flat_hash_map<unsigned int, std::string> defaultMap =
+	static std::map<unsigned int, std::string> defaultMap =
 	{
 		{ 0xF300, ":/flags/au.png" },
 		{ 0xF301, ":/flags/br.png" },

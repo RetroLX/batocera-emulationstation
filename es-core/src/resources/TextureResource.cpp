@@ -8,8 +8,8 @@
 #include "Log.h"
 
 TextureDataManager		TextureResource::sTextureDataManager;
-flat_hash_map< TextureResource::TextureKeyType, std::weak_ptr<TextureResource> > TextureResource::sTextureMap;
-flat_hash_set<TextureResource*> 	TextureResource::sAllTextures;
+std::map< TextureResource::TextureKeyType, std::weak_ptr<TextureResource> > TextureResource::sTextureMap;
+std::set<TextureResource*> 	TextureResource::sAllTextures;
 
 TextureResource::TextureResource(const std::string& path, bool tile, bool linear, bool dynamic, bool allowAsync, MaxSizeInfo* maxSize) : mTextureData(nullptr), mForceLoad(false)
 {

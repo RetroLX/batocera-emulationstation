@@ -571,7 +571,7 @@ void GuiGameOptions::deleteCollection()
 	mWindow->pushGui(new GuiMsgBox(mWindow, _("ARE YOU SURE YOU WANT TO DELETE THIS ITEM?"), _("YES"),
 		[this]
 		{
-            flat_hash_map<std::string, CollectionSystemData> customCollections = CollectionSystemManager::get()->getCustomCollectionSystems();
+			std::map<std::string, CollectionSystemData> customCollections = CollectionSystemManager::get()->getCustomCollectionSystems();
 			auto customCollection = customCollections.find(getCustomCollectionName());
 			if (customCollection == customCollections.cend())
 				return;

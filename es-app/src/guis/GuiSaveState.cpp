@@ -87,7 +87,7 @@ GuiSaveState::GuiSaveState(Window* window, FileData* game, const std::function<v
 		"</theme>";
 
 	mTheme = std::shared_ptr<ThemeData>(new ThemeData());
-	flat_hash_map<std::string, std::string> emptyMap;
+	std::map<std::string, std::string> emptyMap;
 	mTheme->loadFile("imageviewer", emptyMap, xml, false);
 
 	//mGrid->setSize(Renderer::getScreenWidth(), Renderer::getScreenHeight());

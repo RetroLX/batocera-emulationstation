@@ -4,6 +4,7 @@
 
 #include "utils/FileSystemUtil.h"
 #include "MetaData.h"
+#include <unordered_map>
 #include <memory>
 #include <vector>
 #include <stack>
@@ -215,7 +216,7 @@ public:
 	void addChild(FileData* file, bool assignParent = true); // Error if mType != FOLDER
 	void removeChild(FileData* file); //Error if mType != FOLDER
 
-	void createChildrenByFilenameMap(flat_hash_map<std::string, FileData*>& map);
+	void createChildrenByFilenameMap(std::unordered_map<std::string, FileData*>& map);
 
 	FileData* findUniqueGameForFolder();
 

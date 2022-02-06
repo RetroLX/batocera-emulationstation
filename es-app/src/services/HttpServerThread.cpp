@@ -11,6 +11,7 @@
 #include "SystemData.h"
 #include "FileData.h"
 #include "views/ViewController.h"
+#include <unordered_map>
 #include "CollectionSystemManager.h"
 #include "guis/GuiMenu.h"
 #include "guis/GuiMsgBox.h"
@@ -544,8 +545,8 @@ void HttpServerThread::run()
 
 			deleteSystem = true;
 		}
-
-		flat_hash_map<std::string, FileData*> fileMap;
+			
+		std::unordered_map<std::string, FileData*> fileMap;
 		for (auto file : system->getRootFolder()->getFilesRecursive(GAME))
 			fileMap[file->getPath()] = file;
 
@@ -613,7 +614,7 @@ void HttpServerThread::run()
 			return;
 		}
 
-		flat_hash_map<std::string, FileData*> fileMap;
+		std::unordered_map<std::string, FileData*> fileMap;
 		for (auto file : system->getRootFolder()->getFilesRecursive(GAME))
 			fileMap[file->getPath()] = file;
 

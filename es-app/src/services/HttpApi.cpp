@@ -14,6 +14,7 @@
 #include "utils/StringUtil.h"
 #include "utils/md5.h"
 #include "scrapers/Scraper.h"
+#include <unordered_map>
 
 void HttpApi::getSystemDataJson(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer, SystemData* sys)
 {

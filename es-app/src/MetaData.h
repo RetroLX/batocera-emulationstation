@@ -2,12 +2,10 @@
 #ifndef ES_APP_META_DATA_H
 #define ES_APP_META_DATA_H
 
+#include <map>
 #include <vector>
 #include <functional>
 #include <string>
-
-#include <parallel_hashmap/phmap.h>
-using phmap::flat_hash_map;
 
 #include "utils/TimeUtil.h"
 
@@ -177,11 +175,11 @@ public:
 	Utils::Time::DateTime* getScrapeDate(const std::string& scraper);
 
 private:
-    flat_hash_map<int, Utils::Time::DateTime> mScrapeDates;
+	std::map<int, Utils::Time::DateTime> mScrapeDates;
 
 	std::string		mName;
 	MetaDataListType mType;
-    flat_hash_map<MetaDataId, std::string> mMap;
+	std::map<MetaDataId, std::string> mMap;
 	bool mWasChanged;
 	SystemData*		mRelativeTo;
 

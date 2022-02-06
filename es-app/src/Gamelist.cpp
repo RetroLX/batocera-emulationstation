@@ -23,7 +23,7 @@ std::string getGamelistRecoveryPath(SystemData* system)
 	return Utils::FileSystem::getGenericPath(Paths::getUserEmulationStationPath() + "/recovery/" + system->getName());
 }
 
-FileData* findOrCreateFile(SystemData* system, const std::string& path, FileType type, flat_hash_map<std::string, FileData*>& fileMap)
+FileData* findOrCreateFile(SystemData* system, const std::string& path, FileType type, std::unordered_map<std::string, FileData*>& fileMap)
 {
 	auto pGame = fileMap.find(path);
 	if (pGame != fileMap.end())
@@ -106,7 +106,7 @@ FileData* findOrCreateFile(SystemData* system, const std::string& path, FileType
 	return NULL;
 }
 
-std::vector<FileData*> loadGamelistFile(const std::string xmlpath, SystemData* system, flat_hash_map<std::string, FileData*>& fileMap, size_t checkSize, bool fromFile)
+std::vector<FileData*> loadGamelistFile(const std::string xmlpath, SystemData* system, std::unordered_map<std::string, FileData*>& fileMap, size_t checkSize, bool fromFile)
 {	
 	std::vector<FileData*> ret;
 
@@ -200,7 +200,7 @@ void clearTemporaryGamelistRecovery(SystemData* system)
 	Utils::FileSystem::deleteDirectoryFiles(path, true);
 }
 
-void parseGamelist(SystemData* system, flat_hash_map<std::string, FileData*>& fileMap)
+void parseGamelist(SystemData* system, std::unordered_map<std::string, FileData*>& fileMap)
 {
 	std::string xmlpath = system->getGamelistPath(false);
 
@@ -391,7 +391,7 @@ void updateGamelist(SystemData* system)
 	else //set up an empty gamelist to append to		
 		root = doc.append_child("gameList");
 
-    flat_hash_map<std::string, pugi::xml_node> xmlMap;
+	std::map<std::string, pugi::xml_node> xmlMap;
 
 	for (pugi::xml_node fileNode : root.children())
 	{
@@ -476,14 +476,14 @@ void cleanupGamelist(SystemData* system)
 		return;
 	}
 
-    flat_hash_map<std::string, FileData*> fileMap;
+	std::map<std::string, FileData*> fileMap;
 	for (auto file : rootFolder->getFilesRecursive(GAME | FOLDER, false, nullptr, false))
 		fileMap[Utils::FileSystem::getCanonicalPath(file->getPath())] = file;
 
 	bool dirty = false;
 
-    flat_hash_set<std::string> knownXmlPaths;
-    flat_hash_set<std::string> knownMedias;
+	std::set<std::string> knownXmlPaths;
+	std::set<std::string> knownMedias;
 
 	for (pugi::xml_node fileNode = root.first_child(); fileNode; )
 	{

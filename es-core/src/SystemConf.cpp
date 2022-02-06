@@ -13,20 +13,13 @@
 #include <iostream>
 #include <SDL_timer.h>
 
-#if WIN32 & !_DEBUG
-	// NORETROLXCONF routes all SystemConf to es_settings for Windows Release version
+static std::string mapSettingsName(const std::string& name)
+{
+	if (name == "system.language")
+		return "Language";
 
-	#include "Settings.h"
-	#define NORETROLXCONF
-
-	std::string mapSettingsName(const std::string name)
-	{
-		if (name == "system.language")
-			return "Language";
-
-		return name;
-	}
-#endif
+	return name;
+}
 
 SystemConf *SystemConf::sInstance = NULL;
 
@@ -76,10 +69,6 @@ SystemConf *SystemConf::getInstance()
 
 bool SystemConf::loadSystemConf()
 {
-#ifdef NORETROLXCONF
-	return true;
-#endif
-
 	if (mSystemConfFile.empty())
 		return true;
 
@@ -115,10 +104,6 @@ bool SystemConf::loadSystemConf()
 
 bool SystemConf::saveSystemConf()
 {
-#ifdef NORETROLXCONF
-	return Settings::getInstance()->saveFile();	
-#endif
-
 	if (mSystemConfFile.empty())
 		return Settings::getInstance()->saveFile();	
 
@@ -215,8 +200,7 @@ bool SystemConf::saveSystemConf()
 	}
 
 	fileout.close();
-
-	/* Copy back the tmp to retrolx.conf */
+	
 	std::ifstream  src(mSystemConfFileTmp, std::ios::binary);
 	std::ofstream  dst(mSystemConfFile, std::ios::binary);
 	dst << src.rdbuf();
@@ -229,10 +213,6 @@ bool SystemConf::saveSystemConf()
 
 std::string SystemConf::get(const std::string &name) 
 {
-#ifdef NORETROLXCONF
-	return Settings::getInstance()->getString(mapSettingsName(name));
-#endif
-
 	if (mSystemConfFile.empty())
 		return Settings::getInstance()->getString(mapSettingsName(name));
 	
@@ -249,10 +229,6 @@ std::string SystemConf::get(const std::string &name)
 
 bool SystemConf::set(const std::string &name, const std::string &value) 
 {
-#ifdef NORETROLXCONF
-	return Settings::getInstance()->setString(mapSettingsName(name), value == "auto" ? "" : value);
-#endif
-
 	if (mSystemConfFile.empty())
 		return Settings::getInstance()->setString(mapSettingsName(name), value == "auto" ? "" : value);
 
@@ -268,13 +244,8 @@ bool SystemConf::set(const std::string &name, const std::string &value)
 
 bool SystemConf::getBool(const std::string &name, bool defaultValue)
 {
-#ifdef NORETROLXCONF
-	return Settings::getInstance()->getBool(mapSettingsName(name));
-#endif
-
 	if (mSystemConfFile.empty())
 		return Settings::getInstance()->getBool(mapSettingsName(name));
-
 
 	if (defaultValue)
 		return get(name) != "0";
@@ -284,10 +255,6 @@ bool SystemConf::getBool(const std::string &name, bool defaultValue)
 
 bool SystemConf::setBool(const std::string &name, bool value)
 {
-#ifdef NORETROLXCONF	
-	return Settings::getInstance()->setBool(mapSettingsName(name), value);
-#endif
-
 	if (mSystemConfFile.empty())
 		return Settings::getInstance()->setBool(mapSettingsName(name), value);
 

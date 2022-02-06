@@ -242,11 +242,11 @@ private:
 	Transform4x4f mTransform; //Don't access this directly! Use getTransform()!
 	Vector4f mClipRect;
 
-    flat_hash_map<unsigned char, AnimationController*> mAnimationMap;
+	std::map<unsigned char, AnimationController*> mAnimationMap;
 	//AnimationController* mAnimationMap[MAX_ANIMATIONS];
 	
 	StoryboardAnimator* mStoryboardAnimator;
-	flat_hash_map<std::string, ThemeStoryboard*> mStoryBoards;
+	std::map<std::string, ThemeStoryboard*> mStoryBoards;
 
 	std::string mTag;
 };

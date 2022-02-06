@@ -24,9 +24,7 @@
 #include "guis/GuiTextEditPopup.h"
 #include "guis/GuiTextEditPopupKeyboard.h"
 #include "TextToSpeech.h"
-
-#include <parallel_hashmap/phmap.h>
-using phmap::flat_hash_set;
+#include <unordered_set>
 
 // buffer values for scrolling velocity (left, stopped, right)
 const int logoBuffersLeft[] = { -5, -2, -1 };
@@ -1315,11 +1313,11 @@ void SystemView::renderExtras(const Transform4x4f& trans, float lower, float upp
 	int extrasCenter = (int)mExtrasCamOffset;
 
 	Renderer::pushClipRect(Vector2i::Zero(), Vector2i((int)mSize.x(), (int)mSize.y()));
-
-    flat_hash_set<std::string> allPaths;
-    flat_hash_set<std::string> paths;
-    flat_hash_set<std::string> allValues;
-    flat_hash_set<std::string> values;
+	
+	std::unordered_set<std::string> allPaths;
+	std::unordered_set<std::string> paths;
+	std::unordered_set<std::string> allValues;
+	std::unordered_set<std::string> values;
 
 	if (mExtrasFadeOpacity && mExtrasFadeOldCursor >= 0 && mExtrasFadeOldCursor < mEntries.size() && mExtrasFadeOldCursor != mCursor)
 	{

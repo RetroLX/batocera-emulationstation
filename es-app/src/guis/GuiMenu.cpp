@@ -3433,12 +3433,6 @@ void GuiMenu::openQuitMenu_static(Window *window, bool quickAccessMenu, bool ani
 
 		}, "iconScraper", true);
 		
-#if WIN32	
-#define RETROLX_MANUAL_FILE Utils::FileSystem::getEsConfigPath() + "/notice.pdf"
-#else
-#define RETROLX_MANUAL_FILE "/usr/share/retrolx/doc/notice.pdf"
-#endif
-
 		if (ApiSystem::getInstance()->isScriptingSupported(ApiSystem::ScriptId::PDFEXTRACTION) && Utils::FileSystem::exists(Paths::getUserManualPath()))
 		{
 			s->addEntry(_("VIEW USER'S MANUAL"), false, [s, window]

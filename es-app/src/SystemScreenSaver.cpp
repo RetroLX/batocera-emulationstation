@@ -16,6 +16,7 @@
 #include "SystemData.h"
 #include "components/ImageComponent.h"
 #include "components/TextComponent.h"
+#include <unordered_map>
 #include <time.h>
 #include "AudioManager.h"
 #include "math/Vector2i.h"

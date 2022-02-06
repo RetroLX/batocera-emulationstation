@@ -330,7 +330,7 @@ void CollectionSystemManager::updateSystemsList()
 	// remove all Collection Systems
 	removeCollectionsFromDisplayedSystems();
 
-	flat_hash_map<std::string, FileData*> map;
+	std::unordered_map<std::string, FileData*> map;
 	getAllGamesCollection()->getRootFolder()->createChildrenByFilenameMap(map);
 
 	// add custom enabled ones
@@ -377,7 +377,7 @@ void CollectionSystemManager::refreshCollectionSystems(FileData* file)
 	if (!file->getSystem()->isGameSystem() || file->getType() != GAME)
 		return;
 
-    flat_hash_map<std::string, CollectionSystemData> allCollections;
+	std::map<std::string, CollectionSystemData> allCollections;
 	allCollections.insert(mAutoCollectionSystemsData.cbegin(), mAutoCollectionSystemsData.cend());
 	allCollections.insert(mCustomCollectionSystemsData.cbegin(), mCustomCollectionSystemsData.cend());
 
@@ -488,7 +488,7 @@ void CollectionSystemManager::deleteCollectionFiles(FileData* file)
 	std::string key = file->getFullPath();
 
 	// find games in collection systems
-    flat_hash_map<std::string, CollectionSystemData> allCollections;
+	std::map<std::string, CollectionSystemData> allCollections;
 	allCollections.insert(mAutoCollectionSystemsData.cbegin(), mAutoCollectionSystemsData.cend());
 	allCollections.insert(mCustomCollectionSystemsData.cbegin(), mCustomCollectionSystemsData.cend());
 
@@ -738,7 +738,7 @@ SystemData* CollectionSystemManager::getSystemToView(SystemData* sys)
 // loads Automatic Collection systems (All, Favorites, Last Played)
 void CollectionSystemManager::initAutoCollectionSystems()
 {
-	for(flat_hash_map<std::string, CollectionSystemDecl>::const_iterator it = mCollectionSystemDeclsIndex.cbegin() ; it != mCollectionSystemDeclsIndex.cend() ; it++ )
+	for(std::map<std::string, CollectionSystemDecl>::const_iterator it = mCollectionSystemDeclsIndex.cbegin() ; it != mCollectionSystemDeclsIndex.cend() ; it++ )
 	{
 		CollectionSystemDecl sysDecl = it->second;
 		if (!sysDecl.isCustom)
@@ -1045,7 +1045,7 @@ void CollectionSystemManager::populateAutoCollection(CollectionSystemData* sysDa
 }
 
 // populates a Custom Collection System
-void CollectionSystemManager::populateCustomCollection(CollectionSystemData* sysData, flat_hash_map<std::string, FileData*>* pMap)
+void CollectionSystemManager::populateCustomCollection(CollectionSystemData* sysData, std::unordered_map<std::string, FileData*>* pMap)
 {
 	SystemData* newSys = sysData->system;
 	sysData->isPopulated = true;
@@ -1103,7 +1103,7 @@ void CollectionSystemManager::populateCustomCollection(CollectionSystemData* sys
 
 	FolderData* folder = getAllGamesCollection()->getRootFolder();
 
-	flat_hash_map<std::string, FileData*> map;
+	std::unordered_map<std::string, FileData*> map;
 
 	if (pMap == nullptr && folder != nullptr)
 	{
@@ -1122,7 +1122,7 @@ void CollectionSystemManager::populateCustomCollection(CollectionSystemData* sys
 		// if item is portable relative to homepath
 		gameKey = Utils::FileSystem::resolveRelativePath(Utils::String::trim(gameKey), relativeTo, true);
 
-		flat_hash_map<std::string, FileData*>::const_iterator it = pMap->find(gameKey);
+		std::unordered_map<std::string, FileData*>::const_iterator it = pMap->find(gameKey);
 		if (it != pMap->cend())
 		{
 			if (std::find(hiddenSystems.cbegin(), hiddenSystems.cend(), it->second->getName()) != hiddenSystems.cend())
@@ -1168,7 +1168,7 @@ void CollectionSystemManager::removeCollectionsFromDisplayedSystems()
 	ViewController::get()->removeGameListView(mCustomCollectionsBundle);
 }
 
-void CollectionSystemManager::addEnabledCollectionsToDisplayedSystems(flat_hash_map<std::string, CollectionSystemData>* colSystemData, flat_hash_map<std::string, FileData*>* pMap)
+void CollectionSystemManager::addEnabledCollectionsToDisplayedSystems(std::map<std::string, CollectionSystemData>* colSystemData, std::unordered_map<std::string, FileData*>* pMap)
 {
 	if (Settings::getInstance()->getBool("ThreadedLoading"))
 	{
@@ -1299,7 +1299,7 @@ std::vector<std::string> CollectionSystemManager::getSystemsFromTheme()
 		return systems;
 	}
 
-    flat_hash_map<std::string, ThemeSet>::const_iterator set = themeSets.find(Settings::getInstance()->getString("ThemeSet"));
+	std::map<std::string, ThemeSet>::const_iterator set = themeSets.find(Settings::getInstance()->getString("ThemeSet"));
 	if(set == themeSets.cend())
 	{
 		// currently selected theme set is missing, so just pick the first available set
@@ -1403,7 +1403,7 @@ std::vector<std::string> CollectionSystemManager::getCollectionsFromConfigFolder
 std::vector<std::string> CollectionSystemManager::getCollectionThemeFolders(bool custom)
 {
 	std::vector<std::string> systems;
-	for(flat_hash_map<std::string, CollectionSystemDecl>::const_iterator it = mCollectionSystemDeclsIndex.cbegin() ; it != mCollectionSystemDeclsIndex.cend() ; it++ )
+	for(std::map<std::string, CollectionSystemDecl>::const_iterator it = mCollectionSystemDeclsIndex.cbegin() ; it != mCollectionSystemDeclsIndex.cend() ; it++ )
 	{
 		CollectionSystemDecl sysDecl = it->second;
 		if (sysDecl.isCustom == custom)

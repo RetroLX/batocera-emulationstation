@@ -18,6 +18,7 @@
 #include "guis/GuiTextEditPopupKeyboard.h"
 #include "views/UIModeController.h"
 
+#include <unordered_set>
 #include <algorithm>
 
 #define WINDOW_WIDTH (float)Math::max((int)Renderer::getScreenHeight(), (int)(Renderer::getScreenWidth() * 0.73f))
