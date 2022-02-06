@@ -1334,26 +1334,37 @@ msgstr "CPU 최대 주파수"
 msgid "Cpu feature"
 msgstr "CPU 사양"
 
+msgctxt "game_options"
+msgid "SHARP-BILINEAR-SIMPLE"
+msgstr ""
+
+msgctxt "game_options"
 msgid "SCANLINES"
-msgstr "스캔라인"
+msgstr ""
 
+msgctxt "game_options"
 msgid "RETRO"
-msgstr "레트로"
+msgstr ""
 
+msgctxt "game_options"
 msgid "ENHANCED"
-msgstr "향상됨"
+msgstr ""
 
+msgctxt "game_options"
 msgid "CURVATURE"
-msgstr "곡률"
+msgstr ""
 
+msgctxt "game_options"
 msgid "ZFAST"
-msgstr "ZFAST"
+msgstr ""
 
+msgctxt "game_options"
 msgid "FLATTEN-GLOW"
-msgstr "평면빛"
+msgstr ""
 
+msgctxt "game_options"
 msgid "RGA SCALING"
-msgstr "RGA 크기조절"
+msgstr ""
 
 msgid "VENDOR"
 msgstr "벤더"
@@ -1634,6 +1645,9 @@ msgstr "사용안함"
 msgid "DEFAULT"
 msgstr ""
 
+msgid "ENHANCED"
+msgstr "향상됨"
+
 msgid "INSTANT"
 msgstr ""
 
@@ -1787,11 +1801,14 @@ msgstr "입력지연 줄이기"
 msgid "RUN-AHEAD FRAMES"
 msgstr "프레임 미리 실행"
 
-msgid "USE RUN-AHEAD FRAMES"
-msgstr "프레임 미리 실행 사용"
+msgid "High numbers can result in visible jitter."
+msgstr ""
 
-msgid "RUN-AHEAD USE SECOND INSTANCE"
-msgstr "미리 실행 초 단위 사용"
+msgid "USE SECOND INSTANCE FOR RUN-AHEAD"
+msgstr ""
+
+msgid "Can prevent audio skips on button presses."
+msgstr ""
 
 msgid "AUTOMATIC FRAME DELAY"
 msgstr ""
@@ -1800,8 +1817,18 @@ msgid "AUTO FRAME DELAY"
 msgstr ""
 
 msgid ""
-"Automatically decrease frame delay temporarily to prevent frame drops. Turn "
-"off if this worsens audio/video stuttering."
+"Automatically decrease frame delay temporarily to prevent frame drops. Can "
+"introduce stuttering."
+msgstr ""
+
+msgid "VARIABLE REFRESH RATE (G-SYNC, FREESYNC)"
+msgstr ""
+
+msgid "VARIABLE REFRESH RATE"
+msgstr ""
+
+msgid ""
+"Don't deviate from core requested timing. G-Sync, FreeSync, HDMI 2.1 VRR."
 msgstr ""
 
 msgid "DECORATION SET"
@@ -2789,6 +2816,30 @@ msgstr ""
 
 msgid "SCREEN READER DISABLED"
 msgstr ""
+
+#~ msgid "USE RUN-AHEAD FRAMES"
+#~ msgstr "프레임 미리 실행 사용"
+
+#~ msgid "RUN-AHEAD USE SECOND INSTANCE"
+#~ msgstr "미리 실행 초 단위 사용"
+
+#~ msgid "SCANLINES"
+#~ msgstr "스캔라인"
+
+#~ msgid "RETRO"
+#~ msgstr "레트로"
+
+#~ msgid "CURVATURE"
+#~ msgstr "곡률"
+
+#~ msgid "ZFAST"
+#~ msgstr "ZFAST"
+
+#~ msgid "FLATTEN-GLOW"
+#~ msgstr "평면빛"
+
+#~ msgid "RGA SCALING"
+#~ msgstr "RGA 크기조절"
 
 #~ msgid "SET PLAYER PASSWORD"
 #~ msgstr "플레이어 비밀번호 설정"

@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: batocera-es v33beta(2022/01/04)\n"
+"Project-Id-Version: batocera-es v33beta(2022/01/20)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-10-23 13:22+0200\n"
-"PO-Revision-Date: 2022-01-04 07:26+0900\n"
+"PO-Revision-Date: 2022-01-21 19:28+0900\n"
 "Last-Translator: mikakunin\n"
 "Language-Team: mikakunin\n"
 "Language: ja\n"
@@ -302,7 +302,7 @@ msgstr "このコレクションは空です。"
 
 #. TRANSLATION: number of developpers / various developpers
 msgid "None"
-msgstr "使用しない"
+msgstr "無し"
 
 msgid "Various"
 msgstr "いろいろ"
@@ -390,7 +390,7 @@ msgid "RETROACHIEVEMENT UNLOCK SOUND"
 msgstr "RETROACHIEVEMENTサウンドのロック解除"
 
 msgid "none"
-msgstr "なし"
+msgstr "無し"
 
 msgid "UNLOCK SOUND"
 msgstr "サウンドのロック解除"
@@ -423,7 +423,7 @@ msgid "FILTER GAMELIST BY"
 msgstr "ゲームリスト別のフィルタ"
 
 msgid "EDIT DYNAMIC COLLECTION FILTERS"
-msgstr "システム・項目別コレクションの詳細編集"
+msgstr "システム・項目別コレクション詳細編集"
 
 msgid "RESET ALL FILTERS"
 msgstr "全フィルタをリセット"
@@ -450,7 +450,7 @@ msgid "GAME COLLECTION SETTINGS"
 msgstr "ゲームコレクション設定"
 
 msgid "COLLECTIONS TO DISPLAY"
-msgstr "表示するコレクション"
+msgstr "システム・コレクション"
 
 msgid "SYSTEMS DISPLAYED"
 msgstr "表示するシステム"
@@ -462,7 +462,7 @@ msgid "CREATE CUSTOM COLLECTION"
 msgstr "コレクション作成"
 
 msgid "CREATE NEW CUSTOM COLLECTION FROM THEME"
-msgstr "テーマファイルからマイコレクションを作成"
+msgstr "テーマファイルからコレクションを作成"
 
 msgid "SELECT THEME FOLDER"
 msgstr "追加するコレクションを選択"
@@ -481,7 +481,7 @@ msgid "OPTIONS"
 msgstr "設定"
 
 msgid "SORT COLLECTIONS AND SYSTEMS"
-msgstr "マイコレクションとシステムの並べ替え"
+msgstr "コレクションとシステムの並べ替え"
 
 msgid "ALPHABETICALLY"
 msgstr "アルファベット順"
@@ -496,7 +496,7 @@ msgid "BY RELEASE YEAR"
 msgstr "リリース年別"
 
 msgid "SORT SYSTEMS"
-msgstr "各システムをソート"
+msgstr "各システムの並び替え"
 
 msgid "START ON SYSTEM"
 msgstr "最初に表示するシステム"
@@ -529,25 +529,25 @@ msgid "SELECT COLLECTIONS"
 msgstr "コレクションを選択"
 
 msgid "AUTOMATIC COLLECTIONS"
-msgstr "自動コレクション"
+msgstr "個別表示コレクション"
 
 msgid "PER GENRE"
-msgstr "ジャンルごと"
+msgstr "個別ジャンル(グループ化可能)"
 
 msgid "ARCADE SYSTEMS"
 msgstr "アーケードシステム"
 
 msgid "AUTOMATIC GAME COLLECTIONS"
-msgstr "自動ゲームコレクション"
+msgstr "基本ゲームコレクション"
 
 msgid "EDITABLE COLLECTIONS"
-msgstr "編集可能なコレクション"
+msgstr "マイコレクション"
 
 msgid "DYNAMIC COLLECTIONS"
 msgstr "システム・項目別コレクション"
 
 msgid "CUSTOM GAME COLLECTIONS"
-msgstr "マイゲームコレクション"
+msgstr "マイコレクション"
 
 msgid "PLEASE WAIT"
 msgstr "お待ちください"
@@ -617,10 +617,10 @@ msgid "SELECT RANDOM GAME"
 msgstr "ランダムにゲーム選択"
 
 msgid "SORT GAMES BY"
-msgstr "ゲーム別のソート"
+msgstr "ゲームの並び替え"
 
 msgid "OTHER FILTERS"
-msgstr "その他のフィルタ"
+msgstr "その他フィルタ"
 
 msgid "COLLECTION"
 msgstr "コレクション"
@@ -1340,24 +1340,35 @@ msgstr "Cpu 最大周波数"
 msgid "Cpu feature"
 msgstr "CPU 機能"
 
+msgctxt "game_options"
+msgid "SHARP-BILINEAR-SIMPLE"
+msgstr "SHARP-BILINEAR-SIMPLE"
+
+msgctxt "game_options"
 msgid "SCANLINES"
 msgstr "スキャンライン"
 
+msgctxt "game_options"
 msgid "RETRO"
 msgstr "レトロ"
 
+msgctxt "game_options"
 msgid "ENHANCED"
 msgstr "拡張"
 
+msgctxt "game_options"
 msgid "CURVATURE"
 msgstr "曲率"
 
+msgctxt "game_options"
 msgid "ZFAST"
 msgstr "ZFAST"
 
+msgctxt "game_options"
 msgid "FLATTEN-GLOW"
 msgstr "FLATTEN-GLOW"
 
+msgctxt "game_options"
 msgid "RGA SCALING"
 msgstr "RGAスケーリング"
 
@@ -1635,13 +1646,16 @@ msgid "SHOW CLOCK IN 12-HOUR FORMAT"
 msgstr "時計を12時間形式で表示"
 
 msgid "POWER SAVER MODES"
-msgstr "省電力モード(rpi用)"
+msgstr "省電力モード(ハンドヘルドi)"
 
 msgid "DISABLED"
 msgstr "無効"
 
 msgid "DEFAULT"
 msgstr "標準"
+
+msgid "ENHANCED"
+msgstr "拡張"
 
 msgid "INSTANT"
 msgstr "瞬時"
@@ -1707,10 +1721,10 @@ msgid "BOOT SPLASH"
 msgstr "ブートスプラッシュ映像"
 
 msgid "DEFAULT VIDEO/USER SET SPLASH"
-msgstr "既定映像スプラッシュ"
+msgstr "イメージ動画スプラッシュ"
 
 msgid "SILENT VIDEO/USER SET SPLASH"
-msgstr "音声無し映像スプラッシュ"
+msgstr "音声無し動画スプラッシュ"
 
 msgid "BATOCERA SPLASH IMAGE"
 msgstr "BATOCERA スプラッシュ画像"
@@ -1799,11 +1813,14 @@ msgstr "ちらつき軽減"
 msgid "RUN-AHEAD FRAMES"
 msgstr "先行フレーム"
 
-msgid "USE RUN-AHEAD FRAMES"
-msgstr "先行フレームの使用"
+msgid "High numbers can result in visible jitter."
+msgstr "数値が大きいと、目に見えるジッターが発生する可能性があります"
 
-msgid "RUN-AHEAD USE SECOND INSTANCE"
-msgstr "先行実行の2番目のインスタンス"
+msgid "USE SECOND INSTANCE FOR RUN-AHEAD"
+msgstr "先読みには2番目のインスタンスを使用します"
+
+msgid "Can prevent audio skips on button presses."
+msgstr "ボタンを押したときの音声スキップを防ぎます"
 
 msgid "AUTOMATIC FRAME DELAY"
 msgstr "自動フレーム遅延"
@@ -1812,11 +1829,22 @@ msgid "AUTO FRAME DELAY"
 msgstr "自動フレーム遅延"
 
 msgid ""
-"Automatically decrease frame delay temporarily to prevent frame drops. Turn "
-"off if this worsens audio/video stuttering."
+"Automatically decrease frame delay temporarily to prevent frame drops. Can "
+"introduce stuttering."
 msgstr ""
-"フレーム遅延を自動的に減らしフレームドロップを防ぎます。オーディオ/ビデオで不"
-"具合がでた場合は、オフにします。"
+"フレームドロップを防ぐために、フレーム遅延を自動的に減らします。不具合がでる"
+"場合があります"
+
+msgid "VARIABLE REFRESH RATE (G-SYNC, FREESYNC)"
+msgstr "可変リフレッシュレート（G-SYNC、FREESYNC）"
+
+msgid "VARIABLE REFRESH RATE"
+msgstr "可変リフレッシュレート"
+
+msgid ""
+"Don't deviate from core requested timing. G-Sync, FreeSync, HDMI 2.1 VRR."
+msgstr ""
+"コア要求のタイミングから逸脱しないでください。 G-Sync、FreeSync、HDMI2.1VRR"
 
 msgid "DECORATION SET"
 msgstr "ベゼルを選択"
@@ -2083,7 +2111,7 @@ msgid "ICON AND TEXT"
 msgstr "アイコンと文字"
 
 msgid "IGNORE LEADING ARTICLES WHEN SORTING"
-msgstr "ソート時に主要項目を無視"
+msgstr "ソート時に「The,a,an」を無視"
 
 msgid "VOLUME"
 msgstr "音量"

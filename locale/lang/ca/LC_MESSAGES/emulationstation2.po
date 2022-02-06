@@ -1335,26 +1335,37 @@ msgstr "Freqüència màxima del processador"
 msgid "Cpu feature"
 msgstr "Característica del processador"
 
+msgctxt "game_options"
+msgid "SHARP-BILINEAR-SIMPLE"
+msgstr ""
+
+msgctxt "game_options"
 msgid "SCANLINES"
-msgstr "SCANLINES"
+msgstr ""
 
+msgctxt "game_options"
 msgid "RETRO"
-msgstr "RETRO"
+msgstr ""
 
+msgctxt "game_options"
 msgid "ENHANCED"
-msgstr "MILLORAT"
+msgstr ""
 
+msgctxt "game_options"
 msgid "CURVATURE"
-msgstr "CURVATURA"
+msgstr ""
 
+msgctxt "game_options"
 msgid "ZFAST"
-msgstr "ZFAST"
+msgstr ""
 
+msgctxt "game_options"
 msgid "FLATTEN-GLOW"
-msgstr "PLANA-BRILLANT"
+msgstr ""
 
+msgctxt "game_options"
 msgid "RGA SCALING"
-msgstr "ESCALAT RGA"
+msgstr ""
 
 msgid "VENDOR"
 msgstr ""
@@ -1635,6 +1646,9 @@ msgstr ""
 msgid "DEFAULT"
 msgstr ""
 
+msgid "ENHANCED"
+msgstr "MILLORAT"
+
 msgid "INSTANT"
 msgstr ""
 
@@ -1788,10 +1802,13 @@ msgstr ""
 msgid "RUN-AHEAD FRAMES"
 msgstr ""
 
-msgid "USE RUN-AHEAD FRAMES"
+msgid "High numbers can result in visible jitter."
 msgstr ""
 
-msgid "RUN-AHEAD USE SECOND INSTANCE"
+msgid "USE SECOND INSTANCE FOR RUN-AHEAD"
+msgstr ""
+
+msgid "Can prevent audio skips on button presses."
 msgstr ""
 
 msgid "AUTOMATIC FRAME DELAY"
@@ -1801,8 +1818,18 @@ msgid "AUTO FRAME DELAY"
 msgstr ""
 
 msgid ""
-"Automatically decrease frame delay temporarily to prevent frame drops. Turn "
-"off if this worsens audio/video stuttering."
+"Automatically decrease frame delay temporarily to prevent frame drops. Can "
+"introduce stuttering."
+msgstr ""
+
+msgid "VARIABLE REFRESH RATE (G-SYNC, FREESYNC)"
+msgstr ""
+
+msgid "VARIABLE REFRESH RATE"
+msgstr ""
+
+msgid ""
+"Don't deviate from core requested timing. G-Sync, FreeSync, HDMI 2.1 VRR."
 msgstr ""
 
 msgid "DECORATION SET"
@@ -2797,6 +2824,24 @@ msgstr ""
 
 msgid "SCREEN READER DISABLED"
 msgstr ""
+
+#~ msgid "SCANLINES"
+#~ msgstr "SCANLINES"
+
+#~ msgid "RETRO"
+#~ msgstr "RETRO"
+
+#~ msgid "CURVATURE"
+#~ msgstr "CURVATURA"
+
+#~ msgid "ZFAST"
+#~ msgstr "ZFAST"
+
+#~ msgid "FLATTEN-GLOW"
+#~ msgstr "PLANA-BRILLANT"
+
+#~ msgid "RGA SCALING"
+#~ msgstr "ESCALAT RGA"
 
 #~ msgid "SET PLAYER PASSWORD"
 #~ msgstr "CONTRASENYA PER JUGADORS"
