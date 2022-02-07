@@ -80,6 +80,7 @@ private:
 
 	std::string mRootPath;
 	std::string mSystemConfFilePath;
+	std::string mConfigPath;
 	std::string mLogPath;
 	std::string mScreenShotsPath;
 	std::string mSaveStatesPath;
