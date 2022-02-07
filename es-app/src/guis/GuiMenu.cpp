@@ -4096,18 +4096,6 @@ std::vector<DecorationSetInfo> GuiMenu::getDecorationsSets(SystemData* system)
 		Paths::getDecorationsPath()
 	};
 	
-	win32path = Win32ApiSystem::getEmulatorLauncherPath("decorations");
-	if (!win32path.empty())
-		paths.push_back(win32path);
-
-
-#else
-	std::vector<std::string> paths = {
-		"/usr/share/retrolx/datainit/decorations",
-		"/userdata/decorations"
-	};
-#endif
-
 	Utils::FileSystem::stringList dirContent;
 	std::string folder;
 
