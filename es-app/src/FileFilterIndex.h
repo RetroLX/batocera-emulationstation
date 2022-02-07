@@ -80,7 +80,7 @@ public:
 
 protected:
 	//std::vector<FilterDataDecl> filterDataDecl;
-    flat_hash_map<int, FilterDataDecl> mFilterDecl;
+	std::map<int, FilterDataDecl> mFilterDecl;
 
 	std::string getIndexableKey(FileData* game, FilterIndexType type, bool getSecondary);
 
