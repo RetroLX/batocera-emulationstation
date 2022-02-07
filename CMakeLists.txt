@@ -243,7 +243,6 @@ set(COMMON_INCLUDE_DIRS
     ${RAPIDJSON_INCLUDE_DIRS}
     ${CMAKE_CURRENT_SOURCE_DIR}/external
     ${CMAKE_CURRENT_SOURCE_DIR}/external/libyuv/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/external/phmap
     ${CMAKE_CURRENT_SOURCE_DIR}/es-core/src
 )
 

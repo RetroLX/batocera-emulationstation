@@ -1321,8 +1321,10 @@ const std::string FileData::getEmulator(bool resolveDefault)
 	if (resolveDefault && emulator.empty())
 		emulator = getSourceFileData()->getSystem()->getEmulator();
 
+#if RETROLX
 	if (emulator.empty())
 		emulator = getSourceFileData()->getSystem()->getEmulator();
+#endif
 		
 	return emulator;
 }

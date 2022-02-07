@@ -4,6 +4,3 @@
 [submodule "libyuv"]
 	path = external/libyuv
 	url = https://chromium.googlesource.com/libyuv/libyuv
-[submodule "external/phmap"]
-	path = external/phmap
-	url = https://github.com/greg7mdp/parallel-hashmap
