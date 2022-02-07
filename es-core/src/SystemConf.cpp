@@ -46,9 +46,6 @@ static std::map<std::string, std::string> defaults =
 	{ "global.ai_service_enabled", "0" },
 };
 
-std::string systemConfFile = "/userdata/system/retrolx.conf";
-std::string systemConfFileTmp = "/userdata/system/retrolx.conf.tmp";
-
 SystemConf::SystemConf() 
 {
 	mSystemConfFile = Paths::getSystemConfFilePath();
