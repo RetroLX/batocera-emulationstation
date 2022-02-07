@@ -63,6 +63,34 @@ Paths::Paths()
 	mVersionInfoPath = "/usr/share/batocera/batocera.version";
 #endif
 
+#if RETROLX
+	mRootPath = "/userdata";
+	mEmulationStationPath = "/usr/share/emulationstation";
+	mUserEmulationStationPath = "/userdata/system/configs/emulationstation";
+
+	mConfigPath = "/userdata/system/";
+	mLogPath = "/userdata/system/logs";
+	mScreenShotsPath = "/userdata/screenshots";
+	mSaveStatesPath = "/userdata/saves";
+	mMusicPath = "/usr/share/retrolx/music";
+	mUserMusicPath = "/userdata/music";
+	mThemesPath = "/usr/share/emulationstation/themes";
+	mUserThemesPath = "/userdata/themes";
+	mKeyboardMappingsPath = "/usr/share/evmapy";
+	mUserKeyboardMappingsPath = "/userdata/system/configs/evmapy";
+	mDecorationsPath = "/usr/share/retrolx/datainit/decorations";
+	mUserDecorationsPath = "/userdata/decorations";
+	mShadersPath = "/usr/share/retrolx/shaders/configs";
+	mUserShadersPath = "/userdata/shaders/configs";
+	mTimeZonesPath = "/usr/share/zoneinfo/";
+	mRetroachivementSounds = "/usr/share/libretro/assets/sounds";
+	mUserRetroachivementSounds = "/userdata/sounds/retroachievements";
+	
+	mSystemConfFilePath = "/userdata/system/retrolx.conf";
+	mUserManualPath = "/usr/share/retrolx/doc/notice.pdf";
+	mVersionInfoPath = "/usr/share/retrolx/retrolx.version";
+#endif
+
 /* EmuElec sample locations.
 #ifdef _ENABLEEMUELEC
 	mRootPath = "/storage/roms"; // ?
