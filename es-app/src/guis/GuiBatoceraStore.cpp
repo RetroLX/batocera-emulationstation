@@ -170,7 +170,7 @@ void GuiBatoceraStore::loadList(bool updatePackageList, bool restoreIndex)
 	for (auto& package : mPackages)
 	{
 		if (!mArchitecture.empty() && !package.arch.empty() && package.arch != "any" && package.arch != mArchitecture)
-        		continue;
+			continue;
 
 		if (repositories.find(package.repository) == repositories.cend())
 			repositories.insert(package.repository);
@@ -207,7 +207,7 @@ void GuiBatoceraStore::loadList(bool updatePackageList, bool restoreIndex)
 	for (auto package : mPackages)
 	{
 		if (!mArchitecture.empty() && !package.arch.empty() && package.arch != "any" && package.arch != mArchitecture)
-        		continue;
+			continue;
 
 		if (!mTabFilter.empty() && package.repository != mTabFilter)				
 			continue;		

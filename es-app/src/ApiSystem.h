@@ -97,7 +97,13 @@ public:
 		THEBEZELPROJECT = 16,
 		PADSINFO = 17,
 		BATOCERAPREGAMELISTSHOOK = 18,
-                RETROLXPACMAN = 19
+		TIMEZONES = 19,
+		AUDIODEVICE = 20,
+		BACKUP = 21,
+		INSTALL = 22,
+		SUPPORTFILE = 23,
+		UPGRADE = 24,
+                RETROLXPACMAN = 25
 	};
 
 	virtual bool isScriptingSupported(ScriptId script);
